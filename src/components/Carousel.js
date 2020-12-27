@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 // Images
@@ -33,8 +33,8 @@ const Container = styled.div`
 
 const Images = styled.div`
   ${size}
-  transform: translateX(-100%);
-  transition: transform .3s ease-in;
+  transform: translateX(${props => props.transition}%);
+  transition: transform ${props => props.transitionDuration}s ease-in;
   display: flex;
 `;
 
@@ -67,37 +67,52 @@ const Image = styled.img`
 
 function Carousel() {
 
-  // Duplicate the first and last images for smooth transitions.
   const images = [
-    hero_3, // Last image duplicate
-    hero_1, // First image
+    hero_1,
     hero_2,
     hero_3,
-    hero_1, // First image duplicate
   ];
 
-  const [currentImage, setCurrentImage] = useState(1);
-  const [currentTransition, setCurrentTransition] = useState(-100)
-  const imagesRef = useRef();
+  const [slides, setSlides] = useState([...images])
+  const [transition, setTransition] = useState(0);
+  const [transitionDuration, setTransitionDuration] = useState(.3);
 
   // Functions
   const next = () => {
-    imagesRef.current.style.transform = `translateX(${currentTransition - 100}%)`;
-    setCurrentImage(prev => prev + 1);
-    setCurrentTransition(prev => prev - 100);
+    setTransition(prev => prev - 100);
   };
 
   const previous = () => {
-    imagesRef.current.style.transform = `translateX(${currentTransition + 100}%)`;
-    setCurrentImage(prev => prev - 1);
-    setCurrentTransition(prev => prev + 100);
+    setTransition(prev => prev + 100);
   };
+
+  /* At the end of each transition:
+  - The transition duration is set to 0. It allows us to silently reset transform: translateX to 0.
+  - The slides order is changed so that there is always a "previous slide" and a "next slide" to go to without jumping too far.
+  - Thanks to useEffect, the transition duration is put back to 0.3s to have a smooth animation.
+  */
+  const handleTransitionEnd = () => {
+    setTransitionDuration(0);
+    setTransition(0);
+    setSlides(prev => {
+      const slides = [...prev];
+      const prevSlide = slides.shift();
+      slides.push(prevSlide);
+      return slides;
+    })
+  }
+
+  useEffect(() => {
+    if (transitionDuration === 0) {
+      setTransitionDuration(.3);
+    }
+  }, [transitionDuration])
 
   return (
     <CarouselComponent>
       <Container>
-        <Images ref={imagesRef}>
-          {images.map((image, index) => {
+        <Images onTransitionEnd={handleTransitionEnd} transition={transition} transitionDuration={transitionDuration}>
+          {slides.map((image, index) => {
             return <Image key={index} src={image} alt='Hero' />;
           })}
         </Images>
