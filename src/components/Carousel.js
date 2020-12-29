@@ -18,6 +18,14 @@ width: 100%;
 height: 100%;
 `;
 
+const Container = styled.div`
+  display: flex;
+
+  @media all and (max-width: 576px) {
+    flex-direction: column;
+  }
+`;
+
 const CarouselComponent = styled.div`
   position: relative;
   max-width: 840px;
@@ -26,7 +34,7 @@ const CarouselComponent = styled.div`
   height: 100%;
 `;
 
-const Container = styled.div`
+const Slider = styled.div`
   ${size}
   overflow: hidden;
 `;
@@ -180,9 +188,9 @@ function Carousel() {
   }, [transitionDuration]);
 
   return (
-    <>
+    <Container>
       <CarouselComponent>
-        <Container>
+        <Slider>
           <Images
             onTransitionEnd={handleTransitionEnd}
             transition={transition}
@@ -192,7 +200,7 @@ function Carousel() {
               return <Image key={index} src={image} alt='Hero' />;
             })}
           </Images>
-        </Container>
+        </Slider>
         <Menu>
           <Button type='button' onClick={previous}>
             <img src={angle_left} alt='Previous' />
@@ -219,7 +227,7 @@ function Carousel() {
           </ShopLink>
         </Card>
       </Center>
-    </>
+    </Container>
   );
 }
 

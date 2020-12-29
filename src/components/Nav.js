@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { ReactComponent as Logo } from '../images/logo.svg';
 
 const Container = styled.div`
   position: absolute;
@@ -16,6 +17,7 @@ const Button = styled.button`
   display: none;
   padding: 1rem;
   justify-self: start;
+  cursor: pointer;
 
   @media all and (max-width: 576px) {
     display: inline-block;
@@ -120,9 +122,9 @@ function Nav() {
           />
         </svg>
       </Button>
-      <BrandMobile>room</BrandMobile>
+      <BrandMobile><Logo /></BrandMobile>
       <Navigation isNavOpen={isNavOpen}>
-        <Brand>room</Brand>
+        <Brand><Logo /></Brand>
         <Button onClick={handleCloseNav}>
           <svg width='16' height='16' xmlns='http://www.w3.org/2000/svg'>
             <path
