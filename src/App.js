@@ -21,12 +21,6 @@ const Row = styled.div`
   }
 `;
 
-const Title = styled.h1`
-  font-size: 2.75rem;
-  font-weight: 300;
-  margin-bottom: 2rem;
-`;
-
 const About = styled.h2`
   text-transform: uppercase;
   font-weight: 600;
@@ -52,27 +46,9 @@ const Card = styled.div`
 
 `;
 
-const ShopLink = styled.a`
-  text-transform: uppercase;
-  letter-spacing: .5rem;
-  font-weight: 300;
-  font-size: 1.25rem;
-  margin-top: 2rem;
-  display: inline-block;
-  cursor: pointer;
-
-  &:hover {
-    color: ${colors.grey};
-  }
-`;
-
 const Text = styled.p`
   line-height: 1.25rem;
   color: ${colors.grey};
-`;
-
-const Arrow = styled.svg`
-  margin-left: 2rem;
 `;
 
 const Image = styled.img`
@@ -87,19 +63,6 @@ function App() {
       <Row>
         <Nav />
         <Carousel />
-        <Center>
-          <Card>
-            <Title>Discover innovative ways to decorate</Title>
-            <Text>
-              We provide unmatched quality, comfort, and style for property owners
-              across the country. Our experts combine form and function in
-              bringing your vision to life. Create a room in your own style with
-              our collection and make your property a reflection of you and what
-              you love.
-            </Text>
-            <ShopLink>Shop now<Arrow width="40" height="12" xmlns="http://www.w3.org/2000/svg"><path d="M34.05 0l5.481 5.527h.008v.008L40 6l-.461.465v.063l-.062-.001L34.049 12l-.662-.668 4.765-4.805H0v-1h38.206l-4.82-4.86L34.05 0z" fill="currentColor" fill-rule="nonzero"/></Arrow></ShopLink>
-          </Card>
-        </Center>
       </Row>
 
       <Row>
