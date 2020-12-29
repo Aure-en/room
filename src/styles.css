@@ -85,3 +85,8 @@ a {
 .notransition {
   transition-duration: 0s;
 }
+
+.active {
+	opacity: 0;
+	transform: translateY(2.5%);
+}

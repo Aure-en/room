@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 
 // Images
@@ -69,12 +69,14 @@ const Center = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 1rem 0;
 `;
 
 const Card = styled.div`
   max-width: 70%;
   min-width: 450px;
   padding: 2rem;
+  transition: all .25s ease-in-out;
 
   @media all and (max-width: 576px) {
     min-width: 0;
@@ -132,6 +134,7 @@ function Carousel() {
     },
   ];
 
+  const cardRef = useRef();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [slides, setSlides] = useState([...images]);
   const [transition, setTransition] = useState(0);
@@ -143,6 +146,7 @@ function Carousel() {
     setCurrentSlide((prev) => {
       return prev === images.length - 1 ? 0 : prev + 1;
     });
+    cardRef.current.classList.add('active');
   };
 
   const previous = () => {
@@ -166,6 +170,7 @@ function Carousel() {
       slides.push(prevSlide);
       return slides;
     });
+    cardRef.current.classList.remove('active');
   };
 
   useEffect(() => {
@@ -199,7 +204,7 @@ function Carousel() {
       </CarouselComponent>
 
       <Center>
-        <Card>
+        <Card ref={cardRef}>
           <Title>{text[currentSlide].title}</Title>
           <Text>{text[currentSlide].description}</Text>
           <ShopLink>
