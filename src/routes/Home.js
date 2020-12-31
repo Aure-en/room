@@ -10,11 +10,18 @@ import about_light from '../images/image-about-light.jpg'
 const colors = {
   black: 'hsl(0, 0%, 0%)',
   grey: 'hsl(0, 0%, 63%)',
-  darkGrey: 'hsl(0, 0%, 27%)',
 }
+
+const Container = styled.div`
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+`;
 
 const Row = styled.div`
   display: flex;
+  flex: 1;
 
   @media all and (max-width: 576px) {
     flex-direction: column;
@@ -36,14 +43,7 @@ const Center = styled.div`
 
 const Card = styled.div`
   max-width: 70%;
-  min-width: 450px;
   padding: 2rem;
-
-  @media all and (max-width: 576px) {
-    min-width: 0;
-    padding: 1rem;
-  }
-
 `;
 
 const Text = styled.p`
@@ -59,7 +59,7 @@ const Image = styled.img`
 
 function Home() {
   return (
-    <>
+    <Container>
       <Nav />
       <Carousel />
 
@@ -80,7 +80,7 @@ function Home() {
         </Center>
         <Image src={about_light} alt='White chair' />
       </Row>
-    </>
+    </Container>
   );
 }
 

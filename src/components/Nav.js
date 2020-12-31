@@ -7,10 +7,13 @@ const Container = styled.div`
   z-index: 1;
   padding: 1rem;
   display: grid;
-  width: 100vw;
-  max-width: 100%;
-  grid-template-columns: 1fr auto 1fr;
   align-items: baseline;
+
+  @media all and (max-width: 600px) {
+    grid-template-columns: 1fr auto 1fr;
+    width: 100vw;
+    max-width: 100%;
+  }
 `;
 
 const Button = styled.button`
@@ -19,13 +22,12 @@ const Button = styled.button`
   justify-self: start;
   cursor: pointer;
 
-  @media all and (max-width: 576px) {
+  @media all and (max-width: 600px) {
     display: inline-block;
   }
 `;
 
 const Navigation = styled.nav`
-  position: absolute;
   font-family: 'Spartan', sans-serif;
   color: #fff;
   z-index: 2;
@@ -45,7 +47,7 @@ const Navigation = styled.nav`
     top: 1rem;
   }
 
-  @media all and (max-width: 576px) {
+  @media all and (max-width: 600px) {
     display: ${(props) => (props.isNavOpen ? 'flex' : 'none')};
     flex-direction: row;
     background: #fff;
@@ -61,7 +63,7 @@ const Brand = styled.span`
   margin: 0 2rem;
   color: #fff;
 
-  @media all and (max-width: 576px) {
+  @media all and (max-width: 600px) {
     display: none;
   }
 `;
@@ -69,7 +71,7 @@ const Brand = styled.span`
 const BrandMobile = styled(Brand)`
   display: none;
 
-  @media all and (max-width: 576px) {
+  @media all and (max-width: 600px) {
     display: inline-block;
   }
 `;
@@ -79,7 +81,7 @@ const Link = styled.a`
   margin: 0 1.25rem;
   color: #fff;
 
-  @media all and (max-width: 576px) {
+  @media all and (max-width: 600px) {
     color: #000;
   }
 
@@ -93,7 +95,7 @@ const Link = styled.a`
     height: 2px;
     background: #fff;
 
-    @media all and (max-width: 576px) {
+    @media all and (max-width: 600px) {
       background: #000;
     }
   }

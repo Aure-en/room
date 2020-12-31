@@ -14,8 +14,8 @@ const colors = {
 };
 
 const size = `
-width: 100%;
-height: 100%;
+  width: 100%;
+  height: 100%;
 `;
 
 const Container = styled.div`
@@ -52,7 +52,7 @@ const Menu = styled.div`
   left: 100%;
   bottom: 0;
 
-  @media all and (max-width: 576px) {
+  @media all and (max-width: 1170px) {
     left: initial;
     right: 0;
   }
