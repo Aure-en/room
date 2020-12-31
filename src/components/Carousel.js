@@ -2,11 +2,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 
 // Images
-import hero_1 from '../images/desktop-image-hero-1.jpg';
-import hero_2 from '../images/desktop-image-hero-2.jpg';
-import hero_3 from '../images/desktop-image-hero-3.jpg';
-import angle_left from '../images/icon-angle-left.svg';
-import angle_right from '../images/icon-angle-right.svg';
+import hero_1 from '../assets/images/desktop-image-hero-1.jpg';
+import hero_2 from '../assets/images/desktop-image-hero-2.jpg';
+import hero_3 from '../assets/images/desktop-image-hero-3.jpg';
+import angle_left from '../assets/icons/icon-angle-left.svg';
+import angle_right from '../assets/icons/icon-angle-right.svg';
 
 const colors = {
   black: 'hsl(0, 0%, 0%)',

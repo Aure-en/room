@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Nav from '../components/Nav';
 
 // Images
-import about_image from '../images/about.jpg';
+import about_image from '../assets/images/about.jpg';
 
 const colors = {
   black: 'hsl(0, 0%, 0%)',
@@ -27,6 +27,12 @@ const Center = styled.div`
   align-items: center;
   justify-content: center;
   padding: 3rem 0;
+  max-width: 50%;
+
+  @media all and (max-width: 1000px) {
+    max-width: initial;
+  }
+
 `;
 
 const Title = styled.div`
@@ -45,6 +51,16 @@ const Heading = styled.div`
   font-size: 1.5rem;
   text-align: center;
   margin: 2rem 0;
+
+  &:after {
+    position: relative;
+    display: inline-block;
+    content: '';
+    height: 1px;
+    width: 3rem;
+    background-color: ${colors.gold};
+    margin-top: 2rem;
+  }
 `;
 
 const TextDropCap = styled.p`

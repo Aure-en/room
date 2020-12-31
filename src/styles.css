@@ -71,3 +71,13 @@ a {
 	opacity: 0;
 	transform: translateY(2.5%);
 }
+
+input[type='text']:focus,
+input[type='email']:focus,
+input[type='tel']:focus {
+	outline: none;
+}
+
+textarea:focus {
+	outline: none;
+}

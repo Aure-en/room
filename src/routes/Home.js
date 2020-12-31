@@ -4,8 +4,8 @@ import '../styles.css';
 import styled from 'styled-components';
 
 // Images
-import about_dark from '../images/image-about-dark.jpg'
-import about_light from '../images/image-about-light.jpg'
+import about_dark from '../assets/images/image-about-dark.jpg'
+import about_light from '../assets/images/image-about-light.jpg'
 
 const colors = {
   black: 'hsl(0, 0%, 0%)',

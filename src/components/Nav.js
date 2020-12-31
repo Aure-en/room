@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { ReactComponent as Logo } from '../images/logo.svg';
+import { ReactComponent as Logo } from '../assets/icons/logo.svg';
 
 const Container = styled.div`
   position: absolute;
