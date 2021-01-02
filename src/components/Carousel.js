@@ -21,7 +21,7 @@ const size = `
 const Container = styled.div`
   display: flex;
 
-  @media all and (max-width: 576px) {
+  @media all and (max-width: 600px) {
     flex-direction: column;
   }
 `;

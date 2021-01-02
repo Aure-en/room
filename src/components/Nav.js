@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as Logo } from '../assets/icons/logo.svg';
+import { Link } from 'react-router-dom'
+
+const colors = {
+  primary: '#fff'
+}
 
 const Container = styled.div`
   position: absolute;
@@ -28,8 +33,10 @@ const Button = styled.button`
 `;
 
 const Navigation = styled.nav`
+  // Absolute positioning for mobile navigation
+  position: absolute;
   font-family: 'Spartan', sans-serif;
-  color: #fff;
+  color: ${colors.primary};
   z-index: 2;
   display: flex;
   align-items: center;
@@ -50,7 +57,7 @@ const Navigation = styled.nav`
   @media all and (max-width: 600px) {
     display: ${(props) => (props.isNavOpen ? 'flex' : 'none')};
     flex-direction: row;
-    background: #fff;
+    background: ${colors.primary};
     width: 100vw;
     top: 0;
     left: 0;
@@ -61,7 +68,7 @@ const Navigation = styled.nav`
 const Brand = styled.span`
   font-size: 1.5rem;
   margin: 0 2rem;
-  color: #fff;
+  color: ${colors.primary};
 
   @media all and (max-width: 600px) {
     display: none;
@@ -76,10 +83,10 @@ const BrandMobile = styled(Brand)`
   }
 `;
 
-const Link = styled.a`
+const NavLink = styled.a`
   position: relative;
   margin: 0 1.25rem;
-  color: #fff;
+  color: ${colors.primary};
 
   @media all and (max-width: 600px) {
     color: #000;
@@ -93,7 +100,7 @@ const Link = styled.a`
     margin-left: -12.5px;
     width: 25px;
     height: 2px;
-    background: #fff;
+    background: ${colors.primary};
 
     @media all and (max-width: 600px) {
       background: #000;
@@ -119,7 +126,7 @@ function Nav() {
         <svg width='20' height='14' xmlns='http://www.w3.org/2000/svg'>
           <path
             d='M20 12v2H0v-2h20zm0-6v2H0V6h20zm0-6v2H0V0h20z'
-            fill='#FFF'
+            fill={`${colors.primary}`}
             fill-rule='evenodd'
           />
         </svg>
@@ -137,10 +144,10 @@ function Nav() {
             />
           </svg>
         </Button>
-        <Link href='#'>home</Link>
-        <Link href='#'>shop</Link>
-        <Link href='#'>about</Link>
-        <Link href='#'>contact</Link>
+        <Link to='/'><NavLink>home</NavLink></Link>
+        <Link to='/shop'><NavLink>shop</NavLink></Link>
+        <Link to='/about'><NavLink>about</NavLink></Link>
+        <Link to='/contact'><NavLink>contact</NavLink></Link>
       </Navigation>
     </Container>
   );
