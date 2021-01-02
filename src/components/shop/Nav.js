@@ -1,10 +1,11 @@
 // Nav specifics to the Shop Page. 
 // Looks different from the normal nav, and displays links for shopping categories, a shopping cart, the user's saved items, a search bar...
 
-import React from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as Logo } from '../../assets/icons/logo.svg';
 import { Link } from 'react-router-dom';
+import SideNav from './SideNav';
 
 // Icons
 import { ReactComponent as Cart } from '../../assets/icons/icon-shopping-cart.svg';
@@ -45,10 +46,6 @@ const Navigation = styled.nav`
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-
-  @media all and (max-width: 600px) {
-    display: none;
-  }
 `;
 
 const Brand = styled.span`
@@ -65,22 +62,30 @@ const NavIcon = styled.span`
   ${icon}
 `;
 
+const NavLeft = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
 const NavRight = styled.div`
   justify-self: right;
 `;
 
 function Nav() {
+
+  const navRef = useRef();
+
   return (
-    <Container>
+    <Container ref={navRef}>
       <Navigation>
-        <div>
+        <NavLeft>
           <NavIconLink>
-            <Home />
+            <SideNav nav={navRef} />
           </NavIconLink>
           <NavIconLink>
             <Home />
           </NavIconLink>
-        </div>
+        </NavLeft>
 
         <Link to='/'>
           <Brand>

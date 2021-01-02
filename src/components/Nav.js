@@ -83,7 +83,7 @@ const BrandMobile = styled(Brand)`
   }
 `;
 
-const NavLink = styled.a`
+const NavLink = styled.span`
   position: relative;
   margin: 0 1.25rem;
   color: ${colors.primary};
@@ -127,7 +127,7 @@ function Nav() {
           <path
             d='M20 12v2H0v-2h20zm0-6v2H0V6h20zm0-6v2H0V0h20z'
             fill={`${colors.primary}`}
-            fill-rule='evenodd'
+            fillRule='evenodd'
           />
         </svg>
       </Button>

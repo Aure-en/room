@@ -51,7 +51,8 @@ const Category = styled.a`
   text-transform: uppercase;
   font-weight: 600;
   color: ${colors.tertiary};
-  padding: .75rem 0;
+  padding: .75rem 0 calc(0.75rem - 2px) 0;
+  border-bottom: 2px solid transparent;
   
   &:hover {
     border-bottom: 2px solid ${colors.tertiary};
@@ -109,9 +110,10 @@ function ShopNav() {
         {/* Sort the categories by order before displaying them */}
         {Object.keys(categories)
           .sort((a, b) => categories[a].order - categories[b].order)
-          .map((category) => {
+          .map((category, index) => {
             return (
               <Category
+                key={category + index}
                 onMouseOver={() => {
                   setDropdown(true);
                   setHovered(category);
@@ -133,14 +135,14 @@ function ShopNav() {
                   categories[hovered].categories[a].order -
                   categories[hovered].categories[b].order
               )
-              .map((subcategory) => {
+              .map((subcategory, index) => {
                 return (
-                  <Column>
+                  <Column key={subcategory + index}>
                     <Subcategory>{formatNavLink(subcategory)}</Subcategory>
                     <div>
                       {categories[hovered].categories[subcategory].categories.map(
-                        (item) => {
-                          return <Item>{formatNavLink(item)}</Item>;
+                        (item, index) => {
+                          return <Item key={item + index}>{formatNavLink(item)}</Item>;
                         }
                       )}
                     </div>

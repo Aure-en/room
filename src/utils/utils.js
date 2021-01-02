@@ -11,7 +11,7 @@ export const formatNavLink = (link) => {
 };
 
 const capitalize = (word) => {
-  if (word !== 'of') {
+  if (!['of', 'and'].includes(word)) {
     return word[0].toUpperCase() + word.slice(1);
   } else {
     return word

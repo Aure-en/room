@@ -214,7 +214,7 @@ function Contact() {
           <Heading2>Contact Us</Heading2>
           <Form onSubmit={handleFormSubmit}>
             <Field>
-              <Label for='first_name'>First Name</Label>
+              <Label htmlFor='first_name'>First Name</Label>
               <Input
                 type='text'
                 value={firstName}
@@ -225,7 +225,7 @@ function Contact() {
             </Field>
 
             <Field>
-              <Label for='last_name'>Last Name</Label>
+              <Label htmlFor='last_name'>Last Name</Label>
               <Input
                 type='text'
                 value={lastName}
@@ -236,7 +236,7 @@ function Contact() {
             </Field>
 
             <Field>
-              <Label for='email'>Email</Label>
+              <Label htmlFor='email'>Email</Label>
               <Input
                 type='email'
                 id='email'
@@ -247,7 +247,7 @@ function Contact() {
             </Field>
 
             <Field>
-              <Label for='phone'>Phone Number</Label>
+              <Label htmlFor='phone'>Phone Number</Label>
               <Input
                 type='tel'
                 id='phone'
@@ -258,7 +258,7 @@ function Contact() {
             </Field>
 
             <MessageField>
-              <Label for='message'>Message</Label>
+              <Label htmlFor='message'>Message</Label>
               <TextArea
                 value={message}
                 id='message'
