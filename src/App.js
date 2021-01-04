@@ -6,6 +6,7 @@ import Home from './routes/Home.js'
 import Contact from './routes/Contact.js'
 import ShopCategory from './routes/ShopCategory.js'
 import HandleShop from './routes/HandleShop.js'
+import ShopItemDetails from './routes/ShopItemDetails';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
             <Switch>
               <Route exact path="/" component={Home} />
               <Route exact path="/shop" component={ShopCategory} />
+              <Route exact path='/shop/:id' component={ShopItemDetails} />
               <Route exact path="/about" component={About} />
               <Route exact path="/contact" component={Contact} />
               <Route exact path="/handleshop" component={HandleShop} />

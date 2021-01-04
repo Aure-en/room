@@ -32,7 +32,7 @@ const Price = styled.div`
   font-size: .825rem;
 `;
 
-function ShopItem({ name, images, price, id }) {
+function ShopItemPreview({ name, images, price, id }) {
   const [image, setImage] = useState(images[0]);
 
   const changeImage = () => {
@@ -57,4 +57,4 @@ function ShopItem({ name, images, price, id }) {
   );
 }
 
-export default ShopItem;
+export default ShopItemPreview;

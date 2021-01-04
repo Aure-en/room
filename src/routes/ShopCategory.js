@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Nav from '../components/shop/Nav';
 import ShopNav from '../components/shop/ShopNav';
-import ShopItem from '../components/shop/ShopItem';
+import ShopItemPreview from '../components/shop/ShopItemPreview';
 import { useFirestore } from '../contexts/FirestoreContext';
 import styled from 'styled-components'
 
@@ -40,14 +40,11 @@ function ShopCategory() {
           items.map(item => {
             return (
               <li>
-                <ShopItem 
-                name={item.name}
-                images={item.images}
-                colors={item.colors}
-                price={item.price}
-                dimensions={item.dimensions}
-                type={item.type}
-                additionals={item.additionals}
+                <ShopItemPreview 
+                  name={item.name}
+                  images={item.images}
+                  price={item.price}
+                  id={item.id}
                 />
               </li>
             )

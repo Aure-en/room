@@ -66,11 +66,18 @@ export function FirestoreProvider({ children }) {
     });
   };
 
+  // Gets an item's data
+  const getItem = async (id) => {
+    const doc = await firestore.collection('products').doc(id).get();
+    return doc.data();
+  }
+
   const value = {
     getShopCategories,
     getShopItems,
     createItem,
     addItem,
+    getItem
   };
 
   return (
