@@ -1,16 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useFirestore } from '../../contexts/FirestoreContext';
 import { useStorage } from '../../contexts/FirestoreStorage';
 import styled from 'styled-components';
 
 const Form = styled.form``;
 const Label = styled.label``;
-const Field = styled.div``;
+const Field = styled.div`
+  margin: 2rem 0;
+`;
 const Input = styled.input``;
 const TextArea = styled.textarea``;
-const Select = styled.select``;
 const HandleField = styled.button``;
 const SubmitBtn = styled.button``;
+const Preview = styled.div`
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-gap: 2rem;
+`;
+
+const Image = styled.img`
+  max-width: 100%;
+`;
 
 function AddShopItem() {
 
@@ -21,38 +31,32 @@ function AddShopItem() {
     height: 0,
     width: 0,
   });
+  const [materials, setMaterials] = useState([''])
   const [images, setImages] = useState([]);
-  const [type, setType] = useState('');
   const [description, setDescription] = useState('');
-  const [details, setDetails] = useState('');
   const [categories, setCategories] = useState(['']);
   const [colors, setColors] = useState([
     {
       description: '',
       type: '',
-      value: '',
+      value: '#000',
     },
   ]);
-  const [additional, setAdditional] = useState({});
+  const [additional, setAdditional] = useState([
+    {
+      type: '',
+      information: '',
+    }
+  ]);
+  const [options, setOptions] = useState([{
+    type: '',
+    options: [{ option: '', price: ''}],
+  }])
+  const [imagesPreview, setImagesPreview] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const { createItem, addItem } = useFirestore();
   const { uploadItemImage } = useStorage();
-
-  // Additional informations input fields are added / removed depending on the type of item.
-  useEffect(() => {
-    switch(type) {
-      case 'sofa':
-        setAdditional(
-          {
-            seats: 1
-          }
-        )
-        break;
-      default:
-        setAdditional({});
-    }
-  }, [type])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -67,6 +71,26 @@ function AddShopItem() {
       imagesUrls.push(imageUrl);
     }
 
+    // Format additional informations and options
+    // If the fields are empty, they are ignored.
+    const formattedAdditional = {};
+    for (let information of additional) {
+      if (information.type !== '' && information.information !== '') {
+        formattedAdditional[information.type] = information.information;
+      }
+    }
+
+    // Remove empty fields
+    const formattedMaterials = [...materials].filter(material => material !== '');
+    const formattedCategories = [...categories].filter(category => category !== '');
+
+    const formattedOptions = {};
+    for (let option of options) {
+      if (option.type !== '' && option.options.option !== '' && option.options.price !== '') {
+        formattedOptions[option.type] = [...option.options];
+      }
+    }
+
     // Adds the shop item information in the firestore.
     addItem(
       itemId,
@@ -76,10 +100,10 @@ function AddShopItem() {
       imagesUrls,
       description,
       colors,
-      details,
-      additional,
-      categories,
-      type
+      formattedAdditional,
+      formattedOptions,
+      formattedMaterials,
+      formattedCategories,
     )
   };
 
@@ -87,6 +111,12 @@ function AddShopItem() {
     e.preventDefault();
     if (e.target.files.length === 0) return;
     setImages(e.target.files);
+
+    const preview = [];
+    for (let file of e.target.files) {
+      preview.push(URL.createObjectURL(file));
+    }
+    setImagesPreview(preview);
   }
 
   return (
@@ -98,6 +128,7 @@ function AddShopItem() {
             type='text'
             value={name}
             onChange={(e) => setName(e.target.value)}
+            required
           />
         </Field>
 
@@ -107,6 +138,7 @@ function AddShopItem() {
             type='number'
             value={price}
             onChange={(e) => setPrice(e.target.value)}
+            required
           />
         </Field>
 
@@ -117,7 +149,7 @@ function AddShopItem() {
             type='number'
             value={dimensions.depth}
             onChange={(e) =>
-              setDimensions({ ...dimensions, depth: e.target.value })
+              setDimensions({ ...dimensions, depth: +e.target.value })
             }
           />
 
@@ -126,7 +158,7 @@ function AddShopItem() {
             type='number'
             value={dimensions.height}
             onChange={(e) =>
-              setDimensions({ ...dimensions, height: e.target.value })
+              setDimensions({ ...dimensions, height: +e.target.value })
             }
           />
 
@@ -135,20 +167,50 @@ function AddShopItem() {
             type='text'
             value={dimensions.width}
             onChange={(e) =>
-              setDimensions({ ...dimensions, width: e.target.value })
+              setDimensions({ ...dimensions, width: +e.target.value })
             }
           />
         </Field>
 
         <Field>
-          <Label>Type</Label>
-          <Select
-            onChange={(e) => setType(e.target.value)}
-          >
-            <option value='sofa'>Sofa</option>
-            <option value='table'>Table</option>
-            <option value='bed'>Bed</option>
-          </Select>
+          <div>Materials</div>
+
+          {materials.map((material, index) => {
+            return (
+              <div>
+                <Label>{index + 1}</Label>
+                <Input
+                  type='text'
+                  value={material}
+                  onChange={(e) =>
+                    setMaterials((prev) => {
+                      const materials = [...prev];
+                      materials[index] = e.target.value;
+                      return materials;
+                    })
+                  }
+                />
+
+                <HandleField
+                  type='button'
+                  onClick={() =>
+                    setMaterials((prev) => {
+                      const materials = [...prev];
+                      materials.splice(index, 1);
+                      return materials;
+                    })
+                  }
+                >
+                  Remove
+                </HandleField>
+              </div>
+            );
+          })}
+
+          <HandleField
+            type='button' onClick={() => setMaterials([...materials, ''])}>
+            Add
+          </HandleField>
         </Field>
 
         <Field>
@@ -156,14 +218,6 @@ function AddShopItem() {
           <TextArea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-          />
-        </Field>
-
-        <Field>
-          <Label>Details</Label>
-          <TextArea
-            value={details}
-            onChange={(e) => setDetails(e.target.value)}
           />
         </Field>
 
@@ -230,7 +284,7 @@ function AddShopItem() {
           <HandleField
             type='button'
             onClick={() =>
-              setColors([...colors, { description: '', type: '', value: '' }])
+              setColors([...colors, { description: '', type: '', value: '#000' }])
             }
           >
             Add
@@ -278,37 +332,185 @@ function AddShopItem() {
           </HandleField>
         </Field>
 
-        { additional.length !== 0 &&
         <Field>
-          <div>Additional Informations</div>
+          <div>Options</div>
 
-          {Object.keys(additional).map((information, index) => {
+          {options.map((option, indexOption) => {
             return (
               <div>
-
-                <Label>{information}</Label>
+                <Label>Type</Label>
                 <Input
                   type='text'
-                  value={additional[information]}
+                  value={option.type}
                   onChange={(e) =>
-                    setAdditional({...additional, [information] : e.target.value})
+                    setOptions((prev) => {
+                      const options = [...prev];
+                      options[indexOption].type = e.target.value;
+                      return options;
+                    })
                   }
                 />
-                
+
+                <Field>
+                  <Label>Options</Label>
+
+                  {option.options.map((choice, indexChoice) => {
+                    return (
+                      <div>
+                        <Label>Option</Label>
+                        <Input
+                          type='text'
+                          value={choice.option}
+                          onChange={(e) =>
+                            setOptions((prev) => {
+                              const options = [...prev];
+                              options[indexOption].options[indexChoice].option = e.target.value;
+                              return options;
+                            })
+                          }
+                        />
+
+                        <Label>Price</Label>
+                        <Input
+                          type='number'
+                          value={choice.price}
+                          onChange={(e) =>
+                            setOptions((prev) => {
+                              const options = [...prev];
+                              options[indexOption].options[indexChoice].price = e.target.value;
+                              return options;
+                            })
+                          }
+                        />
+
+                      <HandleField
+                        type='button'
+                        onClick={() => {
+                          const newOptions = [...options];
+                          newOptions[indexOption].options.splice(indexChoice, 1);
+                          setOptions(newOptions)
+                        }}
+                      >
+                        Remove Choice
+                      </HandleField>
+                      </div>
+                    )
+                  })}
+
+            <HandleField
+              type='button'
+              onClick={() => {
+                const newOptions = [...options];
+                newOptions[indexOption].options = [...options[indexOption].options, { option: '', price : ''}];
+                setOptions(newOptions)
+              }}
+            >
+              Add Choice
+            </HandleField>
+          </Field>
+
+                <HandleField
+                  type='button'
+                  onClick={() =>
+                    setOptions((prev) => {
+                      const options = [...prev];
+                      options.splice(indexOption, 1);
+                      return options;
+                    })
+                  }
+                >
+                  Remove Option
+                </HandleField>
               </div>
             );
           })}
-        </Field>
-        }
 
-        <input
-          type='file'
-          id='avatar'
-          name='avatar'
-          accept='image/png, image/jpeg, image/jpg'
-          multiple
-          onChange={addImages}
-        />
+          <HandleField
+            type='button'
+            onClick={() =>
+              setOptions([...options, { type: '', options: ['']}])
+            }
+          >
+            Add Option
+          </HandleField>
+        </Field>
+
+        <Field>
+          <div>Additional</div>
+
+          {additional.map((add, index) => {
+            return (
+              <div>
+                <Label>Type</Label>
+                <Input
+                  type='text'
+                  value={add.type}
+                  onChange={(e) =>
+                    setAdditional((prev) => {
+                      const additional = [...prev];
+                      additional[index].type = e.target.value;
+                      return additional;
+                    })
+                  }
+                />
+
+                <Label>Information</Label>
+                <Input
+                  type='text'
+                  value={add.information}
+                  onChange={(e) =>
+                    setAdditional((prev) => {
+                      const additional = [...prev];
+                      additional[index].information = e.target.value;
+                      return additional;
+                    })
+                  }
+                />
+
+                <HandleField
+                  type='button'
+                  onClick={() =>
+                    setAdditional((prev) => {
+                      const additional = [...prev];
+                      additional.splice(index, 1);
+                      return additional;
+                    })
+                  }
+                >
+                  Remove
+                </HandleField>
+              </div>
+            );
+          })}
+
+          <HandleField
+            type='button'
+            onClick={() =>
+              setAdditional([...additional, { type: '', information: ''}])
+            }
+          >
+            Add
+          </HandleField>
+        </Field>
+
+        <Field>
+          <input
+            type='file'
+            id='avatar'
+            name='avatar'
+            multiple
+            onChange={addImages}
+          />
+
+          <Preview>
+          {imagesPreview.map(image => {
+            return (
+              <Image src={image} alt='preview'/>
+            )
+          })}
+        </Preview>
+        </Field>
+
 
       <SubmitBtn type="submit">Submit</SubmitBtn>
       </Form>

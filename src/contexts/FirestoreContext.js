@@ -19,8 +19,10 @@ export function FirestoreProvider({ children }) {
 
   // Returns all the products we are selling.
   const getShopItems = async () => {
+    const itemsList = [];
     const items = await firestore.collection('products').get();
-    items.docs.map((doc) => console.log(doc.data()));
+    items.docs.map((doc) => itemsList.push(doc.data()));
+    return itemsList
   };
 
   // Create a document where we'll store an item.
@@ -38,10 +40,10 @@ export function FirestoreProvider({ children }) {
     images,
     description,
     colors,
-    details,
     additional,
+    options,
+    materials,
     categories,
-    type
   ) => {
 
     return firestore.collection('products').doc(id).set({
@@ -49,6 +51,7 @@ export function FirestoreProvider({ children }) {
       name,
       images,
       price,
+      materials,
       dimensions: {
         depth: dimensions.depth,
         height: dimensions.height,
@@ -56,10 +59,9 @@ export function FirestoreProvider({ children }) {
       },
       description,
       colors,
-      details,
       additional,
       categories,
-      type,
+      options,
       stock: [],
     });
   };
