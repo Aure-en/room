@@ -3,20 +3,23 @@ import styled from 'styled-components';
 
 const Container = styled.div`
   display: flex;
+  height: 100%;
+  width: 100%;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 `;
 
 const ImageContainer = styled.div`
+  height: 100%;
+  width: 100%;
   position: relative;
-  height: 70vh;
   cursor: zoom-in;
 `;
 
 const Zoom = styled.div`
   height: 100%;
   width: 100%;
-  border: 1px solid blue;
   position: absolute;
   top: 0;
   left: 0;
@@ -27,7 +30,9 @@ const Zoom = styled.div`
 `;
 
 const Image = styled.img`
-  max-height: 100%;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
 `;
 
 function ImageMagnifier({ image }) {
@@ -47,29 +52,27 @@ function ImageMagnifier({ image }) {
   };
 
   return (
-    <div>
-      <Container>
-        <ImageContainer>
-          <Zoom
-            image={image}
-            isZooming={isZooming}
-            ref={zoomRef}
-            onClick={() => {
-              setIsZooming(false);
-            }}
-            onMouseMove={moveZoom}
-          />
+    <Container>
+      <ImageContainer>
+        <Zoom
+          image={image}
+          isZooming={isZooming}
+          ref={zoomRef}
+          onClick={() => {
+            setIsZooming(false);
+          }}
+          onMouseMove={moveZoom}
+        />
 
-          <Image
-            src={image}
-            onClick={(e) => {
-              setIsZooming(true);
-              moveZoom(e);
-            }}
-          />
-        </ImageContainer>
-      </Container>
-    </div>
+        <Image
+          src={image}
+          onClick={(e) => {
+            setIsZooming(true);
+            moveZoom(e);
+          }}
+        />
+      </ImageContainer>
+    </Container>
   );
 }
 

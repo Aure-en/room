@@ -81,3 +81,16 @@ input[type='tel']:focus {
 textarea:focus {
 	outline: none;
 }
+
+.image-preview-enter {
+	opacity: 0;
+}
+
+.image-preview-enter-active {
+	opacity: 1;
+	transition: opacity 500ms;
+}
+
+.image-preview-exit {
+	opacity: 1;
+}

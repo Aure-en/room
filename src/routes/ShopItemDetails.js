@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import ImageMagnifier from '../components/shop/ImageMagnifier';
+import ImagesPreview from '../components/shop/ImagesPreview';
 import { useFirestore } from '../contexts/FirestoreContext';
 
 function ShopItemDetails({ match }) {
@@ -20,7 +20,7 @@ function ShopItemDetails({ match }) {
   return (
     <div>
       {!loading && 
-        <ImageMagnifier image={item.images[1]} />
+        <ImagesPreview images={item.images} size={35} />
       }
     </div>
   )
