@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useFirestore } from '../../contexts/FirestoreContext';
 import styled from 'styled-components';
 import { formatNavLink } from '../../utils/utils';
+import { Link } from 'react-router-dom';
 
 // Styled components
 
@@ -9,7 +10,7 @@ const colors = {
   primary: 'hsl(0, 0%, 0%)', // Black
   secondary: 'hsl(0, 0%, 27%)', // Grey
   secondaryBright: 'hsl(0, 0%, 40%)', // Brighter grey
-  tertiary: 'hsl(0, 0%, 100%)' // White
+  tertiary: 'hsl(0, 0%, 100%)', // White
 };
 
 const Container = styled.nav`
@@ -31,7 +32,7 @@ const DropdownContainer = styled.div`
   position: absolute;
   z-index: 3;
   background: ${colors.tertiary};
-  top: ${props => props.margin}px;
+  top: ${(props) => props.margin}px;
   width: 100%;
   box-shadow: 0 0px 4px -3px ${colors.secondary};
 `;
@@ -49,28 +50,28 @@ const Column = styled.div`
   margin: 0 1rem;
 `;
 
-const Category = styled.a`
+const Category = styled.span`
   cursor: pointer;
   flex: 1;
   text-align: center;
   text-transform: uppercase;
   font-weight: 600;
   color: ${colors.tertiary};
-  padding: .75rem 0 calc(0.75rem - 2px) 0;
+  padding: 0.75rem 0 calc(0.75rem - 2px) 0;
   border-bottom: 2px solid transparent;
-  
+
   &:hover {
     border-bottom: 2px solid ${colors.tertiary};
   }
 `;
 
-const Subcategory = styled.a`
+const Subcategory = styled.span`
   position: relative;
   display: inline-block;
   color: ${colors.primary};
   text-transform: uppercase;
   cursor: pointer;
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
   font-weight: 600;
 
   &:hover {
@@ -78,8 +79,8 @@ const Subcategory = styled.a`
   }
 `;
 
-const Item = styled.a`
-  padding: .25rem 0;
+const Item = styled.span`
+  padding: 0.25rem 0;
   cursor: pointer;
   display: block;
   color: ${colors.secondary};
@@ -125,7 +126,9 @@ function ShopNav() {
                   setHovered(category);
                 }}
               >
-                {formatNavLink(category)}
+                <Link to={`/shop/${encodeURIComponent(category)}`}>
+                  {formatNavLink(category)}
+                </Link>
               </Category>
             );
           })}
@@ -144,13 +147,23 @@ function ShopNav() {
               .map((subcategory, index) => {
                 return (
                   <Column key={subcategory + index}>
-                    <Subcategory>{formatNavLink(subcategory)}</Subcategory>
+                    <Subcategory>
+                      <Link to={`/shop/${encodeURIComponent(subcategory)}`}>
+                        {formatNavLink(subcategory)}
+                      </Link>
+                    </Subcategory>
                     <div>
-                      {categories[hovered].categories[subcategory].categories.map(
-                        (item, index) => {
-                          return <Item key={item + index}>{formatNavLink(item)}</Item>;
-                        }
-                      )}
+                      {categories[hovered].categories[
+                        subcategory
+                      ].categories.map((item, index) => {
+                        return (
+                          <Item key={item + index}>
+                            <Link to={`/shop/${encodeURIComponent(item)}`}>
+                              {formatNavLink(item)}
+                            </Link>
+                          </Item>
+                        );
+                      })}
                     </div>
                   </Column>
                 );

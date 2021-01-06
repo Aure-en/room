@@ -22,8 +22,16 @@ export function FirestoreProvider({ children }) {
     const itemsList = [];
     const items = await firestore.collection('products').get();
     items.docs.map((doc) => itemsList.push(doc.data()));
-    return itemsList
+    return itemsList;
   };
+
+  // Returns only the products from a certain category
+  const getCategoryItems = async (category) => {
+    const itemsList = [];
+    const items = await firestore.collection('products').where("categories", "array-contains", category).get();
+    items.docs.map((doc => itemsList.push(doc.data())));
+    return itemsList;
+  }
 
   // Create a document where we'll store an item.
   // Returns the id we will attribute to the item.
@@ -75,6 +83,7 @@ export function FirestoreProvider({ children }) {
   const value = {
     getShopCategories,
     getShopItems,
+    getCategoryItems,
     createItem,
     addItem,
     getItem

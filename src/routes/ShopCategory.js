@@ -18,17 +18,17 @@ const Shop = styled.div`
   padding-top: 5rem;
 `;
 
-function ShopCategory() {
+function ShopCategory({ match }) {
 
   const [items, setItems] = useState([])
-  const { getShopItems } = useFirestore();
+  const { getCategoryItems } = useFirestore();
 
   useEffect(() => {
     (async () => {
-      const itemsList = await getShopItems();
+      const itemsList = await getCategoryItems(decodeURIComponent(match.params.category));
       setItems(itemsList);
     })();
-  }, [])
+  }, [match])
 
   return (
     <div>
