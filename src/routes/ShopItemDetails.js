@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useFirestore } from '../contexts/FirestoreContext';
+import { useAuth } from '../contexts/AuthContext';
 import { formatNavLink } from '../utils/utils';
 import ImagesPreview from '../components/shop/ImagesPreview';
 import Nav from '../components/shop/Nav';
@@ -259,14 +260,14 @@ function ShopItemDetails({ match }) {
   const [currentOption, setCurrentOption] = useState([]);
   const [quantity, setQuantity] = useState(1);
   const [areDetailsOpen, setAreDetailsOpen] = useState(false);
-  const { getItem } = useFirestore();
+  const { getItem, addToCart } = useFirestore();
+  const { currentUser, signInAnonymously } = useAuth();
 
   // Fetch the item data and store it in the state
   useEffect(() => {
     (async () => {
       const itemId = match.params.itemId;
       const item = await getItem(itemId);
-      console.log(item);
       setItem(item);
       setLoading(false);
     })();
@@ -285,6 +286,17 @@ function ShopItemDetails({ match }) {
       setCurrentOption(options);
     }
   }, [item]);
+
+  const handleAddToCart = async (e) => {
+    e.preventDefault();
+
+    console.log(currentUser.uid);
+    // If the user is not signed in, we sign him up anonymously to save his cart and allow him to order.
+    if (!currentUser) {
+      await signInAnonymously();
+    }
+    addToCart(currentUser.uid, item.id, currentColor, currentOption, quantity);
+  }
 
   return (
     <>
@@ -332,7 +344,7 @@ function ShopItemDetails({ match }) {
                   })}
                 </Description>
 
-                <Selection>
+                <Selection onSubmit={handleAddToCart}>
                   <div>
                     <TextLabel>Color: </TextLabel>
                     <Choice> {currentColor}</Choice>
@@ -361,7 +373,7 @@ function ShopItemDetails({ match }) {
                   <div>
                     {Object.keys(item.options).map((option, index) => {
                       return (
-                        <OptionsField>
+                        <OptionsField key={option}>
                           <TextLabel>{option}: </TextLabel>
                           <Options>
                             {item.options[option].map((choice) => {

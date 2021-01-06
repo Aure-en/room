@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useFirestore } from '../../contexts/FirestoreContext';
-import { useStorage } from '../../contexts/FirestoreStorage';
+import { useStorage } from '../../contexts/StorageContext';
 import styled from 'styled-components';
 
 const Form = styled.form``;
