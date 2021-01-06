@@ -42,17 +42,17 @@ function ShopItemPreview({ name, images, price, id }) {
 
   return (
     <Container>
-      <Link to={`/shop/${id}`}>
+      <Link to={`/shop/item/${id}`}>
         <Image
           src={image}
           onMouseOver={changeImage}
           onMouseLeave={changeImage}
         />
       </Link>
-      <Link to={`/shop/${id}`}>
+      <Link to={`/shop/item/${id}`}>
         <Name>{name}</Name>
       </Link>
-      <Price>{price}$</Price>
+      <Price>£{price}</Price>
     </Container>
   );
 }

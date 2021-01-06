@@ -72,7 +72,7 @@ function ImagesPreview({ images, size }) {
   const [currentImage, setCurrentImage] = useState(images[0]);
   const [slides, setSlides] = useState([]);
   const [transition, setTransition] = useState(0);
-  const [transitionDuration, setTransitionDuration] = useState(0.4);
+  const [transitionDuration, setTransitionDuration] = useState(0.3);
   const [isImageChanging, setIsImageChanging] = useState(false);
 
   // Organize slides.
@@ -120,7 +120,7 @@ function ImagesPreview({ images, size }) {
 
   useEffect(() => {
     if (transitionDuration === 0) {
-      setTransitionDuration(0.4);
+      setTransitionDuration(0.3);
     }
   }, [transitionDuration]);
 
@@ -131,7 +131,7 @@ function ImagesPreview({ images, size }) {
   }, [isImageChanging]);
 
   return (
-    <>
+    <div>
       <Container size={size}>
         <CSSTransition
           in={isImageChanging}
@@ -152,14 +152,14 @@ function ImagesPreview({ images, size }) {
             transition={transition}
             transitionDuration={transitionDuration}
           >
-            {slides.map((slide) => {
+            {slides.map((slide, index) => {
               return (
-                <Slide size={size}>
+                <Slide size={size} key={index}>
                   {slides &&
-                    slide.map((image) => {
+                    slide.map((image, index) => {
                       if (image) {
                         return (
-                          <Preview size={size}>
+                          <Preview size={size} key={image}>
                             <Image
                               src={image}
                               alt='Item Preview'
@@ -172,7 +172,7 @@ function ImagesPreview({ images, size }) {
                           </Preview>
                         );
                       } else {
-                        return <Preview size={size} />;
+                        return <Preview size={size} key={`empty-${index}`}/>;
                       }
                     })}
                 </Slide>
@@ -184,7 +184,7 @@ function ImagesPreview({ images, size }) {
           <AngleRight />
         </Button>
       </Carousel>
-    </>
+    </div>
   );
 }
 

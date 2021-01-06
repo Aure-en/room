@@ -67,6 +67,10 @@ a {
 	text-decoration: none;
 }
 
+strong {
+	font-weight: 600;
+}
+
 .active {
 	opacity: 0;
 	transform: translateY(2.5%);
@@ -77,6 +81,9 @@ input[type='email']:focus,
 input[type='tel']:focus {
 	outline: none;
 }
+
+
+/* Transitions */
 
 textarea:focus {
 	outline: none;
@@ -93,4 +100,39 @@ textarea:focus {
 
 .image-preview-exit {
 	opacity: 1;
+}
+
+.hide {
+	max-height: 0;
+	overflow: hidden;
+}
+
+.details-enter {
+	max-height: 0;
+	overflow: hidden;
+}
+
+.details-enter-active {
+	max-height: 15rem;
+	transition: all .3s linear;
+}
+
+.details-enter-done {
+	max-height: initial;
+}
+
+.details-exit {
+	max-height: 15rem;
+	overflow: hidden;
+	transition: all .3s linear;
+}
+
+.details-exit-active {
+	max-height: 0;
+	transition: all .3s linear;
+}
+
+.details-exit-done {
+	max-height: 0;
+	overflow: hidden;
 }

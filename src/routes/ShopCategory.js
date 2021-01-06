@@ -32,14 +32,16 @@ function ShopCategory() {
 
   return (
     <div>
-      <Nav />
-      <ShopNav />
+      <header>
+        <Nav />
+        <ShopNav />
+      </header>
       <Shop>
         <ShopList>
         {
           items.map(item => {
             return (
-              <li>
+              <li key={item.id}>
                 <ShopItemPreview 
                   name={item.name}
                   images={item.images}

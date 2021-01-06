@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as Logo } from '../assets/icons/logo.svg';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
 const colors = {
-  primary: '#fff'
-}
+  primary: '#fff',
+};
 
 const Container = styled.div`
   position: absolute;
@@ -131,23 +131,35 @@ function Nav() {
           />
         </svg>
       </Button>
-      <BrandMobile><Logo /></BrandMobile>
+      <BrandMobile>
+        <Logo />
+      </BrandMobile>
       <Navigation isNavOpen={isNavOpen}>
-        <Brand><Logo /></Brand>
+        <Brand>
+          <Logo />
+        </Brand>
         <Button onClick={handleCloseNav}>
           <svg width='16' height='16' xmlns='http://www.w3.org/2000/svg'>
             <path
               d='M14.364.222l1.414 1.414L9.414 8l6.364 6.364-1.414 1.414L8 9.414l-6.364 6.364-1.414-1.414L6.586 8 .222 1.636 1.636.222 8 6.586 14.364.222z'
               fill='#000'
-              fill-rule='evenodd'
+              fillRule='evenodd'
               opacity='.201'
             />
           </svg>
         </Button>
-        <Link to='/'><NavLink>home</NavLink></Link>
-        <Link to='/shop'><NavLink>shop</NavLink></Link>
-        <Link to='/about'><NavLink>about</NavLink></Link>
-        <Link to='/contact'><NavLink>contact</NavLink></Link>
+        <Link to='/'>
+          <NavLink>home</NavLink>
+        </Link>
+        <Link to='/shop'>
+          <NavLink>shop</NavLink>
+        </Link>
+        <Link to='/about'>
+          <NavLink>about</NavLink>
+        </Link>
+        <Link to='/contact'>
+          <NavLink>contact</NavLink>
+        </Link>
       </Navigation>
     </Container>
   );

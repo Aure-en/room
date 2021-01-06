@@ -54,7 +54,7 @@ const Brand = styled.span`
   color: ${colors.primary};
 `;
 
-const NavIconLink = styled.a`
+const NavIconLink = styled.span`
   ${icon}
 `;
 

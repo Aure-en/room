@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 // Images
 import hero_1 from '../assets/images/desktop-image-hero-1.jpg';
 import hero_2 from '../assets/images/desktop-image-hero-2.jpg';
 import hero_3 from '../assets/images/desktop-image-hero-3.jpg';
-import angle_left from '../assets/icons/icon-angle-left.svg';
-import angle_right from '../assets/icons/icon-angle-right.svg';
+import { ReactComponent as AngleLeft } from '../assets/icons/icon-angle-left.svg';
+import { ReactComponent as AngleRight } from '../assets/icons/icon-angle-right.svg';
 
 const colors = {
   black: 'hsl(0, 0%, 0%)',
@@ -62,6 +63,7 @@ const Button = styled.button`
   background: ${colors.black};
   padding: 1.5rem 2rem;
   cursor: pointer;
+  color: #fff;
 
   &:hover {
     background: ${colors.darkGrey};
@@ -84,7 +86,7 @@ const Card = styled.div`
   max-width: 70%;
   min-width: 450px;
   padding: 2rem;
-  transition: all .25s ease-in-out;
+  transition: all 0.25s ease-in-out;
 
   @media all and (max-width: 576px) {
     min-width: 0;
@@ -92,7 +94,7 @@ const Card = styled.div`
   }
 `;
 
-const ShopLink = styled.a`
+const ShopLink = styled.span`
   text-transform: uppercase;
   letter-spacing: 0.5rem;
   font-weight: 300;
@@ -203,10 +205,10 @@ function Carousel() {
         </Slider>
         <Menu>
           <Button type='button' onClick={previous}>
-            <img src={angle_left} alt='Previous' />
+            <AngleLeft />
           </Button>
           <Button type='button' onClick={next}>
-            <img src={angle_right} alt='Next' />
+            <AngleRight />
           </Button>
         </Menu>
       </CarouselComponent>
@@ -215,16 +217,18 @@ function Carousel() {
         <Card ref={cardRef}>
           <Title>{text[currentSlide].title}</Title>
           <Text>{text[currentSlide].description}</Text>
-          <ShopLink>
-            Shop now
-            <Arrow width='40' height='12' xmlns='http://www.w3.org/2000/svg'>
-              <path
-                d='M34.05 0l5.481 5.527h.008v.008L40 6l-.461.465v.063l-.062-.001L34.049 12l-.662-.668 4.765-4.805H0v-1h38.206l-4.82-4.86L34.05 0z'
-                fill='currentColor'
-                fill-rule='nonzero'
-              />
-            </Arrow>
-          </ShopLink>
+          <Link to='/shop'>
+            <ShopLink>
+              Shop now
+              <Arrow width='40' height='12' xmlns='http://www.w3.org/2000/svg'>
+                <path
+                  d='M34.05 0l5.481 5.527h.008v.008L40 6l-.461.465v.063l-.062-.001L34.049 12l-.662-.668 4.765-4.805H0v-1h38.206l-4.82-4.86L34.05 0z'
+                  fill='currentColor'
+                  fillRule='nonzero'
+                />
+              </Arrow>
+            </ShopLink>
+          </Link>
         </Card>
       </Center>
     </Container>

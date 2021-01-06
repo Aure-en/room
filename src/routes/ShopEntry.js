@@ -5,8 +5,10 @@ import ShopNav from '../components/shop/ShopNav';
 function Shop() {
   return (
     <div>
-      <Nav />
-      <ShopNav />
+      <header>
+        <Nav />
+        <ShopNav />
+      </header>
     </div>
   )
 }

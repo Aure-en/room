@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useFirestore } from '../../contexts/FirestoreContext';
 import styled from 'styled-components';
 import { formatNavLink } from '../../utils/utils';
@@ -13,6 +13,7 @@ const colors = {
 };
 
 const Container = styled.nav`
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -27,8 +28,12 @@ const Nav = styled.ul`
 `;
 
 const DropdownContainer = styled.div`
+  position: absolute;
+  z-index: 3;
   background: ${colors.tertiary};
+  top: ${props => props.margin}px;
   width: 100%;
+  box-shadow: 0 0px 4px -3px ${colors.secondary};
 `;
 
 const Dropdown = styled.div`
@@ -92,6 +97,7 @@ function ShopNav() {
   const [categories, setCategories] = useState([]);
   const [dropdown, setDropdown] = useState(false);
   const [hovered, setHovered] = useState('');
+  const navRef = useRef();
 
   useEffect(() => {
     (async () => {
@@ -106,7 +112,7 @@ function ShopNav() {
         setDropdown(false);
       }}
     >
-      <Nav>
+      <Nav ref={navRef}>
         {/* Sort the categories by order before displaying them */}
         {Object.keys(categories)
           .sort((a, b) => categories[a].order - categories[b].order)
@@ -126,7 +132,7 @@ function ShopNav() {
       </Nav>
 
       {dropdown && Object.keys(categories[hovered].categories).length !== 0 && (
-        <DropdownContainer>
+        <DropdownContainer margin={navRef.current.offsetHeight}>
           <Dropdown>
             {/* Sort the subcategories by order before displaying them */}
             {Object.keys(categories[hovered].categories)
