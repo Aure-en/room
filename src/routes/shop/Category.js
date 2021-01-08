@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import Nav from '../components/shop/Nav';
-import ShopNav from '../components/shop/ShopNav';
-import ShopItemPreview from '../components/shop/ShopItemPreview';
-import { useFirestore } from '../contexts/FirestoreContext';
+import Nav from '../../components/shop/Nav';
+import ShopNav from '../../components/shop/ShopNav';
+import ShopItemPreview from '../../components/shop/ShopItemPreview';
+import { useFirestore } from '../../contexts/FirestoreContext';
 import styled from 'styled-components'
 
 const ShopList = styled.ul`
@@ -18,7 +18,7 @@ const Shop = styled.div`
   padding-top: 5rem;
 `;
 
-function ShopCategory({ match }) {
+function Category({ match }) {
 
   const [items, setItems] = useState([])
   const { getCategoryItems } = useFirestore();
@@ -58,4 +58,4 @@ function ShopCategory({ match }) {
   )
 }
 
-export default ShopCategory
+export default Category

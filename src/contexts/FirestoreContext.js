@@ -87,7 +87,7 @@ export function FirestoreProvider({ children }) {
 
   // Add an item to the user's cart
   // In the cart, each product chosen has their own id.
-  const addToCart = async (userId, productId, color, options, quantity) => {
+  const addToCart = async (userId, productId, name, image, color, options, quantity, type, price) => {
     
     // If the same item is already in the cart, we simply increase the quantity.
     const sameItem = await firestore
@@ -122,11 +122,35 @@ export function FirestoreProvider({ children }) {
       .set({
         id,
         productId,
+        name,
+        image,
         color,
         options,
         quantity,
+        type,
+        price
       });
   };
+
+  const deleteFromCart = (userId, id) => {
+    return firestore.collection('carts').doc(userId).collection('items').doc(id).delete();
+  }
+
+  const updateCartQuantity = (userId, id, quantity) => {
+    return firestore.collection('carts').doc(userId).collection('items').doc(id).update({ quantity });
+  }
+
+  // Get an user's cart.
+  const getCart = async (userId) => {
+    const cart = [];
+    const items = await firestore.collection('carts').doc(userId).collection('items').get();
+    items.forEach(item => cart.push(item.data()));
+    return cart;
+  }
+
+  const cartListener = (userId, callback) => {
+    return firestore.collection('carts').doc(userId).collection('items').onSnapshot(callback)
+  }
 
   const value = {
     getShopCategories,
@@ -136,6 +160,10 @@ export function FirestoreProvider({ children }) {
     addItem,
     getItem,
     addToCart,
+    getCart,
+    deleteFromCart,
+    updateCartQuantity,
+    cartListener
   };
 
   return (

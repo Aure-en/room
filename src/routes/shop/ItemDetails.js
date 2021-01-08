@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { useFirestore } from '../contexts/FirestoreContext';
-import { useAuth } from '../contexts/AuthContext';
-import { formatNavLink } from '../utils/utils';
-import ImagesPreview from '../components/shop/ImagesPreview';
-import Nav from '../components/shop/Nav';
-import ShopNav from '../components/shop/ShopNav';
+import { useFirestore } from '../../contexts/FirestoreContext';
+import { useAuth } from '../../contexts/AuthContext';
+import { formatNavLink } from '../../utils/utils';
+import ImagesPreview from '../../components/shop/ImagesPreview';
+import Nav from '../../components/shop/Nav';
+import ShopNav from '../../components/shop/ShopNav';
 import { CSSTransition } from 'react-transition-group';
 
 // Icons
-import { ReactComponent as AngleRight } from '../assets/icons/icon-small-arrow.svg';
-import { ReactComponent as Plus } from '../assets/icons/icon-plus.svg';
-import iconX from '../assets/icons/icon-x.svg';
+import { ReactComponent as AngleRight } from '../../assets/icons/icon-small-arrow.svg';
+import { ReactComponent as Plus } from '../../assets/icons/icon-plus.svg';
+import iconX from '../../assets/icons/icon-x.svg';
 
 // Styled Components
 const colors = {
@@ -150,7 +150,7 @@ const SubmitBtn = styled.button`
   }
 `;
 
-    // Select the item's color
+// Select the item's color
 const ColorList = styled.ul`
   display: flex;
 `;
@@ -165,28 +165,30 @@ const ColorLabel = styled.label`
   cursor: pointer;
   margin-right: 0.5rem;
 `;
-  
-    // Select an option
+
+// Select an option
 const Options = styled.div`
-display: grid;
-grid-template-columns: repeat(3, 1fr auto);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr auto);
 `;
 
 const OptionsField = styled.div`
-display: flex;
-align-items: center;
+  display: flex;
+  align-items: center;
 `;
 
 const OptionLabel = styled.label`
   cursor: pointer;
-  border: 1px solid ${props => props.isSelected ? colors.secondary : colors.text };
-  color: ${props => props.isSelected ? colors.secondary : colors.text };
-  outline: 1px solid ${props => props.isSelected ? colors.secondary : 'transparent' };
+  border: 1px solid
+    ${(props) => (props.isSelected ? colors.secondary : colors.text)};
+  color: ${(props) => (props.isSelected ? colors.secondary : colors.text)};
+  outline: 1px solid
+    ${(props) => (props.isSelected ? colors.secondary : 'transparent')};
   padding: 0.5rem 1rem;
   margin-left: 1rem;
 `;
 
-    // Select a quantity
+// Select a quantity
 const Quantity = styled.input`
   font-family: 'Source Sans Pro', sans-serif;
   width: 2rem;
@@ -249,11 +251,11 @@ const DropdownColumn = styled.div`
   padding-bottom: 1.5rem;
 
   & > *:first-child {
-    margin-bottom: .5rem;
+    margin-bottom: 0.5rem;
   }
 `;
 
-function ShopItemDetails({ match }) {
+function ItemDetails({ match }) {
   const [item, setItem] = useState({});
   const [loading, setLoading] = useState(true);
   const [currentColor, setCurrentColor] = useState('');
@@ -290,13 +292,22 @@ function ShopItemDetails({ match }) {
   const handleAddToCart = async (e) => {
     e.preventDefault();
 
-    console.log(currentUser.uid);
     // If the user is not signed in, we sign him up anonymously to save his cart and allow him to order.
     if (!currentUser) {
       await signInAnonymously();
     }
-    addToCart(currentUser.uid, item.id, currentColor, currentOption, quantity);
-  }
+    addToCart(
+      currentUser.uid,
+      item.id,
+      item.name,
+      item.images[0],
+      currentColor,
+      currentOption,
+      quantity,
+      item.type,
+      item.price
+    );
+  };
 
   return (
     <>
@@ -340,7 +351,7 @@ function ShopItemDetails({ match }) {
                 <Price>£{item.price}</Price>
                 <Description>
                   {item.description.map((paragraph, index) => {
-                    return <p key={'description'+index}>{paragraph}</p>;
+                    return <p key={'description' + index}>{paragraph}</p>;
                   })}
                 </Description>
 
@@ -381,7 +392,10 @@ function ShopItemDetails({ match }) {
                                 <>
                                   <OptionLabel
                                     htmlFor={choice.option}
-                                    isSelected={currentOption[index][option] === choice.option}
+                                    isSelected={
+                                      currentOption[index][option] ===
+                                      choice.option
+                                    }
                                   >
                                     {choice.option}
                                   </OptionLabel>
@@ -390,14 +404,17 @@ function ShopItemDetails({ match }) {
                                     id={choice.option}
                                     name={choice.option}
                                     onClick={(e) =>
-                                      setCurrentOption(prev => {
-                                        return [...prev].map(prevOption => {
-                                          if (Object.keys(prevOption)[0] === option) {
-                                            return { [option]: choice.option }
+                                      setCurrentOption((prev) => {
+                                        return [...prev].map((prevOption) => {
+                                          if (
+                                            Object.keys(prevOption)[0] ===
+                                            option
+                                          ) {
+                                            return { [option]: choice.option };
                                           } else {
                                             return prevOption;
                                           }
-                                        })
+                                        });
                                       })
                                     }
                                   />
@@ -436,7 +453,9 @@ function ShopItemDetails({ match }) {
                 </Selection>
 
                 <Additional>
-                  <AdditionalBtn onClick={() => setAreDetailsOpen(!areDetailsOpen)}>
+                  <AdditionalBtn
+                    onClick={() => setAreDetailsOpen(!areDetailsOpen)}
+                  >
                     Additional Information
                     <Plus />
                   </AdditionalBtn>
@@ -448,43 +467,42 @@ function ShopItemDetails({ match }) {
                     mountOnEnter={true}
                   >
                     <Dropdown>
-
                       <DropdownColumn>
                         <TextLabel>Dimensions (cm)</TextLabel>
                         <ul>
-                          {Object.keys(item.dimensions).map(dimension => {
+                          {Object.keys(item.dimensions).map((dimension) => {
                             return (
                               <Li key={dimension}>
-                                <AdditionalLabel>
-                                  {dimension}:
-                                </AdditionalLabel>
-                                <AdditionalInfo> {item.dimensions[dimension]}</AdditionalInfo>
+                                <AdditionalLabel>{dimension}:</AdditionalLabel>
+                                <AdditionalInfo>
+                                  {' '}
+                                  {item.dimensions[dimension]}
+                                </AdditionalInfo>
                               </Li>
-                            )
+                            );
                           })}
                         </ul>
                       </DropdownColumn>
-                      
+
                       <DropdownColumn>
                         <TextLabel>Details</TextLabel>
                         <ul>
-                          {Object.keys(item.additional).map(info => {
+                          {Object.keys(item.additional).map((info) => {
                             return (
                               <Li key={info}>
-                                <AdditionalLabel>
-                                  {info}:
-                                </AdditionalLabel>
-                                <AdditionalInfo> {item.additional[info]}</AdditionalInfo>
+                                <AdditionalLabel>{info}:</AdditionalLabel>
+                                <AdditionalInfo>
+                                  {' '}
+                                  {item.additional[info]}
+                                </AdditionalInfo>
                               </Li>
-                            )
+                            );
                           })}
                         </ul>
                       </DropdownColumn>
-
                     </Dropdown>
                   </CSSTransition>
                 </Additional>
-
               </Details>
             </Informations>
           </Center>
@@ -494,4 +512,4 @@ function ShopItemDetails({ match }) {
   );
 }
 
-export default ShopItemDetails;
+export default ItemDetails;

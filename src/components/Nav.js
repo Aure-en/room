@@ -102,8 +102,15 @@ const NavLink = styled.span`
     height: 2px;
     background: ${colors.primary};
 
+    @media all and (max-width: 1000px) {
+      bottom: 0;
+      height: 1px;
+    }
+
     @media all and (max-width: 600px) {
       background: #000;
+      height: 2px;
+      bottom: -1rem;
     }
   }
 `;
