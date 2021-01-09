@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useAuth } from '../../contexts/AuthContext';
-import { useFirestore } from '../../contexts/FirestoreContext';
+import { useFirestore } from '../../hooks/useFirestore';
+import { Link } from 'react-router-dom';
 
 // Icon
 import { ReactComponent as Delete } from '../../assets/icons/icon-x-med.svg';
@@ -15,9 +16,10 @@ const colors = {
 };
 
 const Item = styled.div`
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr) auto;
   align-items: center;
+  justify-items: center;
   border-bottom: 1px solid ${colors.border};
 `;
 
@@ -65,7 +67,7 @@ const Quantity = styled.input`
   text-align: center;
 `;
 
-const QuantityBtn = styled.button`
+const Button = styled.button`
   font-size: 1.25rem;
   color: ${colors.primary};
   cursor: pointer;
@@ -74,7 +76,6 @@ const QuantityBtn = styled.button`
     color: initial;
   }
 `;
-
 function CartItem({ item }) {
   const [quantity, setQuantity] = useState(item.quantity);
   const { currentUser } = useAuth();
@@ -89,7 +90,7 @@ function CartItem({ item }) {
       <Information>
         <Image src={item.image} alt='Item preview' />
         <div>
-          <Name>{item.name}</Name>
+          <Name><Link to={`/shop/item/${item.id}`}>{item.name}</Link></Name>
           <Type>
             {item.type} - {item.color}
           </Type>
@@ -107,13 +108,14 @@ function CartItem({ item }) {
           </div>
         </div>
       </Information>
+      <Price>£{item.price}</Price>
 
       <div>
-        <QuantityBtn
+        <Button
           onClick={() => setQuantity((prev) => (+prev < 2 ? '1' : prev - 1))}
         >
           -
-        </QuantityBtn>
+        </Button>
         <Quantity
           value={quantity}
           onChange={(e) => {
@@ -122,12 +124,12 @@ function CartItem({ item }) {
             setQuantity(quantity);
           }}
         />
-        <QuantityBtn onClick={() => setQuantity((prev) => +prev + 1)}>
+        <Button onClick={() => setQuantity((prev) => +prev + 1)}>
           +
-        </QuantityBtn>
+        </Button>
       </div>
       <Price>£{item.price * quantity}</Price>
-      <Delete onClick={() => deleteFromCart(currentUser.uid, item.id)}/>
+      <Button onClick={() => deleteFromCart(currentUser.uid, item.id)}><Delete/></Button>
     </Item>
   );
 }

@@ -1,13 +1,6 @@
-import React, { useContext } from 'react';
 import { firestore } from '../firebase/firebase';
 
-const FirestoreContext = React.createContext();
-
 export function useFirestore() {
-  return useContext(FirestoreContext);
-}
-
-export function FirestoreProvider({ children }) {
   // Returns an object representing all the shopping categories.
   const getShopCategories = async () => {
     const categories = await firestore
@@ -87,8 +80,17 @@ export function FirestoreProvider({ children }) {
 
   // Add an item to the user's cart
   // In the cart, each product chosen has their own id.
-  const addToCart = async (userId, productId, name, image, color, options, quantity, type, price) => {
-    
+  const addToCart = async (
+    userId,
+    productId,
+    name,
+    image,
+    color,
+    options,
+    quantity,
+    type,
+    price
+  ) => {
     // If the same item is already in the cart, we simply increase the quantity.
     const sameItem = await firestore
       .collection('carts')
@@ -101,7 +103,7 @@ export function FirestoreProvider({ children }) {
 
     if (sameItem.docs.length > 0) {
       const currentQuantity = sameItem.docs[0].data().quantity;
-      sameItem.docs[0].ref.update({ 'quantity' : +currentQuantity + +quantity });
+      sameItem.docs[0].ref.update({ quantity: +currentQuantity + +quantity });
       return;
     }
 
@@ -128,31 +130,49 @@ export function FirestoreProvider({ children }) {
         options,
         quantity,
         type,
-        price
+        price,
       });
   };
 
   const deleteFromCart = (userId, id) => {
-    return firestore.collection('carts').doc(userId).collection('items').doc(id).delete();
-  }
+    return firestore
+      .collection('carts')
+      .doc(userId)
+      .collection('items')
+      .doc(id)
+      .delete();
+  };
 
   const updateCartQuantity = (userId, id, quantity) => {
-    return firestore.collection('carts').doc(userId).collection('items').doc(id).update({ quantity });
-  }
+    return firestore
+      .collection('carts')
+      .doc(userId)
+      .collection('items')
+      .doc(id)
+      .update({ quantity });
+  };
 
   // Get an user's cart.
   const getCart = async (userId) => {
     const cart = [];
-    const items = await firestore.collection('carts').doc(userId).collection('items').get();
-    items.forEach(item => cart.push(item.data()));
+    const items = await firestore
+      .collection('carts')
+      .doc(userId)
+      .collection('items')
+      .get();
+    items.forEach((item) => cart.push(item.data()));
     return cart;
-  }
+  };
 
   const cartListener = (userId, callback) => {
-    return firestore.collection('carts').doc(userId).collection('items').onSnapshot(callback)
-  }
+    return firestore
+      .collection('carts')
+      .doc(userId)
+      .collection('items')
+      .onSnapshot(callback);
+  };
 
-  const value = {
+  return {
     getShopCategories,
     getShopItems,
     getCategoryItems,
@@ -163,12 +183,6 @@ export function FirestoreProvider({ children }) {
     getCart,
     deleteFromCart,
     updateCartQuantity,
-    cartListener
+    cartListener,
   };
-
-  return (
-    <FirestoreContext.Provider value={value}>
-      {children}
-    </FirestoreContext.Provider>
-  );
 }

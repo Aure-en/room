@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Nav from '../../components/shop/Nav';
 import ShopNav from '../../components/shop/ShopNav';
 import ShopItemPreview from '../../components/shop/ShopItemPreview';
-import { useFirestore } from '../../contexts/FirestoreContext';
+import { useFirestore } from '../../hooks/useFirestore';
 import styled from 'styled-components'
 
 const ShopList = styled.ul`

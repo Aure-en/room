@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { useFirestore } from '../../contexts/FirestoreContext';
+import { useFirestore } from '../../hooks/useFirestore';
 import { useAuth } from '../../contexts/AuthContext';
 import { formatNavLink } from '../../utils/utils';
 import ImagesPreview from '../../components/shop/ImagesPreview';
