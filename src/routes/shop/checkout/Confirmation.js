@@ -1,6 +1,9 @@
 import React from 'react'
 
-function Confirmation() {
+function Confirmation({ location }) {
+
+  console.log(location);
+
   return (
     <div>
       

@@ -172,6 +172,156 @@ export function useFirestore() {
       .onSnapshot(callback);
   };
 
+  // Create a real user (not an anonymous one)
+  const createUser = (userId, firstName, lastName, email) => {
+    return firestore.collection('users').doc(userId).set({
+      firstName,
+      lastName,
+      email,
+    });
+  };
+
+  // Add an address to the user's address book
+  const addAddress = async (
+    userId,
+    firstName,
+    lastName,
+    address,
+    zipCode,
+    city,
+    country
+  ) => {
+    const docRef = await firestore
+      .collection('users')
+      .doc(userId)
+      .collection('addresses')
+      .doc();
+    const id = docRef.id;
+    return firestore
+      .collection('users')
+      .doc(userId)
+      .collection('addresses')
+      .doc(id)
+      .set({
+        id,
+        firstName,
+        lastName,
+        address,
+        zipCode,
+        city,
+        country,
+      });
+  };
+
+  // Remove an address from the user's address book
+  const deleteAddress = (userId, id) => {
+    return firestore
+      .collection('users')
+      .doc(userId)
+      .collection('addresses')
+      .doc(id)
+      .delete();
+  };
+
+  // Get the user's addresses
+  const getAddresses = async (userId) => {
+    const addressBook = [];
+    const addresses = await firestore
+      .collection('users')
+      .doc(userId)
+      .collection('addresses')
+      .get();
+    addresses.forEach((address) => addressBook.push(address.data()));
+    return addressBook;
+  };
+
+  // Add a card to the user's cards list
+  const addCard = async (userId, name, number, date, cvc) => {
+    const docRef = await firestore
+      .collection('users')
+      .doc(userId)
+      .collection('cards')
+      .doc();
+    const id = docRef.id;
+    return firestore
+      .collection('users')
+      .doc(userId)
+      .collection('cards')
+      .doc(id)
+      .set({
+        id,
+        name,
+        number,
+        date,
+        cvc,
+      });
+  };
+
+  // Remove a card from the user's cards list
+  const deleteCard = (userId, id) => {
+    return firestore
+      .collection('users')
+      .doc(userId)
+      .collection('cards')
+      .doc(id)
+      .delete();
+  };
+
+  // Get the user's cards
+  const getCards = async (userId) => {
+    const cardsList = [];
+    const cards = await firestore
+      .collection('users')
+      .doc(userId)
+      .collection('cards')
+      .get();
+    cards.forEach((card) => cardsList.push(card.data()));
+    return cardsList;
+  };
+
+  // Create an order
+  const createOrder = async (products, shipping, card) => {
+    const docRef = await firestore.collection('orders').doc();
+    const id = docRef.id;
+
+    await firestore.collection('orders').doc(id).set({
+      id,
+      products,
+      shipping,
+      card,
+      status: 'Preparation',
+    });
+    
+    return id;
+  };
+
+  // Add order to a user's orders list
+  const addOrder = (userId, id) => {
+    return firestore
+      .collection('users')
+      .doc(userId)
+      .collection('orders')
+      .doc(id);
+  };
+
+  // Get an order
+  const getOrder = async (id) => {
+    const order = await firestore.collection('orders').doc(id).get();
+    return order.data();
+  };
+
+  // Get a user's orders
+  const getOrders = async (userId) => {
+    const ordersList = [];
+    const orders = await firestore
+      .collection('users')
+      .doc(userId)
+      .collection('orders')
+      .get();
+    orders.forEach((order) => ordersList.push(order.data()));
+    return ordersList;
+  }
+
   return {
     getShopCategories,
     getShopItems,
@@ -184,5 +334,16 @@ export function useFirestore() {
     deleteFromCart,
     updateCartQuantity,
     cartListener,
+    createUser,
+    addAddress,
+    deleteAddress,
+    getAddresses,
+    addCard,
+    deleteCard,
+    getCards,
+    createOrder,
+    addOrder,
+    getOrder,
+    getOrders
   };
 }

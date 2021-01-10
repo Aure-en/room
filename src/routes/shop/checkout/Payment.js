@@ -4,6 +4,8 @@ import Nav from '../../../components/shop/nav/Nav';
 import ShopNav from '../../../components/shop/nav/ShopNav';
 import Order from '../../../components/shop/checkout/Order';
 import { Redirect, useHistory } from 'react-router-dom';
+import { useAuth } from '../../../contexts/AuthContext';
+import { useFirestore } from '../../../hooks/useFirestore';
 
 // Icon
 import check from '../../../assets/icons/icon-check.svg';
@@ -153,23 +155,18 @@ function Payment({ location }) {
   const [cvc, setCvc] = useState('');
   const [remember, setRemember] = useState(false);
   const history = useHistory();
+  const { currentUser } = useAuth();
+  const { getCart, createOrder } = useFirestore();
 
-  const confirmOrder = (e) => {
+  const confirmOrder = async (e) => {
     e.preventDefault();
 
+    const cart = await getCart(currentUser.uid);
+    const order = await createOrder(cart, location.state.personal, { name, number, date, cvc })
+
     history.push({
-      pathname: '/shop/confirmation',
-      state: {
-        personal: location.state.personal,
-        payment: {
-          name,
-          number,
-          date,
-          cvc
-        }
-      }
+      pathname: `/shop/confirmation/${order}`
     })
-    
   }
 
   return (

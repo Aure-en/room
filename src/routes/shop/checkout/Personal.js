@@ -126,16 +126,11 @@ const Heading = styled.h1`
 
 function Personal({ location }) {
   /* Props :
-    - location.state.isCreatingAccount : true if user said he wants to create an account.
     - location.state.hasAccount : true if user already has an account.
 
     * If the user already has an account :
       - We will load his addresses if he has any, so he can checkout faster.
       - If he wants to enter a new address, we ask him if he wants to remember it.
-
-      If the user is creating a new account :
-      - We ask for a password to create his account as he checks out.
-      - We ask him if he wants his address to be remembered.
   */
 
   const [firstName, setFirstName] = useState('');
@@ -145,8 +140,6 @@ function Personal({ location }) {
   const [zipCode, setZipCode] = useState('');
   const [country, setCountry] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [phone, setPhone] = useState('');
   const [additional, setAdditional] = useState('');
   const [remember, setRemember] = useState(false);
@@ -158,7 +151,6 @@ function Personal({ location }) {
     history.push({
       pathname: '/shop/payment',
       state: {
-        isCreatingAccount: location.state.isCreatingAccount,
         hasAccount: location.state.hasAccount,
         personal: {
           firstName,
@@ -237,36 +229,6 @@ function Personal({ location }) {
                       placeholder='Enter your phone number'
                     />
                   </Field>
-
-                  {location.state.isCreatingAccount && (
-                    <>
-                      <Field>
-                        <Label htmlFor='password'>Password</Label>
-                        <Input
-                          type='password'
-                          id='password'
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                          placeholder='Enter your password'
-                        />
-                      </Field>
-
-                      <Field>
-                        <Label htmlFor='password_confirmation'>
-                          Password Confirmation
-                        </Label>
-                        <Input
-                          type='password'
-                          id='password_confirmation'
-                          value={passwordConfirmation}
-                          onChange={(e) =>
-                            setPasswordConfirmation(e.target.value)
-                          }
-                          placeholder='Enter your paswsord again'
-                        />
-                      </Field>
-                    </>
-                  )}
                 </Category>
 
                 <CategoryName>Delivery</CategoryName>
@@ -327,8 +289,7 @@ function Personal({ location }) {
                   </FieldLarge>
                 </Category>
 
-                {(location.state.isCreatingAccount ||
-                  location.state.hasAccount) && (
+                {location.state.hasAccount && (
                   <>
                     <CheckboxLabel htmlFor='remember' isChecked={remember}>
                       Remember my informations for easier checkout.
