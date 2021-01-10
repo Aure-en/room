@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import Order from '../../../components/shop/checkout/Order';
 import { useFirestore } from '../../../hooks/useFirestore';
 import { useAuth } from '../../../contexts/AuthContext';
 import Nav from '../../../components/shop/nav/Nav';
 import ShopNav from '../../../components/shop/nav/ShopNav';
-import { Redirect } from 'react-router-dom';
+import Order from '../../../components/shop/checkout/Order';
+import { Redirect, useHistory } from 'react-router-dom';
 
+// Icon
+import check from '../../../assets/icons/icon-check.svg';
+
+// Styled Components
 const colors = {
   primary: 'hsl(0, 0%, 45%)', // Grey
-  border: 'hsl(0, 0%, 90%)',
+  secondary: 'hsl(0, 0%, 27%)', // Button and checkbox
+  tertiary: 'hsl(0, 0%, 90%)',
   input: 'hsl(0, 0%, 70%)', // Input lines
   black: 'hsl(0, 0%, 0%)',
 };
@@ -21,25 +26,28 @@ const Container = styled.div`
 `;
 
 const OrderRecap = styled.div`
-  padding: 5rem;
+  margin-top: 4rem;
   display: flex;
   align-items: start;
   max-width: 1400px;
 `;
 
 const Form = styled.form`
+  display: flex;
+  flex-direction: column;
   min-width: 40vw;
 `;
 
-const Informations = styled.div`
+const Category = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 3rem 5rem;
+  margin: 1.25rem 0 3rem 0;
 `;
 
-const Category = styled.div`
+const CategoryName = styled.div`
   grid-column: 1 / -1;
-  border-bottom: 1px solid ${colors.border};
+  border-bottom: 1px solid ${colors.tertiary};
   text-transform: uppercase;
   font-size: 0.9rem;
   color: ${colors.primary};
@@ -49,6 +57,22 @@ const Category = styled.div`
 const Field = styled.div`
   display: flex;
   flex-direction: column;
+`;
+
+const FieldLarge = styled(Field)`
+  grid-column: 1 / -1;
+`;
+
+const Button = styled.button`
+  margin-top: 2.5rem;
+  font-family: 'Source Sans Pro', sans-serif;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  color: ${colors.tertiary};
+  background: ${colors.secondary};
+  align-self: center;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
 `;
 
 const Label = styled.label`
@@ -72,6 +96,28 @@ const Input = styled.input`
   }
 `;
 
+const Checkbox = styled.input`
+  visibility: hidden;
+`;
+
+const CheckboxLabel = styled.label`
+  display: flex;
+  align-items: center;
+
+  &:before {
+    display: inline-block;
+    content: '';
+    width: 1rem;
+    height: 1rem;
+    margin-right: 0.5rem;
+    border-radius: 2px;
+    border: 1px solid ${colors.secondary};
+    background-color: ${(props) => (props.isChecked ? colors.secondary : '')};
+    background-image: ${(props) => (props.isChecked ? `url(${check})` : '')};
+    background-position: ${(props) => (props.isChecked ? 'center' : '')};
+  }
+`;
+
 const Heading = styled.h1`
   margin-bottom: 2rem;
   font-size: 2rem;
@@ -79,10 +125,17 @@ const Heading = styled.h1`
 `;
 
 function Personal({ location }) {
-
   /* Props :
     - location.state.isCreatingAccount : true if user said he wants to create an account.
     - location.state.hasAccount : true if user already has an account.
+
+    * If the user already has an account :
+      - We will load his addresses if he has any, so he can checkout faster.
+      - If he wants to enter a new address, we ask him if he wants to remember it.
+
+      If the user is creating a new account :
+      - We ask for a password to create his account as he checks out.
+      - We ask him if he wants his address to be remembered.
   */
 
   const [firstName, setFirstName] = useState('');
@@ -92,11 +145,34 @@ function Personal({ location }) {
   const [zipCode, setZipCode] = useState('');
   const [country, setCountry] = useState('');
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [phone, setPhone] = useState('');
-  const [additional, setAdditional] = useState('')
+  const [additional, setAdditional] = useState('');
+  const [remember, setRemember] = useState(false);
+  const history = useHistory();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    history.push({
+      pathname: '/shop/payment',
+      state: {
+        isCreatingAccount: location.state.isCreatingAccount,
+        hasAccount: location.state.hasAccount,
+        personal: {
+          firstName,
+          lastName,
+          email,
+          phone,
+          address,
+          city,
+          zipCode,
+          country,
+          additional,
+        },
+      },
+    });
   };
 
   return (
@@ -115,10 +191,9 @@ function Personal({ location }) {
             <OrderRecap>
               <Form onSubmit={handleSubmit}>
                 <Heading>Personal Details</Heading>
-                <Informations>
 
-                  <Category>General</Category>
-
+                <CategoryName>General</CategoryName>
+                <Category>
                   <Field>
                     <Label htmlFor='first_name'>First Name</Label>
                     <Input
@@ -163,8 +238,39 @@ function Personal({ location }) {
                     />
                   </Field>
 
-                  <Category>Delivery</Category>
+                  {location.state.isCreatingAccount && (
+                    <>
+                      <Field>
+                        <Label htmlFor='password'>Password</Label>
+                        <Input
+                          type='password'
+                          id='password'
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          placeholder='Enter your password'
+                        />
+                      </Field>
 
+                      <Field>
+                        <Label htmlFor='password_confirmation'>
+                          Password Confirmation
+                        </Label>
+                        <Input
+                          type='password'
+                          id='password_confirmation'
+                          value={passwordConfirmation}
+                          onChange={(e) =>
+                            setPasswordConfirmation(e.target.value)
+                          }
+                          placeholder='Enter your paswsord again'
+                        />
+                      </Field>
+                    </>
+                  )}
+                </Category>
+
+                <CategoryName>Delivery</CategoryName>
+                <Category>
                   <Field>
                     <Label htmlFor='address'>Address</Label>
                     <Input
@@ -208,9 +314,37 @@ function Personal({ location }) {
                       placeholder='Enter your country'
                     />
                   </Field>
-                </Informations>
-              </Form>
 
+                  <FieldLarge>
+                    <Label htmlFor='additional'>Additional Informations</Label>
+                    <Input
+                      type='text'
+                      id='additional'
+                      value={additional}
+                      onChange={(e) => setAdditional(e.target.value)}
+                      placeholder='Anything else you would like to tell us (building entrance codes, prefered delivery time...)'
+                    />
+                  </FieldLarge>
+                </Category>
+
+                {(location.state.isCreatingAccount ||
+                  location.state.hasAccount) && (
+                  <>
+                    <CheckboxLabel htmlFor='remember' isChecked={remember}>
+                      Remember my informations for easier checkout.
+                    </CheckboxLabel>
+                    <Checkbox
+                      type='checkbox'
+                      id='remember'
+                      name='remember'
+                      checked={remember}
+                      onChange={() => setRemember(!remember)}
+                    />
+                  </>
+                )}
+
+                <Button type='submit'>Proceed to Payment</Button>
+              </Form>
               <Order />
             </OrderRecap>
           </Container>

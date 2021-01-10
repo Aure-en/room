@@ -86,7 +86,7 @@ function CartItem({ item }) {
   }, [quantity])
 
   return (
-    <Item key={item.id}>
+    <Item>
       <Information>
         <Image src={item.image} alt='Item preview' />
         <div>
@@ -97,7 +97,7 @@ function CartItem({ item }) {
           <div>
             {item.options.map((option) => {
               return (
-                <Option option={option}>
+                <Option option={option} key={option}>
                   <Capitalize>{Object.keys(option)[0]}</Capitalize> -{' '}
                   {Object.values(option)[0]}
                 </Option>

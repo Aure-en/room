@@ -19,7 +19,7 @@ const colors = {
 };
 
 const ShoppingCart = styled.div`
-  padding: 5rem;
+  margin: 4rem;
   display: flex;
   align-items: start;
   max-width: 1400px;

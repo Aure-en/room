@@ -123,7 +123,7 @@ function Order() {
         <ItemsList>
           {cart.map((item) => {
             return (
-              <Item>
+              <Item key={item.id}>
                 <div>
                   <Name>{item.name}</Name>
                   <Type>
