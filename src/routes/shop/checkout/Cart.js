@@ -18,7 +18,7 @@ const colors = {
   hover: 'hsl(0, 0%, 0%)' // Black - Continue Shopping Hover
 };
 
-const ShoppingCart = styled.section`
+const ShoppingCart = styled.div`
   padding: 5rem;
   display: flex;
   align-items: start;

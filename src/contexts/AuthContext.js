@@ -16,6 +16,11 @@ export function AuthProvider({ children }) {
     return auth.signInAnonymously();
   }
 
+  const signUpFromAnonymous = async (email, password) => {
+    const credential = await auth.EmailAuthProvider.credential(email, password);
+    return currentUser.linkWithCredential(credential);
+  }
+
   const signUp = (email, password) => {
     return auth.createUserWithEmailAndPassword(email, password);
   }
@@ -45,6 +50,7 @@ export function AuthProvider({ children }) {
     signIn,
     signOut,
     signInAnonymously,
+    signUpFromAnonymous,
     currentUser,
     resetPassword
   }
