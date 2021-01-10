@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import { CSSTransition } from 'react-transition-group';
 
 // Svgs
-import { ReactComponent as AngleLeft } from '../../assets/icons/icon-angle-left.svg';
-import { ReactComponent as AngleRight } from '../../assets/icons/icon-angle-right.svg';
+import { ReactComponent as AngleLeft } from '../../../assets/icons/icon-angle-left.svg';
+import { ReactComponent as AngleRight } from '../../../assets/icons/icon-angle-right.svg';
 
 const colors = {
   border: 'hsl(0, 0%, 80%)',

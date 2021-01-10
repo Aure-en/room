@@ -4,9 +4,9 @@ import styled from 'styled-components';
 import { useFirestore } from '../../hooks/useFirestore';
 import { useAuth } from '../../contexts/AuthContext';
 import { formatNavLink } from '../../utils/utils';
-import ImagesPreview from '../../components/shop/ImagesPreview';
-import Nav from '../../components/shop/Nav';
-import ShopNav from '../../components/shop/ShopNav';
+import ImagesPreview from '../../components/shop/items/ImagesPreview';
+import Nav from '../../components/shop/nav/Nav';
+import ShopNav from '../../components/shop/nav/ShopNav';
 import { CSSTransition } from 'react-transition-group';
 
 // Icons

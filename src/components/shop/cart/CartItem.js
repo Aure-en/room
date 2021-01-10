@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useAuth } from '../../contexts/AuthContext';
-import { useFirestore } from '../../hooks/useFirestore';
+import { useAuth } from '../../../contexts/AuthContext';
+import { useFirestore } from '../../../hooks/useFirestore';
 import { Link } from 'react-router-dom';
 
 // Icon
-import { ReactComponent as Delete } from '../../assets/icons/icon-x-med.svg';
+import { ReactComponent as Delete } from '../../../assets/icons/icon-x-med.svg';
 
 // Styled Components
 const colors = {
@@ -97,12 +97,10 @@ function CartItem({ item }) {
           <div>
             {item.options.map((option) => {
               return (
-                <>
-                  <Option>
-                    <Capitalize>{Object.keys(option)[0]}</Capitalize> -{' '}
-                    {Object.values(option)[0]}
-                  </Option>
-                </>
+                <Option option={option}>
+                  <Capitalize>{Object.keys(option)[0]}</Capitalize> -{' '}
+                  {Object.values(option)[0]}
+                </Option>
               );
             })}
           </div>

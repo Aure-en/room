@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import Nav from '../../components/shop/Nav';
-import ShopNav from '../../components/shop/ShopNav';
-import ShopItemPreview from '../../components/shop/ShopItemPreview';
+import Nav from '../../components/shop/nav/Nav';
+import ShopNav from '../../components/shop/nav/ShopNav';
+import ShopItemPreview from '../../components/shop/items/ShopItemPreview';
 import { useFirestore } from '../../hooks/useFirestore';
 import styled from 'styled-components'
 

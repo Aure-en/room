@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import CartItem from '../../components/shop/CartItem';
-import Nav from '../../components/shop/Nav';
-import ShopNav from '../../components/shop/ShopNav';
-import { useFirestore } from '../../hooks/useFirestore';
-import { useAuth } from '../../contexts/AuthContext';
-import { useSignIn } from '../../hooks/useSignIn';
+import CartItem from '../../../components/shop/cart/CartItem';
+import Nav from '../../../components/shop/nav/Nav';
+import ShopNav from '../../../components/shop/nav/ShopNav';
+import { useFirestore } from '../../../hooks/useFirestore';
+import { useAuth } from '../../../contexts/AuthContext';
+import { useSignIn } from '../../../hooks/useSignIn';
 import { Link } from 'react-router-dom';
 
 // Styled components
@@ -301,12 +301,24 @@ function Cart() {
               it will only take a minute.
             </PaymentText>
             <PaymentLink>
-              <Link to=''>Create an account</Link>
+              <Link to={{
+                pathname:'/shop/personal',
+                state: { 
+                  isCreatingAccount: true,
+                  hasAccount: false,
+                }
+              }}>Create an account</Link>
             </PaymentLink>
 
             <PaymentText>Or simply proceed to checkout as a guest.</PaymentText>
             <PaymentLink>
-              <Link to=''>Checkout as a guest</Link>
+              <Link to={{
+                pathname:'/shop/personal',
+                state: { 
+                  isCreatingAccount: false,
+                  hasAccount: false,
+                }
+              }}>Checkout as a guest</Link>
             </PaymentLink>
           </ToPayment>
         </ShoppingCart>

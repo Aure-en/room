@@ -6,9 +6,10 @@ import Contact from "./routes/Contact"
 import Entry from "./routes/shop/Entry"
 import Category from "./routes/shop/Category"
 import ItemDetails from "./routes/shop/ItemDetails";
-import Cart from "./routes/shop/Cart";
+import Cart from "./routes/shop/checkout/Cart";
 import HandleShop from "./routes/HandleShop";
-import Payment from "./routes/shop/Payment";
+import Payment from "./routes/shop/checkout/Payment";
+import Personal from "./routes/shop/checkout/Personal";
 
 function App() {
   return (
@@ -17,14 +18,15 @@ function App() {
       <AuthProvider>
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route exact path="/shop/cart" component={Cart} />
-          <Route exact path="/shop/payment" component={Payment} />
-          <Route exact path="/shop" component={Entry} />
-          <Route exact path="/shop/:category" component={Category} />
-          <Route exact path="/shop/item/:itemId" component={ItemDetails} />
           <Route exact path="/about" component={About} />
           <Route exact path="/contact" component={Contact} />
           <Route exact path="/handleshop" component={HandleShop} />
+          <Route exact path="/shop" component={Entry} />
+          <Route exact path="/shop/cart" component={Cart} />
+          <Route exact path="/shop/payment" component={Payment} />
+          <Route exact path="/shop/personal" component={Personal} />
+          <Route exact path="/shop/:category" component={Category} />
+          <Route exact path="/shop/item/:itemId" component={ItemDetails} />
         </Switch>
         </AuthProvider>
       </div>

@@ -3,16 +3,16 @@
 
 import React, { useRef } from 'react';
 import styled from 'styled-components';
-import { ReactComponent as Logo } from '../../assets/icons/logo.svg';
+import { ReactComponent as Logo } from '../../../assets/icons/logo.svg';
 import { Link } from 'react-router-dom';
 import SideNav from './SideNav';
 
 // Icons
-import { ReactComponent as Cart } from '../../assets/icons/icon-shopping-cart.svg';
-import { ReactComponent as Heart } from '../../assets/icons/icon-heart.svg';
-import { ReactComponent as Home } from '../../assets/icons/icon-home.svg';
-import { ReactComponent as Search } from '../../assets/icons/icon-search.svg';
-import { ReactComponent as User } from '../../assets/icons/icon-user.svg';
+import { ReactComponent as Cart } from '../../../assets/icons/icon-shopping-cart.svg';
+import { ReactComponent as Heart } from '../../../assets/icons/icon-heart.svg';
+import { ReactComponent as Home } from '../../../assets/icons/icon-home.svg';
+import { ReactComponent as Search } from '../../../assets/icons/icon-search.svg';
+import { ReactComponent as User } from '../../../assets/icons/icon-user.svg';
 
 const colors = {
   primary: 'hsl(0, 0%, 0%)', // Black

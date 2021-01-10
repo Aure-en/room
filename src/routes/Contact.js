@@ -18,7 +18,7 @@ const colors = {
   background: 'hsl(10, 5%, 90%)',
   darkGrey: 'hsl(0, 0%, 20%)',
   grey: 'hsl(0, 0%, 50%)',
-  lightGrey: 'hsl(0, 0%, 70%)',
+  border: 'hsl(0, 0%, 70%)',
 };
 
 const grid = `  
@@ -33,12 +33,12 @@ const grid = `
 
 const input = `
   border: none;
-  border-bottom: 1px solid ${colors.lightGrey};
+  border-bottom: 1px solid ${colors.border};
   padding: .5rem 0 .25rem 0;
   font-family: 'Source Sans Pro', sans-serif;
 
   &::placeholder {
-    color: ${colors.lightGrey};
+    color: ${colors.border};
   }
 
   &:focus {

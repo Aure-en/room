@@ -1,6 +1,6 @@
 import React from 'react'
-import Nav from '../../components/shop/Nav';
-import ShopNav from '../../components/shop/ShopNav';
+import Nav from '../../components/shop/nav/Nav';
+import ShopNav from '../../components/shop/nav/ShopNav';
 
 function Entry() {
 

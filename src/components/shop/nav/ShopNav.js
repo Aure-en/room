@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useFirestore } from '../../hooks/useFirestore';
+import { useFirestore } from '../../../hooks/useFirestore';
 import styled from 'styled-components';
-import { formatNavLink } from '../../utils/utils';
+import { formatNavLink } from '../../../utils/utils';
 import { Link } from 'react-router-dom';
 
 // Styled components
