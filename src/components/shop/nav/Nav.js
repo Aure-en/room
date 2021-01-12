@@ -12,7 +12,7 @@ import { ReactComponent as Cart } from '../../../assets/icons/icon-shopping-cart
 import { ReactComponent as Heart } from '../../../assets/icons/icon-heart.svg';
 import { ReactComponent as Home } from '../../../assets/icons/icon-home.svg';
 import { ReactComponent as Search } from '../../../assets/icons/icon-search.svg';
-import { ReactComponent as User } from '../../../assets/icons/icon-user.svg';
+import { ReactComponent as User } from '../../../assets/icons/icon-user.svg'
 
 const colors = {
   primary: 'hsl(0, 0%, 0%)', // Black
@@ -97,14 +97,14 @@ function Nav() {
           <NavIcon>
             <Search />
           </NavIcon>
-          <NavIconLink>
+          <NavIcon>
             <User />
-          </NavIconLink>
+          </NavIcon>
           <NavIconLink>
             <Heart />
           </NavIconLink>
           <NavIconLink>
-            <Cart />
+            <Link to='/shop/cart'><Cart /></Link>
           </NavIconLink>
         </NavRight>
       </Navigation>

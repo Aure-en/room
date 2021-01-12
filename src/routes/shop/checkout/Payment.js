@@ -19,14 +19,20 @@ const colors = {
   black: 'hsl(0, 0%, 0%)',
 };
 
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+`;
+
 const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  flex: 1;
 `;
 
 const Main = styled.div`
-  margin-top: 4rem;
   display: flex;
   align-items: start;
   max-width: 1400px;
@@ -57,6 +63,7 @@ const Heading = styled.h1`
   margin-bottom: 2rem;
   font-size: 2rem;
   line-height: 2.75rem;
+  font-family: 'Playfair Display', sans-serif;
 `;
 
 const Form = styled.form`
@@ -176,7 +183,7 @@ function Payment({ location }) {
   return (
     <>
       {location.state ? (
-        <>
+        <Wrapper>
           <header>
             <Nav />
             <ShopNav />
@@ -279,7 +286,7 @@ function Payment({ location }) {
               <Order />
             </Main>
           </Container>
-        </>
+        </Wrapper>
       ) : (
         <Redirect to='/shop/cart' />
       )}

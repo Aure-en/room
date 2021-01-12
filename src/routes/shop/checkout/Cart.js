@@ -18,14 +18,20 @@ const colors = {
   hover: 'hsl(0, 0%, 0%)' // Black - Continue Shopping Hover
 };
 
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+`;
+
 const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  flex: 1;
 `;
 
 const ShoppingCart = styled.div`
-  margin-top: 4rem;
   display: flex;
   align-items: start;
   max-width: 1400px;
@@ -99,19 +105,19 @@ const PaymentChoice = styled.span`
 `;
 
 const button = `
-display: inline-block;
-background: ${colors.payment};
-color: ${colors.secondary};
-padding: 0.5rem 1rem;
-margin: 1rem 0;
-cursor: pointer;
-text-align: center;
-text-transform: uppercase;
-font-size: 0.9rem;
-font-family: 'Source Sans Pro', sans-serif;
+  display: inline-block;
+  background: ${colors.payment};
+  color: ${colors.secondary};
+  padding: 0.5rem 1rem;
+  margin: 1rem 0;
+  cursor: pointer;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  font-family: 'Source Sans Pro', sans-serif;
 
-&:hover {
-  background: ${colors.button};
+  &:hover {
+    background: ${colors.button};
 }`;
 
 const PaymentLink = styled.span`
@@ -217,7 +223,7 @@ function Cart() {
   }, []);
 
   return (
-    <div>
+    <Wrapper>
       <header>
         <Nav />
         <ShopNav />
@@ -324,7 +330,7 @@ function Cart() {
           </ToPayment>
         </ShoppingCart>
       </Container>
-    </div>
+    </Wrapper>
   );
 }
 

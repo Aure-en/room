@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { auth } from '../firebase/firebase';
+import firebase from 'firebase'
 
 const AuthContext = React.createContext();
 
@@ -17,8 +18,8 @@ export function AuthProvider({ children }) {
   }
 
   const signUpFromAnonymous = async (email, password) => {
-    const credential = await auth.EmailAuthProvider.credential(email, password);
-    return currentUser.linkWithCredential(credential);
+    const credential = await firebase.auth.EmailAuthProvider.credential(email, password);
+    return auth.currentUser.linkWithCredential(credential)
   }
 
   const signUp = (email, password) => {

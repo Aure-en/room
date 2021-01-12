@@ -6,6 +6,7 @@ export function useSignUp() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [password, setPassword] = useState('');
+  const [terms, setTerms] = useState(false);
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [isFormCompleted, setIsFormCompleted] = useState(true);
@@ -14,10 +15,10 @@ export function useSignUp() {
   const { currentUser, signUp, signUpFromAnonymous } = useAuth();
 
   useEffect(() => {
-    email && firstName && lastName && password
+    email && firstName && lastName && password && terms
       ? setIsFormCompleted(false)
       : setIsFormCompleted(true);
-  }, [email, firstName, lastName, password]);
+  }, [email, firstName, lastName, password, terms]);
 
   async function handleSignUp(e) {
     e.preventDefault();
@@ -26,10 +27,9 @@ export function useSignUp() {
     setPasswordError('');
 
     try {
-      currentUser && currentUser.isAnonymous
+      (currentUser && currentUser.isAnonymous)
         ? await signUpFromAnonymous(email, password)
         : await signUp(email, password);
-
       setLoading(false);
     } catch (err) {
       switch (err.code) {
@@ -55,6 +55,8 @@ export function useSignUp() {
     setLastName,
     password,
     setPassword,
+    terms,
+    setTerms,
     emailError,
     passwordError,
     isFormCompleted,
