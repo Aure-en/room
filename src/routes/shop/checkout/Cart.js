@@ -18,17 +18,17 @@ const colors = {
   hover: 'hsl(0, 0%, 0%)' // Black - Continue Shopping Hover
 };
 
-const ShoppingCart = styled.div`
-  margin: 4rem;
-  display: flex;
-  align-items: start;
-  max-width: 1400px;
-`;
-
 const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+
+const ShoppingCart = styled.div`
+  margin-top: 4rem;
+  display: flex;
+  align-items: start;
+  max-width: 1400px;
 `;
 
 const ItemList = styled.div`
@@ -108,6 +108,7 @@ cursor: pointer;
 text-align: center;
 text-transform: uppercase;
 font-size: 0.9rem;
+font-family: 'Source Sans Pro', sans-serif;
 
 &:hover {
   background: ${colors.button};

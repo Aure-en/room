@@ -32,8 +32,6 @@ const Heading = styled.h3`
   margin-bottom: 1.5rem;
 `;
 
-const ItemsList = styled.ul``;
-
 const Item = styled.li`
   display: grid;
   grid-template-columns: 1fr auto;
@@ -120,7 +118,7 @@ function Order() {
     <Container>
       <Heading>Order Summary</Heading>
       <Cart>
-        <ItemsList>
+        <ul>
           {cart.map((item) => {
             return (
               <Item key={item.id}>
@@ -135,7 +133,7 @@ function Order() {
               </Item>
             );
           })}
-        </ItemsList>
+        </ul>
         <Row>
           <div>Items</div>
           <Price>£{cart.reduce((sum, item) => sum + +item.price, 0)}</Price>

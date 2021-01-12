@@ -156,16 +156,20 @@ function Payment({ location }) {
   const [remember, setRemember] = useState(false);
   const history = useHistory();
   const { currentUser } = useAuth();
-  const { getCart, createOrder } = useFirestore();
+  const { getCart, createOrder, deleteCart } = useFirestore();
 
   const confirmOrder = async (e) => {
     e.preventDefault();
 
     const cart = await getCart(currentUser.uid);
-    const order = await createOrder(cart, location.state.personal, { name, number, date, cvc })
+    const order = await createOrder(cart, location.state.personal, { name, number, date, cvc });
+    await deleteCart(currentUser.uid);
 
     history.push({
-      pathname: `/shop/confirmation/${order}`
+      pathname: `/shop/confirmation/${order}`,
+      state: {
+        payment: true,
+      }
     })
   }
 

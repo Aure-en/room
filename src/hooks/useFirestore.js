@@ -152,6 +152,10 @@ export function useFirestore() {
       .update({ quantity });
   };
 
+  const deleteCart = (userId) => {
+    return firestore.collection('carts').doc(userId).delete();
+  }
+
   // Get an user's cart.
   const getCart = async (userId) => {
     const cart = [];
@@ -290,8 +294,9 @@ export function useFirestore() {
       shipping,
       card,
       status: 'Preparation',
+      date: new Date()
     });
-    
+
     return id;
   };
 
@@ -333,6 +338,7 @@ export function useFirestore() {
     getCart,
     deleteFromCart,
     updateCartQuantity,
+    deleteCart,
     cartListener,
     createUser,
     addAddress,
