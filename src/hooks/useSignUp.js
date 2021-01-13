@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
+import { useFirestore } from '../hooks/useFirestore';
 
 export function useSignUp() {
   const [email, setEmail] = useState('');
@@ -13,6 +14,7 @@ export function useSignUp() {
   const [loading, setLoading] = useState(false);
 
   const { currentUser, signUp, signUpFromAnonymous } = useAuth();
+  const { createUser } = useFirestore();
 
   useEffect(() => {
     email && firstName && lastName && password && terms
@@ -20,16 +22,17 @@ export function useSignUp() {
       : setIsFormCompleted(true);
   }, [email, firstName, lastName, password, terms]);
 
-  async function handleSignUp(e) {
-    e.preventDefault();
+  async function handleSignUp() {
     setLoading(true);
     setEmailError('');
     setPasswordError('');
 
     try {
-      (currentUser && currentUser.isAnonymous)
+      const user = (currentUser && currentUser.isAnonymous)
         ? await signUpFromAnonymous(email, password)
         : await signUp(email, password);
+      console.log(user);
+      await createUser(user.user.uid, firstName, lastName, email);
       setLoading(false);
     } catch (err) {
       switch (err.code) {

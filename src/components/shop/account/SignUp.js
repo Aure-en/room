@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useSignUp } from '../../../hooks/useSignUp';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 // Icons
 import check from '../../../assets/icons/icon-check.svg';
@@ -107,7 +107,7 @@ const CheckboxLabel = styled.label`
   }
 `;
 
-function SignUp({ flip }) {
+function SignUp({ flip, isPaying }) {
   const {
     email,
     setEmail,
@@ -126,6 +126,8 @@ function SignUp({ flip }) {
     handleSignUp,
   } = useSignUp();
 
+  const history = useHistory();
+
   return (
     <>
       <Welcome>
@@ -133,7 +135,13 @@ function SignUp({ flip }) {
         <p>Join us for a smoother shopping experience.</p>
       </Welcome>
 
-      <form onSubmit={handleSignUp}>
+      <form onSubmit={async (e) => {
+        e.preventDefault();
+        await handleSignUp();
+        isPaying
+          ? history.push('/shop/personal')
+          : history.push('/shop');
+      }}>
         <Field>
           <Label htmlFor='first_name'>First Name</Label>
           <Input

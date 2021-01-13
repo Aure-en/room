@@ -294,19 +294,31 @@ function ItemDetails({ match }) {
 
     // If the user is not signed in, we sign him up anonymously to save his cart and allow him to order.
     if (!currentUser) {
-      await signInAnonymously();
+      const user = await signInAnonymously();
+      addToCart(
+        user.user.uid,
+        item.id,
+        item.name,
+        item.images[0],
+        currentColor,
+        currentOption,
+        quantity,
+        item.type,
+        item.price
+      );
+    } else {
+      addToCart(
+        currentUser.uid,
+        item.id,
+        item.name,
+        item.images[0],
+        currentColor,
+        currentOption,
+        quantity,
+        item.type,
+        item.price
+      );
     }
-    addToCart(
-      currentUser.uid,
-      item.id,
-      item.name,
-      item.images[0],
-      currentColor,
-      currentOption,
-      quantity,
-      item.type,
-      item.price
-    );
   };
 
   return (

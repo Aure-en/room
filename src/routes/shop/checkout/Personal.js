@@ -30,6 +30,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   flex: 1;
+  margin: 5rem;
 `;
 
 const OrderRecap = styled.div`
@@ -70,7 +71,7 @@ const FieldLarge = styled(Field)`
 `;
 
 const Button = styled.button`
-  margin-top: 2.5rem;
+  margin-top: 1.5rem;
   font-family: 'Source Sans Pro', sans-serif;
   text-transform: uppercase;
   font-size: 0.9rem;
@@ -131,13 +132,26 @@ const Heading = styled.h1`
   font-family: 'Playfair Display', sans-serif;
 `;
 
+const Subheading = styled.div`
+  border-bottom: 1px solid ${colors.black};
+  text-transform: uppercase;
+  color: ${colors.black};
+  padding-bottom: 0.25rem;
+  margin-bottom: 1.5rem;
+`;
+
+// Address Book
+
+const Addresses = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 1rem;
+  margin-bottom: 2.5rem;
+`;
+
 function Personal({ location }) {
   /* Props :
-    - location.state.hasAccount : true if user already has an account.
-
-    * If the user already has an account :
-      - We will load his addresses if he has any, so he can checkout faster.
-      - If he wants to enter a new address, we ask him if he wants to remember it.
+    - location.state.isPaying : true if user comes from /shop/cart.
   */
 
   const [firstName, setFirstName] = useState('');
@@ -150,15 +164,41 @@ function Personal({ location }) {
   const [phone, setPhone] = useState('');
   const [additional, setAdditional] = useState('');
   const [remember, setRemember] = useState(false);
+  const [addresses, setAddresses] = useState([]);
+
+  const { currentUser } = useAuth();
+  const { addAddress, getAddresses } = useFirestore();
   const history = useHistory();
+
+  // If the user is logged in, they might have saved addresses.
+  // We display them so that they can checkout faster.
+  useEffect(() => {
+    if (currentUser.isAnonymous) return;
+    (async () => {
+      const addresses = await getAddresses(currentUser.uid);
+      setAddresses(addresses);
+    })();
+  }, [])
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    if (remember) {
+      addAddress(
+        currentUser.uid,
+        firstName,
+        lastName,
+        phone,
+        address,
+        zipCode,
+        city,
+        country
+      );
+    }
+
     history.push({
       pathname: '/shop/payment',
       state: {
-        hasAccount: location.state.hasAccount,
         personal: {
           firstName,
           lastName,
@@ -167,8 +207,7 @@ function Personal({ location }) {
           address,
           city,
           zipCode,
-          country,
-          additional,
+          country
         },
       },
     });
@@ -190,6 +229,45 @@ function Personal({ location }) {
             <OrderRecap>
               <Form onSubmit={handleSubmit}>
                 <Heading>Personal Details</Heading>
+
+                {!currentUser.isAnonymous && addresses.length !== 0 &&
+                  <>
+                  <Subheading>Address Book</Subheading>
+                  <Addresses>
+                    {addresses.map(address => {
+                      return (
+                        <div>
+                          <div>{address.firstName} {address.lastName}</div>
+                          <div>{address.address}</div>
+                          <div>{address.zipCode} {address.city}</div>
+                          <div>{address.country}</div>
+                          <Button onClick={() => {
+                            history.push({
+                              pathname: '/shop/payment',
+                              state: {
+                                personal: {
+                                  firstName: address.firstName,
+                                  lastName: address.lastName,
+                                  email: address.email,
+                                  phone: address.phone,
+                                  address: address.address,
+                                  city: address.city,
+                                  zipCode: address.zipCode,
+                                  country: address.country,
+                                  additional,
+                                },
+                              }
+                            })
+                          }}>Use this address</Button>
+                        </div>
+                      )
+                    })}
+                  </Addresses>
+
+                  <Subheading>Use another address</Subheading>
+
+                  </>
+                }
 
                 <CategoryName>General</CategoryName>
                 <Category>
@@ -296,7 +374,7 @@ function Personal({ location }) {
                   </FieldLarge>
                 </Category>
 
-                {location.state.hasAccount && (
+                {currentUser && !currentUser.isAnonymous && (
                   <>
                     <CheckboxLabel htmlFor='remember' isChecked={remember}>
                       Remember my informations for easier checkout.

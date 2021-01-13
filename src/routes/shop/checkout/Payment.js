@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Nav from '../../../components/shop/nav/Nav';
 import ShopNav from '../../../components/shop/nav/ShopNav';
@@ -9,6 +9,7 @@ import { useFirestore } from '../../../hooks/useFirestore';
 
 // Icon
 import check from '../../../assets/icons/icon-check.svg';
+import iconX from '../../../assets/icons/icon-x.svg';
 
 // Styled Components
 const colors = {
@@ -30,6 +31,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   flex: 1;
+  margin: 5rem;
 `;
 
 const Main = styled.div`
@@ -43,7 +45,7 @@ const Left = styled.div`
 `;
 
 const Category = styled.div`
-  margin-bottom: 3rem;
+  margin-bottom: 2.5rem;
 `;
 
 const CategoryName = styled.div`
@@ -65,6 +67,15 @@ const Heading = styled.h1`
   line-height: 2.75rem;
   font-family: 'Playfair Display', sans-serif;
 `;
+
+const Subheading = styled.div`
+  border-bottom: 1px solid ${colors.black};
+  text-transform: uppercase;
+  color: ${colors.black};
+  padding-bottom: 0.25rem;
+  margin-bottom: 1.5rem;
+`;
+
 
 const Form = styled.form`
   display: flex;
@@ -108,7 +119,7 @@ const Input = styled.input`
   }
 `;
 
-const Checkbox = styled.input`
+const HiddenInput = styled.input`
   visibility: hidden;
 `;
 
@@ -130,6 +141,33 @@ const CheckboxLabel = styled.label`
   }
 `;
 
+const Li = styled.li`
+  padding-left: 1rem;
+  text-indent: 1rem;
+  line-height: 1.25rem;
+  display: flex;
+  align-items: center;
+  margin-bottom: .5rem;
+
+  &:before {
+    content: '';
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    background: url(${iconX});
+  }
+`;
+
+const CardButton = styled.button`
+  margin-left: auto;
+  color: ${colors.secondary};
+
+  &:hover {
+    color: ${colors.black};
+  }
+
+`;
+
 const Button = styled.button`
   margin-top: 2.5rem;
   font-family: 'Source Sans Pro', sans-serif;
@@ -144,16 +182,7 @@ const Button = styled.button`
 
 function Payment({ location }) {
   /* Props :
-    - location.state.isCreatingAccount : true if user said he wants to create an account.
-    - location.state.hasAccount : true if user already has an account.
     - location.state.personal : informations the user entered on the informations page.
-
-    * If the user already has an account :
-      - We will load his credit cards if he has any, so he can checkout faster.
-      - If he wants to enter a new card, we ask him if he wants to remember it.
-
-      If the user is creating a new account :
-      - We ask him if he wants his card to be remembered.
   */
 
   const [name, setName] = useState('');
@@ -161,24 +190,45 @@ function Payment({ location }) {
   const [date, setDate] = useState('');
   const [cvc, setCvc] = useState('');
   const [remember, setRemember] = useState(false);
+  const [cards, setCards] = useState([]);
+
   const history = useHistory();
   const { currentUser } = useAuth();
-  const { getCart, createOrder, deleteCart } = useFirestore();
+  const { addCard, getCards, getCart, createOrder, deleteCart } = useFirestore();
+
+  // If the user is logged in, they might have saved cards.
+  // We display them so that they can checkout faster.
+  useEffect(() => {
+    if (currentUser.isAnonymous) return;
+    (async () => {
+      const cards = await getCards(currentUser.uid);
+      setCards(cards);
+    })();
+  }, [])
 
   const confirmOrder = async (e) => {
     e.preventDefault();
 
     const cart = await getCart(currentUser.uid);
-    const order = await createOrder(cart, location.state.personal, { name, number, date, cvc });
+    const order = await createOrder(cart, location.state.personal, {
+      name,
+      number,
+      date,
+      cvc,
+    });
     await deleteCart(currentUser.uid);
+
+    if (remember) {
+      addCard(currentUser.uid, name, number, date, cvc);
+    }
 
     history.push({
       pathname: `/shop/confirmation/${order}`,
       state: {
         payment: true,
-      }
-    })
-  }
+      },
+    });
+  };
 
   return (
     <>
@@ -192,21 +242,56 @@ function Payment({ location }) {
           <Container>
             <Main>
               <Left>
-
                 <Heading>Checkout</Heading>
 
                 <Category>
-                  <CategoryName>Shipping Details</CategoryName>
+                  <Subheading>Shipping Details</Subheading>
                   <Informations>
-                    <div>{location.state.personal.firstName} {location.state.personal.lastName}</div>
+                    <div>
+                      {location.state.personal.firstName}{' '}
+                      {location.state.personal.lastName}
+                    </div>
                     <div>{location.state.personal.address}</div>
-                    <div>{location.state.personal.zipCode} {location.state.personal.city}</div>
+                    <div>
+                      {location.state.personal.zipCode}{' '}
+                      {location.state.personal.city}
+                    </div>
                     <div>{location.state.personal.country}</div>
                   </Informations>
                 </Category>
 
                 <Category>
-                  <CategoryName>Payment Details</CategoryName>
+                  <Subheading>Payment Details</Subheading>
+                  <CategoryName>Use an existing card</CategoryName>
+
+                  <Category>
+                    {cards.map(card => {
+                      return (
+                        <Li key={card.id}>
+                          <div><strong>{card.name}</strong> — {card.number.slice(-4)}</div>
+                          <CardButton type="button" onClick={async () => {
+                            const cart = await getCart(currentUser.uid);
+                            const order = await createOrder(cart, location.state.personal, {
+                              name: card.name,
+                              number: card.number,
+                              date: card.date,
+                              cvc: card.cvc,
+                            });
+                            await deleteCart(currentUser.uid);
+
+                            history.push({
+                              pathname: `/shop/confirmation/${order}`,
+                              state: {
+                                payment: true,
+                              },
+                            });
+                          }}>Pay with this card →</CardButton>
+                        </Li>
+                      )
+                    })}
+                  </Category>
+
+                  <CategoryName>Use another card</CategoryName>
 
                   <Form onSubmit={confirmOrder}>
                     <Fields>
@@ -228,7 +313,7 @@ function Payment({ location }) {
                           value={number}
                           id='card_number'
                           onChange={(e) => {
-                            let number = e.target.value.replace(/[^0-9]/g, '')
+                            let number = e.target.value.replace(/[^0-9]/g, '');
                             setNumber(number);
                           }}
                           placeholder='Enter your card number'
@@ -253,20 +338,22 @@ function Payment({ location }) {
                           id='cvc'
                           value={cvc}
                           onChange={(e) => {
-                            let cvc = e.target.value.replace(/[^0-9]/g, '')
+                            let cvc = e.target.value.replace(/[^0-9]/g, '');
                             setCvc(cvc);
                           }}
                           placeholder='Enter your CVC code'
                         />
                       </Field>
 
-                      {(location.state.isCreatingAccount ||
-                        location.state.hasAccount) && (
+                      {!currentUser.isAnonymous && (
                         <>
-                          <CheckboxLabel htmlFor='remember' isChecked={remember}>
+                          <CheckboxLabel
+                            htmlFor='remember'
+                            isChecked={remember}
+                          >
                             Remember my card for easier checkout.
                           </CheckboxLabel>
-                          <Checkbox
+                          <HiddenInput
                             type='checkbox'
                             id='remember'
                             name='remember'
@@ -278,7 +365,6 @@ function Payment({ location }) {
                     </Fields>
 
                     <Button type='submit'>Confirm my order</Button>
-
                   </Form>
                 </Category>
               </Left>

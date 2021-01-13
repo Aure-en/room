@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSignIn } from '../../../hooks/useSignIn';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 // Icons
 import check from '../../../assets/icons/icon-check.svg';
@@ -102,7 +102,7 @@ const CheckboxLabel = styled.label`
   }
 `;
 
-function SignIn({ flip }) {
+function SignIn({ flip, isPaying }) {
   const [remember, setRemember] = useState(false);
 
   const {
@@ -117,6 +117,8 @@ function SignIn({ flip }) {
     loading,
   } = useSignIn();
 
+  const history = useHistory();
+
   return (
     <>
       <Welcome>
@@ -124,7 +126,14 @@ function SignIn({ flip }) {
         <p>We are happy to see you again.</p>
       </Welcome>
 
-      <form onSubmit={handleSignIn}>
+      <form
+        onSubmit={async () => {
+          await handleSignIn();
+          isPaying
+            ? history.push('/shop/personal')
+            : history.push('/shop');
+        }}
+      >
         <Field>
           <Label htmlFor='email'>Email</Label>
           <Input
@@ -170,7 +179,9 @@ function SignIn({ flip }) {
       <Message>
         Not a member yet?{' '}
         {flip ? (
-            <><MessageLink onClick={flip}>Sign up now</MessageLink>.</>
+          <>
+            <MessageLink onClick={flip}>Sign up now</MessageLink>.
+          </>
         ) : (
           <Link to='/signup'>
             <MessageLink>Sign up now</MessageLink>.

@@ -152,8 +152,15 @@ export function useFirestore() {
       .update({ quantity });
   };
 
-  const deleteCart = (userId) => {
-    return firestore.collection('carts').doc(userId).delete();
+
+  // To delete the cart (=subcollection), we have to retrieve all the documents within the collection and delete them.
+  const deleteCart = async (userId) => {
+    const itemsId = [];
+    const docs = await firestore.collection('carts').doc(userId).collection('items').get();
+    docs.forEach(doc => itemsId.push(doc.id));
+    for (const id of itemsId) {
+      deleteFromCart(userId, id);
+    }
   }
 
   // Get an user's cart.
@@ -185,11 +192,17 @@ export function useFirestore() {
     });
   };
 
+  const getUser = async (userId) => {
+    const user = await firestore.collection('users').doc(userId).get();
+    return user.data();
+  }
+
   // Add an address to the user's address book
   const addAddress = async (
     userId,
     firstName,
     lastName,
+    phone,
     address,
     zipCode,
     city,
@@ -211,6 +224,7 @@ export function useFirestore() {
         firstName,
         lastName,
         address,
+        phone,
         zipCode,
         city,
         country,
@@ -341,6 +355,7 @@ export function useFirestore() {
     deleteCart,
     cartListener,
     createUser,
+    getUser,
     addAddress,
     deleteAddress,
     getAddresses,

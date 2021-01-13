@@ -157,7 +157,6 @@ function Confirmation({ match, location }) {
   useEffect(() => {
     (async () => {
       const order = await getOrder(match.params.id);
-      console.log(order);
       setOrder(order);
       setLoading(false);
     })();

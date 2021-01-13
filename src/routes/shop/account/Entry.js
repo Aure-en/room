@@ -1,18 +1,17 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Nav from '../../../components/shop/nav/Nav';
 import ShopNav from '../../../components/shop/nav/ShopNav';
 import SignIn from '../../../components/shop/account/SignIn';
 import SignUp from '../../../components/shop/account/SignUp';
 
+import background from '../../../assets/images/entry.png';
+
 // Styled components
 const colors = {
   primary: 'hsl(0, 0%, 45%)', // Grey
-  secondary: 'hsl(0, 0%, 27%)', // Darker grey - for payment background
-  payment: 'hsl(0, 0%, 95%)', // White - for payment text
-  button: 'hsl(0, 0%, 100%)',
-  border: 'hsl(0, 0%, 90%)',
-  hover: 'hsl(0, 0%, 0%)' // Black - Continue Shopping Hover
+  secondary: 'hsl(0, 0%, 27%)', // Darker grey
+  background: 'hsl(0, 0%, 100%)',
 };
 
 const Wrapper = styled.div`
@@ -26,6 +25,8 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   flex: 1;
+  background: url(${background});
+  background-size: cover;
 `;
 
 const Main = styled.div`
@@ -41,6 +42,7 @@ const Card = styled.div`
   height: 45rem;
   perspective: 150rem;
   padding: 0 5rem;
+  background: ${colors.background};
 
   @media all and (max-width: 600px) {
     border: none;
@@ -51,9 +53,9 @@ const Card = styled.div`
 
 const CardInner = styled.div`
   position: relative;
-  transition: transform .8s;
+  transition: transform 0.8s;
   transform-style: preserve-3d;
-  transform: ${props => props.isFlipped ? 'rotateY(180deg)' : ''};
+  transform: ${(props) => (props.isFlipped ? 'rotateY(180deg)' : '')};
   height: 100%;
   width: 100%;
 `;
@@ -72,13 +74,18 @@ const CardBackSide = styled(CardSide)`
   transform: rotateY(180deg);
 `;
 
-function Entry() {
-
+function Entry({ location }) {
   const [isFlipped, setIsFlipped] = useState(false);
+  const [isPaying, setIsPaying] = useState(false);
+
+  useEffect(() => {
+    location.state && location.state.isPaying ?
+    setIsPaying(true) : setIsPaying(false)
+  }, [])
 
   const flip = () => {
     setIsFlipped(!isFlipped);
-  }
+  };
 
   return (
     <Wrapper>
@@ -92,17 +99,17 @@ function Entry() {
           <Card>
             <CardInner isFlipped={isFlipped}>
               <CardSide>
-                <SignIn flip={flip} />
+                <SignUp flip={flip} isPaying={isPaying} />
               </CardSide>
               <CardBackSide>
-                <SignUp flip={flip} />
+                <SignIn flip={flip} isPaying={isPaying} />
               </CardBackSide>
             </CardInner>
           </Card>
         </Main>
       </Container>
     </Wrapper>
-  )
+  );
 }
 
-export default Entry
+export default Entry;

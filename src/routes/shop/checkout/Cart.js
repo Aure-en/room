@@ -8,14 +8,17 @@ import { useAuth } from '../../../contexts/AuthContext';
 import { useSignIn } from '../../../hooks/useSignIn';
 import { Link } from 'react-router-dom';
 
+// Icons
+import { ReactComponent as Basket } from '../../../assets/icons/icon-basket.svg';
+
 // Styled components
 const colors = {
   primary: 'hsl(0, 0%, 45%)', // Grey
   secondary: 'hsl(0, 0%, 27%)', // Darker grey - for payment background
-  payment: 'hsl(0, 0%, 95%)', // White - for payment text
+  text: 'hsl(0, 0%, 95%)', // White - for payment text
   button: 'hsl(0, 0%, 100%)',
   border: 'hsl(0, 0%, 90%)',
-  hover: 'hsl(0, 0%, 0%)' // Black - Continue Shopping Hover
+  hover: 'hsl(0, 0%, 0%)', // Black - Continue Shopping Hover
 };
 
 const Wrapper = styled.div`
@@ -26,9 +29,9 @@ const Wrapper = styled.div`
 
 const Container = styled.div`
   display: flex;
-  align-items: center;
   justify-content: center;
   flex: 1;
+  margin: 5rem;
 `;
 
 const ShoppingCart = styled.div`
@@ -45,6 +48,7 @@ const Heading = styled.h1`
   margin-bottom: 2rem;
   font-size: 2rem;
   line-height: 2.75rem;
+  font-family: 'Playfair Display', sans-serif;
 `;
 
 const Legend = styled.div`
@@ -66,19 +70,52 @@ const Placeholder = styled.div`
   width: 20px;
 `;
 
-const GoBack = styled.div`
+const Subtotal = styled.div`
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  color: ${colors.primary};
+`;
+
+const Bottom = styled.div`
   margin: 1rem 0;
   color: ${colors.secondary};
+  display: flex;
+  justify-content: space-between;
 
   &:hover {
     color: ${colors.hover};
   }
 `;
 
+// Empty Cart
+
+const EmptyCart = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const EmptyCartText = styled.div`
+  font-family: 'Playfair Display', sans-serif;
+  font-size: 1.125rem;
+`;
+
+const Button = styled.button`
+  margin-top: 2.5rem;
+  font-family: 'Source Sans Pro', sans-serif;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  color: ${colors.text};
+  background: ${colors.secondary};
+  align-self: center;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+`;
+
 // Proceed to payment window
 const ToPayment = styled.div`
   background: ${colors.secondary};
-  color: ${colors.payment};
+  color: ${colors.text};
   padding: 3rem;
   display: flex;
   flex-direction: column;
@@ -106,7 +143,7 @@ const PaymentChoice = styled.span`
 
 const button = `
   display: inline-block;
-  background: ${colors.payment};
+  background: ${colors.text};
   color: ${colors.secondary};
   padding: 0.5rem 1rem;
   margin: 1rem 0;
@@ -139,7 +176,7 @@ const Flex = styled.div`
 `;
 
 const Form = styled.div`
-  background: ${colors.payment};
+  background: ${colors.text};
   padding: 1.25rem;
   margin: 1rem 1rem 0 1rem;
   border-radius: 3px;
@@ -222,16 +259,21 @@ function Cart() {
     return unsubscribe;
   }, []);
 
-  return (
-    <Wrapper>
-      <header>
-        <Nav />
-        <ShopNav />
-      </header>
-
-      <Container>
-        <ShoppingCart>
-          <ItemList>
+  // Helper functions to render
+  const renderCart = (cart) => {
+    if (cart.length === 0) {
+      return (
+        <EmptyCart>
+          <Heading>Shopping Cart</Heading>
+          <Basket />
+          <EmptyCartText>Oh no, it seems that your cart is empty.</EmptyCartText>
+          <div>We have a lot of lovely ideas to help you fill it.</div>
+          <Button><Link to='/shop'>Inspire Me</Link></Button>
+        </EmptyCart>
+      )
+    } else {
+      return (
+        <ItemList>
             <Heading>Shopping Cart</Heading>
             <Legend>
               <Product>Product</Product>
@@ -252,12 +294,29 @@ function Cart() {
                 })}
               </ul>
             </div>
-            <GoBack>
-              <Link to='/shop'>← Continue Shopping</Link>
-            </GoBack>
-          </ItemList>
 
-          <ToPayment>
+            <Bottom>
+              <Link to='/shop'>← Continue Shopping</Link>
+              <Subtotal>
+                Subtotal: £
+                {cart.reduce(
+                  (sum, item) => +item.price * +item.quantity + sum,
+                  0
+                )}
+              </Subtotal>
+            </Bottom>
+          </ItemList>
+      )
+    }
+  }
+
+  const renderBox = (cart, currentUser) => {
+    if (cart.length === 0) return;
+
+    // If the user isn't logged in, we'll suggest him to create an account / log in.
+    if (currentUser && currentUser.isAnonymous) {
+      return (
+        <ToPayment>
             <PaymentHeading>
               <PaymentTitle>Thank you for shopping with us!</PaymentTitle>
               <PaymentText>
@@ -308,26 +367,76 @@ function Cart() {
               it will only take a minute.
             </PaymentText>
             <PaymentLink>
-              <Link to={{
-                pathname:'/shop/personal',
-                state: { 
-                  isCreatingAccount: true,
-                  hasAccount: false,
-                }
-              }}>Create an account</Link>
+              <Link
+                to={{
+                  pathname: '/account/entry',
+                  state: {
+                    isPaying: true,
+                  },
+                }}
+              >
+                Create an account
+              </Link>
             </PaymentLink>
 
             <PaymentText>Or simply proceed to checkout as a guest.</PaymentText>
             <PaymentLink>
-              <Link to={{
-                pathname:'/shop/personal',
-                state: { 
-                  isCreatingAccount: false,
-                  hasAccount: false,
-                }
-              }}>Checkout as a guest</Link>
+              <Link
+                to={{
+                  pathname: '/shop/personal',
+                  state: {
+                    isPaying: true,
+                  },
+                }}
+              >
+                Checkout as a guest
+              </Link>
             </PaymentLink>
           </ToPayment>
+      )
+    // Else, we'll just let him proceed.
+    } else {
+      return (
+        <ToPayment>
+          <PaymentHeading>
+            <PaymentTitle>Thank you for shopping with us!</PaymentTitle>
+          </PaymentHeading>
+
+
+          <PaymentText>
+            We sincerely hope that all our products will satisfy your needs
+            and enhance your interior.
+          </PaymentText>
+
+            <PaymentBtn>
+              <Link
+                to={{
+                  pathname: '/shop/personal',
+                  state: {
+                    isPaying: true,
+                  },
+                }}
+              >
+                Continue
+              </Link>
+            </PaymentBtn>
+
+        </ToPayment>
+      )
+    }
+  }
+
+  return (
+    <Wrapper>
+      <header>
+        <Nav />
+        <ShopNav />
+      </header>
+
+      <Container>
+        <ShoppingCart>
+          {renderCart(cart)}
+          {renderBox(cart, currentUser)}
         </ShoppingCart>
       </Container>
     </Wrapper>
