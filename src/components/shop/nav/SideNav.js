@@ -43,7 +43,7 @@ const Container = styled.nav`
   }
 
   @media all and (max-width: 500px) {
-    height: initial;
+    height: 100%;
   }
 `;
 

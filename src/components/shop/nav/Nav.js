@@ -1,18 +1,20 @@
-// Nav specifics to the Shop Page. 
+// Nav specifics to the Shop Page.
 // Looks different from the normal nav, and displays links for shopping categories, a shopping cart, the user's saved items, a search bar...
 
 import React, { useRef } from 'react';
-import styled from 'styled-components';
-import { ReactComponent as Logo } from '../../../assets/icons/logo.svg';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../../contexts/AuthContext';
+import styled from 'styled-components';
 import SideNav from './SideNav';
+import AccessSettings from '../../../components/shop/account/AccessSettings';
 
 // Icons
+import { ReactComponent as Logo } from '../../../assets/icons/logo.svg';
 import { ReactComponent as Cart } from '../../../assets/icons/icon-shopping-cart.svg';
 import { ReactComponent as Heart } from '../../../assets/icons/icon-heart.svg';
 import { ReactComponent as Home } from '../../../assets/icons/icon-home.svg';
 import { ReactComponent as Search } from '../../../assets/icons/icon-search.svg';
-import { ReactComponent as User } from '../../../assets/icons/icon-user.svg'
+import { ReactComponent as User } from '../../../assets/icons/icon-user.svg';
 
 const colors = {
   primary: 'hsl(0, 0%, 0%)', // Black
@@ -72,7 +74,7 @@ const NavRight = styled.div`
 `;
 
 function Nav() {
-
+  const { currentUser } = useAuth();
   const navRef = useRef();
 
   return (
@@ -97,14 +99,24 @@ function Nav() {
           <NavIcon>
             <Search />
           </NavIcon>
-          <NavIcon>
-            <User />
-          </NavIcon>
+
+          {currentUser && !currentUser.isAnonymous ? (
+            <AccessSettings />
+          ) : (
+            <NavIcon>
+              <Link to='/account/entry'><User /></Link>
+            </NavIcon>
+          )}
+
           <NavIconLink>
-            <Heart />
+            <Link to='/shop/favorite'>
+              <Heart />
+            </Link>
           </NavIconLink>
           <NavIconLink>
-            <Link to='/shop/cart'><Cart /></Link>
+            <Link to='/shop/cart'>
+              <Cart />
+            </Link>
           </NavIconLink>
         </NavRight>
       </Navigation>

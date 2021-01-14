@@ -4,7 +4,6 @@ import ShopNav from '../../components/shop/nav/ShopNav';
 import ShopItemPreview from '../../components/shop/items/ShopItemPreview';
 import { useFirestore } from '../../hooks/useFirestore';
 import { useFavorite } from '../../contexts/FavoriteContext';
-import { useAuth } from '../../contexts/AuthContext';
 import styled from 'styled-components'
 
 const ShopList = styled.ul`

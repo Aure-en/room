@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useFirestore } from '../../hooks/useFirestore';
 import { useAuth } from '../../contexts/AuthContext';
+import { useFavorite } from '../../contexts/FavoriteContext';
 import { formatNavLink } from '../../utils/utils';
 import ImagesPreview from '../../components/shop/items/ImagesPreview';
 import Nav from '../../components/shop/nav/Nav';
@@ -12,6 +13,8 @@ import { CSSTransition } from 'react-transition-group';
 // Icons
 import { ReactComponent as AngleRight } from '../../assets/icons/icon-small-arrow.svg';
 import { ReactComponent as Plus } from '../../assets/icons/icon-plus.svg';
+import { ReactComponent as Heart } from '../../assets/icons/icon-heart.svg';
+import { ReactComponent as HeartFilled } from '../../assets/icons/icon-heart-filled.svg';
 import iconX from '../../assets/icons/icon-x.svg';
 
 // Styled Components
@@ -265,7 +268,12 @@ const Message = styled.div`
   text-align: center;
   font-size: 0.825rem;
   color: ${colors.primary};
-  margin-top: .25rem;
+  margin-top: 0.25rem;
+`;
+
+const Icon = styled.span`
+  color: ${colors.primary};
+  cursor: pointer;
 `;
 
 function ItemDetails({ match }) {
@@ -278,6 +286,17 @@ function ItemDetails({ match }) {
   const [message, setMessage] = useState('');
   const { getItem, addToCart } = useFirestore();
   const { currentUser, signInAnonymously } = useAuth();
+  const { favorites, addFavorite, deleteFavorite } = useFavorite();
+
+  const handleFavorite = async (id) => {
+    let userId = currentUser && currentUser.uid;
+
+    if (!currentUser) {
+      const user = await signInAnonymously();
+      userId = user.user.uid;
+    }
+    favorites.includes(id) ? deleteFavorite(userId, id) : addFavorite(userId, id);
+  }
 
   // Fetch the item data and store it in the state
   useEffect(() => {
@@ -375,7 +394,12 @@ function ItemDetails({ match }) {
             <Informations>
               <ImagesPreview images={item.images} size={35} />
               <Details>
-                <Name>{item.name}</Name>
+                <Row>
+                  <Name>{item.name}</Name>
+                  <Icon onClick={() => handleFavorite(item.id)}>
+                    {favorites.includes(item.id) ? <HeartFilled /> : <Heart />}
+                  </Icon>
+                </Row>
                 <Price>£{item.price}</Price>
                 <Description>
                   {item.description.map((paragraph, index) => {
@@ -478,7 +502,11 @@ function ItemDetails({ match }) {
                     </div>
                     <Column>
                       <SubmitBtn type='submit'>Add to Basket</SubmitBtn>
-                      <CSSTransition in={message} timeout={300} classNames="fade">
+                      <CSSTransition
+                        in={message.length !== 0}
+                        timeout={300}
+                        classNames='fade'
+                      >
                         <Message>{message}</Message>
                       </CSSTransition>
                     </Column>

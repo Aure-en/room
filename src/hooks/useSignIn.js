@@ -11,8 +11,7 @@ export function useSignIn() {
   const { signIn, resetPassword } = useAuth();
   const history = useHistory();
 
-  async function handleSignIn(event) {
-    event.preventDefault();
+  async function handleSignIn() {
     clearErrors();
 
     if (!password && !email) {

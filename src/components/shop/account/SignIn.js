@@ -127,10 +127,15 @@ function SignIn({ flip, isPaying }) {
       </Welcome>
 
       <form
-        onSubmit={async () => {
+        onSubmit={async (e) => {
+          e.preventDefault();
           await handleSignIn();
           isPaying
-            ? history.push('/shop/personal')
+            ? history.push({
+              pathname: '/shop/personal',
+              state: {
+                isPaying: true
+              }})
             : history.push('/shop');
         }}
       >
