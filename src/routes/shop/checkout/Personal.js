@@ -189,6 +189,7 @@ function Personal({ location }) {
         firstName,
         lastName,
         phone,
+        email,
         address,
         zipCode,
         city,

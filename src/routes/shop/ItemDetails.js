@@ -255,6 +255,19 @@ const DropdownColumn = styled.div`
   }
 `;
 
+const Column = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 168px; // Size of button
+`;
+
+const Message = styled.div`
+  text-align: center;
+  font-size: 0.825rem;
+  color: ${colors.primary};
+  margin-top: .25rem;
+`;
+
 function ItemDetails({ match }) {
   const [item, setItem] = useState({});
   const [loading, setLoading] = useState(true);
@@ -262,6 +275,7 @@ function ItemDetails({ match }) {
   const [currentOption, setCurrentOption] = useState([]);
   const [quantity, setQuantity] = useState(1);
   const [areDetailsOpen, setAreDetailsOpen] = useState(false);
+  const [message, setMessage] = useState('');
   const { getItem, addToCart } = useFirestore();
   const { currentUser, signInAnonymously } = useAuth();
 
@@ -291,12 +305,21 @@ function ItemDetails({ match }) {
 
   const handleAddToCart = async (e) => {
     e.preventDefault();
+    setMessage('');
 
     // If the user is not signed in, we sign him up anonymously to save his cart and allow him to order.
+
+    let userId = currentUser && currentUser.uid;
+
     if (!currentUser) {
       const user = await signInAnonymously();
-      addToCart(
-        user.user.uid,
+      console.log(user);
+      userId = user.user.uid;
+    }
+
+    try {
+      await addToCart(
+        userId,
         item.id,
         item.name,
         item.images[0],
@@ -306,17 +329,10 @@ function ItemDetails({ match }) {
         item.type,
         item.price
       );
-    } else {
-      addToCart(
-        currentUser.uid,
-        item.id,
-        item.name,
-        item.images[0],
-        currentColor,
-        currentOption,
-        quantity,
-        item.type,
-        item.price
+      setMessage(`${item.name} in ${currentColor} was added to your cart.`);
+    } catch (e) {
+      setMessage(
+        'Sorry, there was an error: we were not able to add the item to your cart.'
       );
     }
   };
@@ -415,7 +431,7 @@ function ItemDetails({ match }) {
                                     type='checkbox'
                                     id={choice.option}
                                     name={choice.option}
-                                    onClick={(e) =>
+                                    onClick={() =>
                                       setCurrentOption((prev) => {
                                         return [...prev].map((prevOption) => {
                                           if (
@@ -460,7 +476,12 @@ function ItemDetails({ match }) {
                         }}
                       />
                     </div>
-                    <SubmitBtn type='submit'>Add to Basket</SubmitBtn>
+                    <Column>
+                      <SubmitBtn type='submit'>Add to Basket</SubmitBtn>
+                      <CSSTransition in={message} timeout={300} classNames="fade">
+                        <Message>{message}</Message>
+                      </CSSTransition>
+                    </Column>
                   </Row>
                 </Selection>
 

@@ -1,4 +1,5 @@
 import { firestore } from '../firebase/firebase';
+import firebase from 'firebase';
 
 export function useFirestore() {
   // Returns an object representing all the shopping categories.
@@ -204,6 +205,7 @@ export function useFirestore() {
     lastName,
     phone,
     address,
+    email,
     zipCode,
     city,
     country
@@ -224,6 +226,7 @@ export function useFirestore() {
         firstName,
         lastName,
         address,
+        email,
         phone,
         zipCode,
         city,

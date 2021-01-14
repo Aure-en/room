@@ -262,36 +262,40 @@ function Payment({ location }) {
 
                 <Category>
                   <Subheading>Payment Details</Subheading>
-                  <CategoryName>Use an existing card</CategoryName>
+                  {cards.length !== 0 && 
+                  <>
+                    <CategoryName>Use an existing card</CategoryName>
 
-                  <Category>
-                    {cards.map(card => {
-                      return (
-                        <Li key={card.id}>
-                          <div><strong>{card.name}</strong> — {card.number.slice(-4)}</div>
-                          <CardButton type="button" onClick={async () => {
-                            const cart = await getCart(currentUser.uid);
-                            const order = await createOrder(cart, location.state.personal, {
-                              name: card.name,
-                              number: card.number,
-                              date: card.date,
-                              cvc: card.cvc,
-                            });
-                            await deleteCart(currentUser.uid);
+                    <Category>
+                      {cards.map(card => {
+                        return (
+                          <Li key={card.id}>
+                            <div><strong>{card.name}</strong> — {card.number.slice(-4)}</div>
+                            <CardButton type="button" onClick={async () => {
+                              const cart = await getCart(currentUser.uid);
+                              const order = await createOrder(cart, location.state.personal, {
+                                name: card.name,
+                                number: card.number,
+                                date: card.date,
+                                cvc: card.cvc,
+                              });
+                              await deleteCart(currentUser.uid);
 
-                            history.push({
-                              pathname: `/shop/confirmation/${order}`,
-                              state: {
-                                payment: true,
-                              },
-                            });
-                          }}>Pay with this card →</CardButton>
-                        </Li>
-                      )
-                    })}
-                  </Category>
+                              history.push({
+                                pathname: `/shop/confirmation/${order}`,
+                                state: {
+                                  payment: true,
+                                },
+                              });
+                            }}>Pay with this card →</CardButton>
+                          </Li>
+                        )
+                      })}
+                    </Category>
 
-                  <CategoryName>Use another card</CategoryName>
+                    <CategoryName>Use another card</CategoryName>
+                  </>
+                  }
 
                   <Form onSubmit={confirmOrder}>
                     <Fields>

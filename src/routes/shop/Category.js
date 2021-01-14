@@ -3,6 +3,8 @@ import Nav from '../../components/shop/nav/Nav';
 import ShopNav from '../../components/shop/nav/ShopNav';
 import ShopItemPreview from '../../components/shop/items/ShopItemPreview';
 import { useFirestore } from '../../hooks/useFirestore';
+import { useFavorite } from '../../contexts/FavoriteContext';
+import { useAuth } from '../../contexts/AuthContext';
 import styled from 'styled-components'
 
 const ShopList = styled.ul`
@@ -22,7 +24,9 @@ function Category({ match }) {
 
   const [items, setItems] = useState([])
   const { getCategoryItems } = useFirestore();
+  const { favorites } = useFavorite();
 
+  // Loads items
   useEffect(() => {
     (async () => {
       const itemsList = await getCategoryItems(decodeURIComponent(match.params.category));
@@ -47,6 +51,7 @@ function Category({ match }) {
                   images={item.images}
                   price={item.price}
                   id={item.id}
+                  isFavorite={favorites.includes(item.id)}
                 />
               </li>
             )
