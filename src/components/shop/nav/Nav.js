@@ -4,6 +4,7 @@
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../../contexts/AuthContext';
+import { useFavorite } from '../../../contexts/FavoriteContext';
 import styled from 'styled-components';
 import SideNav from './SideNav';
 import AccessSettings from '../../../components/shop/account/AccessSettings';
@@ -12,6 +13,7 @@ import AccessSettings from '../../../components/shop/account/AccessSettings';
 import { ReactComponent as Logo } from '../../../assets/icons/logo.svg';
 import { ReactComponent as Cart } from '../../../assets/icons/icon-shopping-cart.svg';
 import { ReactComponent as Heart } from '../../../assets/icons/icon-heart.svg';
+import { ReactComponent as HeartFilled } from '../../../assets/icons/icon-heart-filled.svg';
 import { ReactComponent as Home } from '../../../assets/icons/icon-home.svg';
 import { ReactComponent as Search } from '../../../assets/icons/icon-search.svg';
 import { ReactComponent as User } from '../../../assets/icons/icon-user.svg';
@@ -75,6 +77,7 @@ const NavRight = styled.div`
 
 function Nav() {
   const { currentUser } = useAuth();
+  const { favorites } = useFavorite();
   const navRef = useRef();
 
   return (
@@ -85,7 +88,7 @@ function Nav() {
             <SideNav nav={navRef} />
           </NavIconLink>
           <NavIconLink>
-            <Home />
+            <Link to='/shop'><Home /></Link>
           </NavIconLink>
         </NavLeft>
 
@@ -110,7 +113,7 @@ function Nav() {
 
           <NavIconLink>
             <Link to='/shop/favorite'>
-              <Heart />
+              {favorites.length !== 0 ? <HeartFilled /> : <Heart />}
             </Link>
           </NavIconLink>
           <NavIconLink>

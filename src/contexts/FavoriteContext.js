@@ -12,7 +12,6 @@ export function useFavorite() {
 export function FavoriteProvider({ children }) {
   const { currentUser } = useAuth();
   const [favorites, setFavorites] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   // Get a user's saved items
   const getFavorites = async (userId) => {
@@ -57,7 +56,6 @@ export function FavoriteProvider({ children }) {
         }
         setFavorites(favoritesArray);
       });
-    setLoading(false);
     return unsubscribe;
   }, [currentUser]);
 
@@ -69,7 +67,7 @@ export function FavoriteProvider({ children }) {
 
   return (
     <FavoriteContext.Provider value={value}>
-      {!loading && children}
+      {children}
     </FavoriteContext.Provider>
   );
 }

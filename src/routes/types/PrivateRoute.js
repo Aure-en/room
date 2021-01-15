@@ -11,7 +11,7 @@ function PrivateRoute({ component: Component, ...rest }) {
     <Route
       {...rest}
       render={props => {
-        return currentUser ? <Component {...props} /> : <Redirect to="/account/entry" />
+        return currentUser && !currentUser.isAnonymous ? <Component {...props} /> : <Redirect to="/account/entry" />
       }}
     >
     </Route>

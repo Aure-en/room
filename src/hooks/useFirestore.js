@@ -1,7 +1,9 @@
 import { firestore } from '../firebase/firebase';
-import firebase from 'firebase';
 
 export function useFirestore() {
+
+  // -- SHOP --
+
   // Returns an object representing all the shopping categories.
   const getShopCategories = async () => {
     const categories = await firestore
@@ -78,6 +80,8 @@ export function useFirestore() {
         stock: [],
       });
   };
+
+  // -- CART --
 
   // Add an item to the user's cart
   // In the cart, each product chosen has their own id.
@@ -184,12 +188,13 @@ export function useFirestore() {
       .onSnapshot(callback);
   };
 
+  // -- USERS CREATION --
+
   // Create a real user (not an anonymous one)
-  const createUser = (userId, firstName, lastName, email) => {
+  const createUser = (userId, firstName, lastName) => {
     return firestore.collection('users').doc(userId).set({
       firstName,
-      lastName,
-      email,
+      lastName
     });
   };
 
@@ -197,6 +202,8 @@ export function useFirestore() {
     const user = await firestore.collection('users').doc(userId).get();
     return user.data();
   }
+
+  // -- ADDRESSES --
 
   // Add an address to the user's address book
   const addAddress = async (
@@ -256,6 +263,8 @@ export function useFirestore() {
     return addressBook;
   };
 
+  // -- PAYMENT CARDS --
+
   // Add a card to the user's cards list
   const addCard = async (userId, name, number, date, cvc) => {
     const docRef = await firestore
@@ -300,12 +309,15 @@ export function useFirestore() {
     return cardsList;
   };
 
+  // -- ORDERS --
+
   // Create an order
-  const createOrder = async (products, shipping, card) => {
+  const createOrder = async (products, shipping, card, user) => {
     const docRef = await firestore.collection('orders').doc();
     const id = docRef.id;
 
     await firestore.collection('orders').doc(id).set({
+      user,
       id,
       products,
       shipping,
@@ -315,15 +327,6 @@ export function useFirestore() {
     });
 
     return id;
-  };
-
-  // Add order to a user's orders list
-  const addOrder = (userId, id) => {
-    return firestore
-      .collection('users')
-      .doc(userId)
-      .collection('orders')
-      .doc(id);
   };
 
   // Get an order
@@ -343,6 +346,26 @@ export function useFirestore() {
     orders.forEach((order) => ordersList.push(order.data()));
     return ordersList;
   }
+
+  // -- USER SETTINGS --
+
+  const getUserName = async (userId) => {
+    const user = await firestore.collection('users').doc(userId).get();
+    return {
+      firstName: user.data().firstName,
+      lastName: user.data().lastName
+    }
+  }
+
+  const updateFirstName = (userId, firstName) => {
+    return firestore.collection('users').doc(userId).update({firstName});
+  }
+
+  const updateLastName = (userId, lastName) => {
+    return firestore.collection('users').doc(userId).update({lastName});
+  }
+
+  // Get first and last name
 
   return {
     getShopCategories,
@@ -366,8 +389,10 @@ export function useFirestore() {
     deleteCard,
     getCards,
     createOrder,
-    addOrder,
     getOrder,
-    getOrders
+    getOrders,
+    getUserName,
+    updateFirstName,
+    updateLastName,
   };
 }

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../../contexts/AuthContext';
 
 // Icons
 import { ReactComponent as User } from '../../../assets/icons/icon-user.svg'
@@ -50,6 +51,7 @@ const ModalLink = styled.span`
 
 function AccessSettings() {
 
+  const { signOut } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
@@ -61,8 +63,8 @@ function AccessSettings() {
             <Link to='/account/orders'><ModalLink>Orders</ModalLink></Link>
             <Link to='/account/addresses'><ModalLink>Addresses</ModalLink></Link>
             <Link to='/account/payment'><ModalLink>Payment</ModalLink></Link>
-            <Link to='/account/settings'><ModalLink>Settings</ModalLink></Link>
-            <ModalLink>Log out</ModalLink>
+            <Link to='/account/user'><ModalLink>Settings</ModalLink></Link>
+            <ModalLink onClick={signOut}>Log out</ModalLink>
         </Modal>
       }
 

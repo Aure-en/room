@@ -157,7 +157,7 @@ const button = `
     background: ${colors.button};
 }`;
 
-const PaymentLink = styled.span`
+const PaymentLink = styled(Link)`
   ${button}
   align-self: center;
 `;
@@ -268,7 +268,7 @@ function Cart() {
           <Basket />
           <EmptyCartText>Oh no, it seems that your cart is empty.</EmptyCartText>
           <div>We have a lot of lovely ideas to help you fill it.</div>
-          <Button><Link to='/shop'>Inspire Me</Link></Button>
+          <Link to='/shop'><Button>Inspire Me</Button></Link>
         </EmptyCart>
       )
     } else {
@@ -366,8 +366,7 @@ function Cart() {
               Create one to quickly manage your orders and checkout. We promise
               it will only take a minute.
             </PaymentText>
-            <PaymentLink>
-              <Link
+              <PaymentLink
                 to={{
                   pathname: '/account/entry',
                   state: {
@@ -376,12 +375,10 @@ function Cart() {
                 }}
               >
                 Create an account
-              </Link>
-            </PaymentLink>
+              </PaymentLink>
 
             <PaymentText>Or simply proceed to checkout as a guest.</PaymentText>
-            <PaymentLink>
-              <Link
+              <PaymentLink
                 to={{
                   pathname: '/shop/personal',
                   state: {
@@ -390,8 +387,7 @@ function Cart() {
                 }}
               >
                 Checkout as a guest
-              </Link>
-            </PaymentLink>
+              </PaymentLink>
           </ToPayment>
       )
     // Else, we'll just let him proceed.
@@ -408,8 +404,7 @@ function Cart() {
             and enhance your interior.
           </PaymentText>
 
-            <PaymentBtn>
-              <Link
+              <PaymentLink
                 to={{
                   pathname: '/shop/personal',
                   state: {
@@ -418,8 +413,7 @@ function Cart() {
                 }}
               >
                 Continue
-              </Link>
-            </PaymentBtn>
+              </PaymentLink>
 
         </ToPayment>
       )

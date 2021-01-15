@@ -9,7 +9,6 @@ import { Link } from 'react-router-dom';
 const colors = {
   primary: 'hsl(0, 0%, 0%)', // Black
   secondary: 'hsl(0, 0%, 27%)', // Grey
-  secondaryBright: 'hsl(0, 0%, 40%)', // Brighter grey
   tertiary: 'hsl(0, 0%, 100%)', // White
 };
 
