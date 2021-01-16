@@ -16,8 +16,8 @@ import Personal from './routes/shop/checkout/Personal';
 import Confirmation from './routes/shop/checkout/Confirmation';
 import Entry from './routes/shop/account/Entry';
 import Favorite from './routes/shop/account/Favorite';
-import Order from './routes/shop/account/Order';
-import Address from './routes/shop/account/Address';
+import Orders from './routes/shop/account/Orders';
+import Addresses from './routes/shop/account/Addresses';
 import PaymentCards from './routes/shop/account/Payment';
 import Settings from './routes/shop/account/Settings';
 
@@ -41,8 +41,8 @@ function App() {
               <Route exact path='/shop/:category' component={Category} />
               <Route exact path='/shop/item/:itemId' component={ItemDetails} />
               <PublicRoute exact path='/account/entry' component={Entry} />
-              <PrivateRoute exact path='/account/orders' component={Order}/>
-              <PrivateRoute exact path='/account/addresses' component={Address} />
+              <PrivateRoute exact path='/account/orders' component={Orders}/>
+              <PrivateRoute exact path='/account/addresses' component={Addresses} />
               <PrivateRoute exact path='/account/payment' component={PaymentCards} />
               <PrivateRoute exact path='/account/user' component={Settings}/>
             </Switch>

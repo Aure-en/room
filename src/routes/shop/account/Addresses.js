@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Address() {
+function Addresses() {
   return (
     <div>
       addresses
@@ -8,4 +8,4 @@ function Address() {
   )
 }
 
-export default Address
+export default Addresses

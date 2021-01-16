@@ -216,24 +216,17 @@ function Payment({ location }) {
     const cart = await getCart(currentUser.uid);
 
     // If the user is logged in, we add their id in the order so that we can add it to their orders list.
-    const order = currentUser.isAnonymous
-      ? await createOrder(cart, location.state.personal, {
-          name,
-          number,
-          date,
-          cvc,
-        })
-      : await createOrder(
-          cart,
-          location.state.personal,
-          {
-            name,
-            number,
-            date,
-            cvc,
-          },
-          currentUser.uid
-        );
+    const order = await createOrder(
+      cart,
+      location.state.personal,
+      {
+        name,
+        number,
+        date,
+        cvc,
+      },
+      currentUser.uid
+    );
     await deleteCart(currentUser.uid);
 
     if (remember) {
@@ -304,7 +297,8 @@ function Payment({ location }) {
                                       number: card.number,
                                       date: card.date,
                                       cvc: card.cvc,
-                                    }
+                                    },
+                                    currentUser.uid
                                   );
                                   await deleteCart(currentUser.uid);
 

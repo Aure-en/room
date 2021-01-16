@@ -339,9 +339,8 @@ export function useFirestore() {
   const getOrders = async (userId) => {
     const ordersList = [];
     const orders = await firestore
-      .collection('users')
-      .doc(userId)
       .collection('orders')
+      .orderBy('date')
       .get();
     orders.forEach((order) => ordersList.push(order.data()));
     return ordersList;

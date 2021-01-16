@@ -67,11 +67,10 @@ const Button = styled.button`
 
 function Favorite() {
   const { getItem } = useFirestore();
-  const { favorites } = useFavorite();
-  const [favoriteItems, setFavoriteItems] = useState();
+  const { favorites } = useFavorite([]);
+  const [favoriteItems, setFavoriteItems] = useState([]);
 
   useEffect(() => {
-    console.log(favorites);
     (async () => {
       const favoritesItems = [];
       for (const favorite of favorites) {

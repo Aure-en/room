@@ -63,9 +63,9 @@ function AccountNav({ currentLink }) {
     <Nav>
       {links.map((link) => {
         return currentLink === link ? (
-          <CurrentLink>{link}</CurrentLink>
+          <CurrentLink key={link}>{link}</CurrentLink>
         ) : (
-          <NavLink to={`/account/${link}`}>{link}</NavLink>
+          <NavLink to={`/account/${link}`} key={link}>{link}</NavLink>
         );
       })}
     </Nav>

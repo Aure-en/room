@@ -13,6 +13,7 @@ import { CSSTransition } from 'react-transition-group';
 // Icons
 import { ReactComponent as AngleRight } from '../../assets/icons/icon-small-arrow.svg';
 import { ReactComponent as Plus } from '../../assets/icons/icon-plus.svg';
+import { ReactComponent as Minus } from '../../assets/icons/icon-minus.svg';
 import { ReactComponent as Heart } from '../../assets/icons/icon-heart.svg';
 import { ReactComponent as HeartFilled } from '../../assets/icons/icon-heart-filled.svg';
 import iconX from '../../assets/icons/icon-x.svg';
@@ -518,7 +519,7 @@ function ItemDetails({ match }) {
                     onClick={() => setAreDetailsOpen(!areDetailsOpen)}
                   >
                     Additional Information
-                    <Plus />
+                    {areDetailsOpen ? <Minus /> : <Plus />}
                   </AdditionalBtn>
 
                   <CSSTransition

@@ -40,7 +40,7 @@ const Type = styled.span`
   color: ${colors.primary};
 `;
 
-const OrderTotal = styled.div`
+const Review = styled.div`
   display: grid;
   align-self: flex-end;
   grid-template-columns: repeat(2, auto);
@@ -73,11 +73,11 @@ function CartPreview({ cart }) {
         })}
       </ul>
 
-      <OrderTotal>
+      <Review>
         <div>Items</div><div>£{cart.reduce((sum, item) => sum + (item.price * item.quantity), 0)}</div>
         <div>Shipping</div><div>0</div>
         <Total>Total</Total><Total>£{cart.reduce((sum, item) => sum + (item.price * item.quantity), 0)}</Total>
-      </OrderTotal>
+      </Review>
     </Container>
   )
 }
