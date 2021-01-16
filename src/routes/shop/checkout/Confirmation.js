@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import Nav from '../../../components/shop/nav/Nav';
-import ShopNav from '../../../components/shop/nav/ShopNav';
 import { useFirestore } from '../../../hooks/useFirestore';
 import CartPreview from '../../../components/shop/cart/CartPreview';
 
@@ -13,17 +11,12 @@ const colors = {
   button: 'hsl(0, 0%, 100%)',
 };
 
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-`;
-
 const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   flex: 1;
+  margin: 5rem;
 `;
 
 const Main = styled.div`
@@ -120,12 +113,7 @@ function Confirmation({ match, location }) {
   }, []);
 
   return (
-    <Wrapper>
-      <header>
-        <Nav />
-        <ShopNav />
-      </header>
-
+    <div>
       <Container>
         <Main>
           {!loading && (
@@ -178,7 +166,7 @@ function Confirmation({ match, location }) {
           </Message>
         </Main>
       </Container>
-    </Wrapper>
+    </div>
   );
 }
 

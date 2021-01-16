@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../../contexts/AuthContext';
 import { useUserSettings } from '../../../hooks/useUserSettings';
 import { useFirestore } from '../../../hooks/useFirestore';
-import Nav from '../../../components/shop/nav/Nav';
-import ShopNav from '../../../components/shop/nav/ShopNav';
 import AccountNav from '../../../components/shop/account/AccountNav';
 import styled from 'styled-components';
 
@@ -15,26 +13,6 @@ const colors = {
   input: 'hsl(0, 0%, 70%)', // Input lines
   black: 'hsl(0, 0%, 0%)',
 };
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-`;
-
-const Container = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
-  margin: 5rem;
-`;
-
-const UserSettings = styled.div`
-  display: flex;
-  align-items: start;
-  max-width: 1400px;
-`;
 
 const Heading = styled.h1`
   margin-bottom: 2rem;
@@ -165,105 +143,92 @@ function Settings() {
   };
 
   return (
-    <Wrapper>
-      <header>
-        <Nav />
-        <ShopNav />
-      </header>
+    <section>
+      <Heading>Settings</Heading>
 
-      <Container>
-        <UserSettings>
-          <AccountNav currentLink={'user'} />
+      <Form onSubmit={handleSaveChanges}>
+        <Fields>
+          <Field>
+            <Label htmlFor='first_name'>First Name</Label>
+            <Input
+              type='text'
+              value={firstName}
+              id='first_name'
+              onChange={(e) => setFirstName(e.target.value)}
+              placeholder='Enter your first name'
+            />
+          </Field>
 
-          <section>
-            <Heading>Settings</Heading>
+          <Field>
+            <Label htmlFor='last_name'>Last Name</Label>
+            <Input
+              type='text'
+              value={lastName}
+              id='last_name'
+              onChange={(e) => setLastName(e.target.value)}
+              placeholder='Enter your last name'
+            />
+          </Field>
 
-            <Form onSubmit={handleSaveChanges}>
-              <Fields>
-                <Field>
-                  <Label htmlFor='first_name'>First Name</Label>
-                  <Input
-                    type='text'
-                    value={firstName}
-                    id='first_name'
-                    onChange={(e) => setFirstName(e.target.value)}
-                    placeholder='Enter your first name'
-                  />
-                </Field>
+          <Field>
+            <Label htmlFor='email'>Email</Label>
+            <Input
+              type='email'
+              id='email'
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder='Enter your email'
+            />
+            {emailError && <Message>{emailError}</Message>}
+          </Field>
 
-                <Field>
-                  <Label htmlFor='last_name'>Last Name</Label>
-                  <Input
-                    type='text'
-                    value={lastName}
-                    id='last_name'
-                    onChange={(e) => setLastName(e.target.value)}
-                    placeholder='Enter your last name'
-                  />
-                </Field>
+          <Field>
+            <Label htmlFor='current_password'>Current Password</Label>
+            <Input
+              type='password'
+              id='current_password'
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+              placeholder='Enter your current password'
+            />
+            {currentPasswordError && (
+              <Message>{currentPasswordError}</Message>
+            )}
+          </Field>
 
-                <Field>
-                  <Label htmlFor='email'>Email</Label>
-                  <Input
-                    type='email'
-                    id='email'
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder='Enter your email'
-                  />
-                  {emailError && <Message>{emailError}</Message>}
-                </Field>
+          <Field>
+            <Label htmlFor='new_password'>New Password</Label>
+            <Input
+              type='password'
+              id='new_password'
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              placeholder='Enter your new password'
+            />
+            {newPasswordError && <Message>{newPasswordError}</Message>}
+          </Field>
 
-                <Field>
-                  <Label htmlFor='current_password'>Current Password</Label>
-                  <Input
-                    type='password'
-                    id='current_password'
-                    value={currentPassword}
-                    onChange={(e) => setCurrentPassword(e.target.value)}
-                    placeholder='Enter your current password'
-                  />
-                  {currentPasswordError && (
-                    <Message>{currentPasswordError}</Message>
-                  )}
-                </Field>
+          <Field>
+            <Label htmlFor='new_password_confirmation'>
+              New Password Confirmation
+            </Label>
+            <Input
+              type='password'
+              id='new_password_confirmation'
+              value={newPasswordConfirmation}
+              onChange={(e) => setNewPasswordConfirmation(e.target.value)}
+              placeholder='Enter your new password again'
+            />
+            {newPasswordConfirmationError && (
+              <Message>{newPasswordConfirmationError}</Message>
+            )}
+          </Field>
+        </Fields>
 
-                <Field>
-                  <Label htmlFor='new_password'>New Password</Label>
-                  <Input
-                    type='password'
-                    id='new_password'
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    placeholder='Enter your new password'
-                  />
-                  {newPasswordError && <Message>{newPasswordError}</Message>}
-                </Field>
-
-                <Field>
-                  <Label htmlFor='new_password_confirmation'>
-                    New Password Confirmation
-                  </Label>
-                  <Input
-                    type='password'
-                    id='new_password_confirmation'
-                    value={newPasswordConfirmation}
-                    onChange={(e) => setNewPasswordConfirmation(e.target.value)}
-                    placeholder='Enter your new password again'
-                  />
-                  {newPasswordConfirmationError && (
-                    <Message>{newPasswordConfirmationError}</Message>
-                  )}
-                </Field>
-              </Fields>
-
-              <Button type='submit'>Save Changes</Button>
-              <Message>{message}</Message>
-            </Form>
-          </section>
-        </UserSettings>
-      </Container>
-    </Wrapper>
+        <Button type='submit'>Save Changes</Button>
+        <Message>{message}</Message>
+      </Form>
+    </section>
   );
 }
 

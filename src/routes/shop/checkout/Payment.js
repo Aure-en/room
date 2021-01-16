@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import Nav from '../../../components/shop/nav/Nav';
-import ShopNav from '../../../components/shop/nav/ShopNav';
 import Order from '../../../components/shop/checkout/Order';
 import { Redirect, useHistory } from 'react-router-dom';
 import { useAuth } from '../../../contexts/AuthContext';
@@ -19,12 +17,6 @@ const colors = {
   input: 'hsl(0, 0%, 70%)', // Input lines
   black: 'hsl(0, 0%, 0%)',
 };
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-`;
 
 const Container = styled.div`
   display: flex;
@@ -244,12 +236,6 @@ function Payment({ location }) {
   return (
     <>
       {location.state ? (
-        <Wrapper>
-          <header>
-            <Nav />
-            <ShopNav />
-          </header>
-
           <Container>
             <Main>
               <Left>
@@ -400,7 +386,6 @@ function Payment({ location }) {
               <Order />
             </Main>
           </Container>
-        </Wrapper>
       ) : (
         <Redirect to='/shop/cart' />
       )}

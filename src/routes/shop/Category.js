@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import Nav from '../../components/shop/nav/Nav';
-import ShopNav from '../../components/shop/nav/ShopNav';
 import ShopItemPreview from '../../components/shop/items/ShopItemPreview';
 import { useFirestore } from '../../hooks/useFirestore';
 import { useFavorite } from '../../contexts/FavoriteContext';
@@ -35,10 +33,6 @@ function Category({ match }) {
 
   return (
     <div>
-      <header>
-        <Nav />
-        <ShopNav />
-      </header>
       <Shop>
         <ShopList>
         {

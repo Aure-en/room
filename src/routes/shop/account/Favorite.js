@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import Nav from '../../../components/shop/nav/Nav';
-import ShopNav from '../../../components/shop/nav/ShopNav';
 import ShopItemPreview from '../../../components/shop/items/ShopItemPreview';
 import { useFavorite } from '../../../contexts/FavoriteContext';
 import { useFirestore } from '../../../hooks/useFirestore';
@@ -15,12 +13,6 @@ const colors = {
   button: 'hsl(0, 0%, 27%)', // Darker grey
   text: 'hsl(0, 0%, 95%)', // White
 };
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-`;
 
 const Container = styled.div`
   display: flex;
@@ -82,45 +74,38 @@ function Favorite() {
   }, [favorites]);
 
   return (
-    <Wrapper>
-      <header>
-        <Nav />
-        <ShopNav />
-      </header>
-
-      <Container>
-        <div>
-          {favorites.length === 0 ? (
-            <Empty>
-              <Heading>Favorites</Heading>
-              <Basket />
-              <EmptyText>It seems that you haven't saved any items yet.</EmptyText>
-              <div>We have a lot of lovely ideas to help you fill it.</div>
-              <Link to='/shop'><Button>Inspire Me</Button></Link>
-            </Empty>
-          ) : (
-            <>
-              <Heading>Favorites</Heading>
-              <ItemsList>
-                {favoriteItems.map((item) => {
-                  return (
-                    <li key={item.id}>
-                      <ShopItemPreview
-                        name={item.name}
-                        images={item.images}
-                        price={item.price}
-                        id={item.id}
-                        isFavorite={favorites.includes(item.id)}
-                      />
-                    </li>
-                  );
-                })}
-              </ItemsList>
-            </>
-          )}
-        </div>
-      </Container>
-    </Wrapper>
+    <Container>
+      <div>
+        {favorites.length === 0 ? (
+          <Empty>
+            <Heading>Favorites</Heading>
+            <Basket />
+            <EmptyText>It seems that you haven't saved any items yet.</EmptyText>
+            <div>We have a lot of lovely ideas to help you fill it.</div>
+            <Link to='/shop'><Button>Inspire Me</Button></Link>
+          </Empty>
+        ) : (
+          <>
+            <Heading>Favorites</Heading>
+            <ItemsList>
+              {favoriteItems.map((item) => {
+                return (
+                  <li key={item.id}>
+                    <ShopItemPreview
+                      name={item.name}
+                      images={item.images}
+                      price={item.price}
+                      id={item.id}
+                      isFavorite={favorites.includes(item.id)}
+                    />
+                  </li>
+                );
+              })}
+            </ItemsList>
+          </>
+        )}
+      </div>
+    </Container>
   );
 }
 

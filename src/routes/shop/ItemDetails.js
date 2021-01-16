@@ -6,8 +6,6 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useFavorite } from '../../contexts/FavoriteContext';
 import { formatNavLink } from '../../utils/utils';
 import ImagesPreview from '../../components/shop/items/ImagesPreview';
-import Nav from '../../components/shop/nav/Nav';
-import ShopNav from '../../components/shop/nav/ShopNav';
 import { CSSTransition } from 'react-transition-group';
 
 // Icons
@@ -35,7 +33,6 @@ const Container = styled.div`
 `;
 
 const Center = styled.section`
-  width: 90vw;
   max-width: 1200px;
 `;
 
@@ -358,219 +355,212 @@ function ItemDetails({ match }) {
   };
 
   return (
-    <>
-      <header>
-        <Nav />
-        <ShopNav />
-      </header>
+    <Container>
+      {!loading && (
+        <Center>
+          <Category>
+            <Link to='/'>
+              <CategoryLink>Home</CategoryLink>
+            </Link>
+            <ArrowIcon>
+              <AngleRight />
+            </ArrowIcon>
+            <Link to='/shop'>
+              <CategoryLink>Shop</CategoryLink>
+            </Link>
 
-      <Container>
-        {!loading && (
-          <Center>
-            <Category>
-              <Link to='/'>
-                <CategoryLink>Home</CategoryLink>
-              </Link>
-              <ArrowIcon>
-                <AngleRight />
-              </ArrowIcon>
-              <Link to='/shop'>
-                <CategoryLink>Shop</CategoryLink>
-              </Link>
+            {item.categories.map((category) => {
+              return (
+                <React.Fragment key={category}>
+                  <ArrowIcon>
+                    <AngleRight />
+                  </ArrowIcon>
+                  <Link to={`/shop/${encodeURI(category)}`}>
+                    <CategoryLink>{formatNavLink(category)}</CategoryLink>
+                  </Link>
+                </React.Fragment>
+              );
+            })}
+          </Category>
 
-              {item.categories.map((category) => {
-                return (
-                  <React.Fragment key={category}>
-                    <ArrowIcon>
-                      <AngleRight />
-                    </ArrowIcon>
-                    <Link to={`/shop/${encodeURI(category)}`}>
-                      <CategoryLink>{formatNavLink(category)}</CategoryLink>
-                    </Link>
-                  </React.Fragment>
-                );
-              })}
-            </Category>
+          <Informations>
+            <ImagesPreview images={item.images} size={35} />
+            <Details>
+              <Row>
+                <Name>{item.name}</Name>
+                <Icon onClick={() => handleFavorite(item.id)}>
+                  {favorites.includes(item.id) ? <HeartFilled /> : <Heart />}
+                </Icon>
+              </Row>
+              <Price>£{item.price}</Price>
+              <Description>
+                {item.description.map((paragraph, index) => {
+                  return <p key={'description' + index}>{paragraph}</p>;
+                })}
+              </Description>
 
-            <Informations>
-              <ImagesPreview images={item.images} size={35} />
-              <Details>
-                <Row>
-                  <Name>{item.name}</Name>
-                  <Icon onClick={() => handleFavorite(item.id)}>
-                    {favorites.includes(item.id) ? <HeartFilled /> : <Heart />}
-                  </Icon>
-                </Row>
-                <Price>£{item.price}</Price>
-                <Description>
-                  {item.description.map((paragraph, index) => {
-                    return <p key={'description' + index}>{paragraph}</p>;
+              <Selection onSubmit={handleAddToCart}>
+                <div>
+                  <TextLabel>Color: </TextLabel>
+                  <Choice> {currentColor}</Choice>
+                </div>
+                <ColorList>
+                  {item.colors.map((color) => {
+                    return (
+                      <li key={color.description}>
+                        <ColorLabel
+                          htmlFor={color.description}
+                          value={color.value}
+                          title={color.description}
+                          isSelected={currentColor === color.description}
+                        />
+                        <Checkbox
+                          type='checkbox'
+                          id={color.description}
+                          name={color.description}
+                          onClick={(e) => setCurrentColor(e.target.name)}
+                        />
+                      </li>
+                    );
                   })}
-                </Description>
+                </ColorList>
 
-                <Selection onSubmit={handleAddToCart}>
+                <div>
+                  {Object.keys(item.options).map((option, index) => {
+                    return (
+                      <OptionsField key={option}>
+                        <TextLabel>{option}: </TextLabel>
+                        <Options>
+                          {item.options[option].map((choice) => {
+                            return (
+                              <>
+                                <OptionLabel
+                                  htmlFor={choice.option}
+                                  isSelected={
+                                    currentOption[index][option] ===
+                                    choice.option
+                                  }
+                                >
+                                  {choice.option}
+                                </OptionLabel>
+                                <Checkbox
+                                  type='checkbox'
+                                  id={choice.option}
+                                  name={choice.option}
+                                  onClick={() =>
+                                    setCurrentOption((prev) => {
+                                      return [...prev].map((prevOption) => {
+                                        if (
+                                          Object.keys(prevOption)[0] ===
+                                          option
+                                        ) {
+                                          return { [option]: choice.option };
+                                        } else {
+                                          return prevOption;
+                                        }
+                                      });
+                                    })
+                                  }
+                                />
+                              </>
+                            );
+                          })}
+                        </Options>
+                      </OptionsField>
+                    );
+                  })}
+                </div>
+
+                <Row>
                   <div>
-                    <TextLabel>Color: </TextLabel>
-                    <Choice> {currentColor}</Choice>
+                    <Label htmlFor='quantity'>Quantity: </Label>
+                    <Quantity
+                      type='text'
+                      id='quantity'
+                      name='quantity'
+                      value={quantity}
+                      required
+                      onChange={(e) => {
+                        const quantity = e.target.value.replace(
+                          /[^0-9]/g,
+                          ''
+                        );
+                        setQuantity(quantity);
+                      }}
+                      onBlur={(e) => {
+                        if (e.target.value < 1) setQuantity(1);
+                      }}
+                    />
                   </div>
-                  <ColorList>
-                    {item.colors.map((color) => {
-                      return (
-                        <li key={color.description}>
-                          <ColorLabel
-                            htmlFor={color.description}
-                            value={color.value}
-                            title={color.description}
-                            isSelected={currentColor === color.description}
-                          />
-                          <Checkbox
-                            type='checkbox'
-                            id={color.description}
-                            name={color.description}
-                            onClick={(e) => setCurrentColor(e.target.name)}
-                          />
-                        </li>
-                      );
-                    })}
-                  </ColorList>
+                  <Column>
+                    <SubmitBtn type='submit'>Add to Basket</SubmitBtn>
+                    <CSSTransition
+                      in={message.length !== 0}
+                      timeout={300}
+                      classNames='fade'
+                    >
+                      <Message>{message}</Message>
+                    </CSSTransition>
+                  </Column>
+                </Row>
+              </Selection>
 
-                  <div>
-                    {Object.keys(item.options).map((option, index) => {
-                      return (
-                        <OptionsField key={option}>
-                          <TextLabel>{option}: </TextLabel>
-                          <Options>
-                            {item.options[option].map((choice) => {
-                              return (
-                                <>
-                                  <OptionLabel
-                                    htmlFor={choice.option}
-                                    isSelected={
-                                      currentOption[index][option] ===
-                                      choice.option
-                                    }
-                                  >
-                                    {choice.option}
-                                  </OptionLabel>
-                                  <Checkbox
-                                    type='checkbox'
-                                    id={choice.option}
-                                    name={choice.option}
-                                    onClick={() =>
-                                      setCurrentOption((prev) => {
-                                        return [...prev].map((prevOption) => {
-                                          if (
-                                            Object.keys(prevOption)[0] ===
-                                            option
-                                          ) {
-                                            return { [option]: choice.option };
-                                          } else {
-                                            return prevOption;
-                                          }
-                                        });
-                                      })
-                                    }
-                                  />
-                                </>
-                              );
-                            })}
-                          </Options>
-                        </OptionsField>
-                      );
-                    })}
-                  </div>
+              <Additional>
+                <AdditionalBtn
+                  onClick={() => setAreDetailsOpen(!areDetailsOpen)}
+                >
+                  Additional Information
+                  {areDetailsOpen ? <Minus /> : <Plus />}
+                </AdditionalBtn>
 
-                  <Row>
-                    <div>
-                      <Label htmlFor='quantity'>Quantity: </Label>
-                      <Quantity
-                        type='text'
-                        id='quantity'
-                        name='quantity'
-                        value={quantity}
-                        required
-                        onChange={(e) => {
-                          const quantity = e.target.value.replace(
-                            /[^0-9]/g,
-                            ''
+                <CSSTransition
+                  in={areDetailsOpen}
+                  timeout={500}
+                  classNames='details'
+                  mountOnEnter={true}
+                >
+                  <Dropdown>
+                    <DropdownColumn>
+                      <TextLabel>Dimensions (cm)</TextLabel>
+                      <ul>
+                        {Object.keys(item.dimensions).map((dimension) => {
+                          return (
+                            <Li key={dimension}>
+                              <AdditionalLabel>{dimension}:</AdditionalLabel>
+                              <AdditionalInfo>
+                                {' '}
+                                {item.dimensions[dimension]}
+                              </AdditionalInfo>
+                            </Li>
                           );
-                          setQuantity(quantity);
-                        }}
-                        onBlur={(e) => {
-                          if (e.target.value < 1) setQuantity(1);
-                        }}
-                      />
-                    </div>
-                    <Column>
-                      <SubmitBtn type='submit'>Add to Basket</SubmitBtn>
-                      <CSSTransition
-                        in={message.length !== 0}
-                        timeout={300}
-                        classNames='fade'
-                      >
-                        <Message>{message}</Message>
-                      </CSSTransition>
-                    </Column>
-                  </Row>
-                </Selection>
+                        })}
+                      </ul>
+                    </DropdownColumn>
 
-                <Additional>
-                  <AdditionalBtn
-                    onClick={() => setAreDetailsOpen(!areDetailsOpen)}
-                  >
-                    Additional Information
-                    {areDetailsOpen ? <Minus /> : <Plus />}
-                  </AdditionalBtn>
-
-                  <CSSTransition
-                    in={areDetailsOpen}
-                    timeout={500}
-                    classNames='details'
-                    mountOnEnter={true}
-                  >
-                    <Dropdown>
-                      <DropdownColumn>
-                        <TextLabel>Dimensions (cm)</TextLabel>
-                        <ul>
-                          {Object.keys(item.dimensions).map((dimension) => {
-                            return (
-                              <Li key={dimension}>
-                                <AdditionalLabel>{dimension}:</AdditionalLabel>
-                                <AdditionalInfo>
-                                  {' '}
-                                  {item.dimensions[dimension]}
-                                </AdditionalInfo>
-                              </Li>
-                            );
-                          })}
-                        </ul>
-                      </DropdownColumn>
-
-                      <DropdownColumn>
-                        <TextLabel>Details</TextLabel>
-                        <ul>
-                          {Object.keys(item.additional).map((info) => {
-                            return (
-                              <Li key={info}>
-                                <AdditionalLabel>{info}:</AdditionalLabel>
-                                <AdditionalInfo>
-                                  {' '}
-                                  {item.additional[info]}
-                                </AdditionalInfo>
-                              </Li>
-                            );
-                          })}
-                        </ul>
-                      </DropdownColumn>
-                    </Dropdown>
-                  </CSSTransition>
-                </Additional>
-              </Details>
-            </Informations>
-          </Center>
-        )}
-      </Container>
-    </>
+                    <DropdownColumn>
+                      <TextLabel>Details</TextLabel>
+                      <ul>
+                        {Object.keys(item.additional).map((info) => {
+                          return (
+                            <Li key={info}>
+                              <AdditionalLabel>{info}:</AdditionalLabel>
+                              <AdditionalInfo>
+                                {' '}
+                                {item.additional[info]}
+                              </AdditionalInfo>
+                            </Li>
+                          );
+                        })}
+                      </ul>
+                    </DropdownColumn>
+                  </Dropdown>
+                </CSSTransition>
+              </Additional>
+            </Details>
+          </Informations>
+        </Center>
+      )}
+    </Container>
   );
 }
 

@@ -1,7 +1,6 @@
 import { firestore } from '../firebase/firebase';
 
 export function useFirestore() {
-
   // -- SHOP --
 
   // Returns an object representing all the shopping categories.
@@ -157,16 +156,19 @@ export function useFirestore() {
       .update({ quantity });
   };
 
-
   // To delete the cart (=subcollection), we have to retrieve all the documents within the collection and delete them.
   const deleteCart = async (userId) => {
     const itemsId = [];
-    const docs = await firestore.collection('carts').doc(userId).collection('items').get();
-    docs.forEach(doc => itemsId.push(doc.id));
+    const docs = await firestore
+      .collection('carts')
+      .doc(userId)
+      .collection('items')
+      .get();
+    docs.forEach((doc) => itemsId.push(doc.id));
     for (const id of itemsId) {
       deleteFromCart(userId, id);
     }
-  }
+  };
 
   // Get an user's cart.
   const getCart = async (userId) => {
@@ -194,14 +196,14 @@ export function useFirestore() {
   const createUser = (userId, firstName, lastName) => {
     return firestore.collection('users').doc(userId).set({
       firstName,
-      lastName
+      lastName,
     });
   };
 
   const getUser = async (userId) => {
     const user = await firestore.collection('users').doc(userId).get();
     return user.data();
-  }
+  };
 
   // -- ADDRESSES --
 
@@ -210,12 +212,12 @@ export function useFirestore() {
     userId,
     firstName,
     lastName,
-    phone,
     address,
-    email,
     zipCode,
     city,
-    country
+    country,
+    phone,
+    email
   ) => {
     const docRef = await firestore
       .collection('users')
@@ -233,11 +235,11 @@ export function useFirestore() {
         firstName,
         lastName,
         address,
-        email,
-        phone,
         zipCode,
         city,
         country,
+        phone,
+        email,
       });
   };
 
@@ -261,6 +263,43 @@ export function useFirestore() {
       .get();
     addresses.forEach((address) => addressBook.push(address.data()));
     return addressBook;
+  };
+
+  const editAddress = (
+    userId,
+    id,
+    firstName,
+    lastName,
+    address,
+    zipCode,
+    city,
+    country,
+    phone,
+    email
+  ) => {
+    return firestore
+      .collection('users')
+      .doc(userId)
+      .collection('addresses')
+      .doc(id)
+      .update({
+        firstName,
+        lastName,
+        address,
+        zipCode,
+        city,
+        country,
+        phone,
+        email
+      });
+  };
+
+  const addressListener = (userId, callback) => {
+    return firestore
+      .collection('users')
+      .doc(userId)
+      .collection('addresses')
+      .onSnapshot(callback);
   };
 
   // -- PAYMENT CARDS --
@@ -323,7 +362,7 @@ export function useFirestore() {
       shipping,
       card,
       status: 'Preparation',
-      date: new Date()
+      date: new Date(),
     });
 
     return id;
@@ -338,13 +377,10 @@ export function useFirestore() {
   // Get a user's orders
   const getOrders = async (userId) => {
     const ordersList = [];
-    const orders = await firestore
-      .collection('orders')
-      .orderBy('date')
-      .get();
+    const orders = await firestore.collection('orders').orderBy('date').get();
     orders.forEach((order) => ordersList.push(order.data()));
     return ordersList;
-  }
+  };
 
   // -- USER SETTINGS --
 
@@ -352,17 +388,17 @@ export function useFirestore() {
     const user = await firestore.collection('users').doc(userId).get();
     return {
       firstName: user.data().firstName,
-      lastName: user.data().lastName
-    }
-  }
+      lastName: user.data().lastName,
+    };
+  };
 
   const updateFirstName = (userId, firstName) => {
-    return firestore.collection('users').doc(userId).update({firstName});
-  }
+    return firestore.collection('users').doc(userId).update({ firstName });
+  };
 
   const updateLastName = (userId, lastName) => {
-    return firestore.collection('users').doc(userId).update({lastName});
-  }
+    return firestore.collection('users').doc(userId).update({ lastName });
+  };
 
   // Get first and last name
 
@@ -383,7 +419,9 @@ export function useFirestore() {
     getUser,
     addAddress,
     deleteAddress,
+    editAddress,
     getAddresses,
+    addressListener,
     addCard,
     deleteCard,
     getCards,

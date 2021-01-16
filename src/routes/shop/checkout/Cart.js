@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import CartItem from '../../../components/shop/cart/CartItem';
-import Nav from '../../../components/shop/nav/Nav';
-import ShopNav from '../../../components/shop/nav/ShopNav';
 import { useFirestore } from '../../../hooks/useFirestore';
 import { useAuth } from '../../../contexts/AuthContext';
 import { useSignIn } from '../../../hooks/useSignIn';
@@ -20,12 +18,6 @@ const colors = {
   border: 'hsl(0, 0%, 90%)',
   hover: 'hsl(0, 0%, 0%)', // Black - Continue Shopping Hover
 };
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-`;
 
 const Container = styled.div`
   display: flex;
@@ -421,19 +413,12 @@ function Cart() {
   }
 
   return (
-    <Wrapper>
-      <header>
-        <Nav />
-        <ShopNav />
-      </header>
-
-      <Container>
-        <ShoppingCart>
-          {renderCart(cart)}
-          {renderBox(cart, currentUser)}
-        </ShoppingCart>
-      </Container>
-    </Wrapper>
+    <Container>
+      <ShoppingCart>
+        {renderCart(cart)}
+        {renderBox(cart, currentUser)}
+      </ShoppingCart>
+    </Container>
   );
 }
 
