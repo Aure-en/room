@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import Nav from '../../../components/shop/nav/Nav';
-import ShopNav from '../../../components/shop/nav/ShopNav';
 import SignIn from '../../../components/shop/account/SignIn';
 import SignUp from '../../../components/shop/account/SignUp';
 
@@ -13,12 +11,6 @@ const colors = {
   secondary: 'hsl(0, 0%, 27%)', // Darker grey
   background: 'hsl(0, 0%, 100%)',
 };
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-`;
 
 const Container = styled.div`
   display: flex;
@@ -88,27 +80,20 @@ function Entry({ location }) {
   };
 
   return (
-    <Wrapper>
-      <header>
-        <Nav />
-        <ShopNav />
-      </header>
-
-      <Container>
-        <Main>
-          <Card>
-            <CardInner isFlipped={isFlipped}>
-              <CardSide>
-                <SignUp flip={flip} isPaying={isPaying} />
-              </CardSide>
-              <CardBackSide>
-                <SignIn flip={flip} isPaying={isPaying} />
-              </CardBackSide>
-            </CardInner>
-          </Card>
-        </Main>
-      </Container>
-    </Wrapper>
+    <Container>
+      <Main>
+        <Card>
+          <CardInner isFlipped={isFlipped}>
+            <CardSide>
+              <SignUp flip={flip} isPaying={isPaying} />
+            </CardSide>
+            <CardBackSide>
+              <SignIn flip={flip} isPaying={isPaying} />
+            </CardBackSide>
+          </CardInner>
+        </Card>
+      </Main>
+    </Container>
   );
 }
 

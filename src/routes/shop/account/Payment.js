@@ -256,7 +256,7 @@ function Payment() {
         <CardsList>
           {cards.map((card) => {
             return (
-              <>
+              <React.Fragment key={card.id}>
                 <Card>
                   <strong>{card.name}</strong>
                   <div>{card.number.slice(-4)} (Last 4 digits)</div>
@@ -366,7 +366,7 @@ function Payment() {
                     <Message>{messageEdit}</Message>
                   </Form>
                 </EditModal>
-              </>
+              </React.Fragment>
             );
           })}
         </CardsList>
@@ -424,7 +424,9 @@ function Payment() {
                 id='cvc'
                 value={cvc}
                 onChange={(e) => {
+                  // Makes sure the user can only write 3 numbers.
                   let cvc = e.target.value.replace(/[^0-9]/g, '');
+                  if (cvc.length > 3) cvc = cvc.slice(0, 3);
                   setCvc(cvc);
                 }}
                 placeholder='Enter your CVC code'

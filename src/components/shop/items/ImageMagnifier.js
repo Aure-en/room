@@ -8,13 +8,13 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  cursor: zoom-in;
 `;
 
 const ImageContainer = styled.div`
   height: 100%;
   width: 100%;
   position: relative;
-  cursor: zoom-in;
 `;
 
 const Zoom = styled.div`

@@ -80,6 +80,11 @@ export function useFirestore() {
       });
   };
 
+  // Search for an item
+  const searchItem = (query) => {
+    return firestore.collection('products').where('name', '>=', query).where('name', '<=', query+'\uf8ff').get();
+  }
+
   // -- CART --
 
   // Add an item to the user's cart
@@ -391,6 +396,14 @@ export function useFirestore() {
     return order.data();
   };
 
+  // Search order
+  const searchOrder = async (email, id) => {
+    let order;
+    const query = await firestore.collection('orders').where('shipping.email', '==', email).where('id', '==', id).get();
+    query.forEach((doc) => { order = doc.data(); });
+    return order;
+  }
+
   // Get a user's orders
   const getOrders = async (userId) => {
     const ordersList = [];
@@ -409,6 +422,7 @@ export function useFirestore() {
     };
   };
 
+  // Get first and last name
   const updateFirstName = (userId, firstName) => {
     return firestore.collection('users').doc(userId).update({ firstName });
   };
@@ -417,8 +431,6 @@ export function useFirestore() {
     return firestore.collection('users').doc(userId).update({ lastName });
   };
 
-  // Get first and last name
-
   return {
     getShopCategories,
     getShopItems,
@@ -426,6 +438,7 @@ export function useFirestore() {
     createItem,
     addItem,
     getItem,
+    searchItem,
     addToCart,
     getCart,
     deleteFromCart,
@@ -446,6 +459,7 @@ export function useFirestore() {
     cardListener,
     createOrder,
     getOrder,
+    searchOrder,
     getOrders,
     getUserName,
     updateFirstName,

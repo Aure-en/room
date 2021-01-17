@@ -12,16 +12,24 @@ import Favorite from '../../routes/shop/account/Favorite';
 import ItemDetails from '../../routes/shop/ItemDetails';
 import PublicRoute from '../../routes/types/PublicRoute';
 import Entry from '../../routes/shop/account/Entry';
+import Tracking from './orders/Tracking';
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+`;
 
 const Container = styled.div`
   display: flex;
   justify-content: center;
+  flex: 1;
 `;
 
 function Shop({ match }) {
 
   return (
-    <div>
+    <Wrapper>
       <header>
         <Nav />
         <ShopNav />
@@ -35,12 +43,13 @@ function Shop({ match }) {
           <Route exact path={`${match.path}/personal`} component={Personal} />
           <Route exact path={`${match.path}/confirmation/:id`} component={Confirmation} />
           <Route exact path={`${match.path}/favorite`} component={Favorite} />
+          <Route exact path={`${match.path}/tracking`} component={Tracking} />
           <Route exact path={`${match.path}/item/:itemId`} component={ItemDetails} />
           <Route exact path={`${match.path}/:category`} component={Category} />
         </Switch>
       </Container>
 
-    </div>
+    </Wrapper>
   )
 }
 

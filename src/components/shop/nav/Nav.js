@@ -107,7 +107,7 @@ function Nav() {
             <AccessSettings />
           ) : (
             <NavIcon>
-              <Link to='/account/entry'><User /></Link>
+              <Link to='/shop/entry'><User /></Link>
             </NavIcon>
           )}
 
