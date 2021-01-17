@@ -7,6 +7,7 @@ import Modal from 'react-modal';
 // Icons
 import { ReactComponent as Plus } from '../../../assets/icons/icon-plus.svg';
 import { ReactComponent as Minus } from '../../../assets/icons/icon-minus.svg';
+import { ReactComponent as Close } from '../../../assets/icons/icon-close.svg';
 
 // Styled Components
 const colors = {
@@ -165,6 +166,18 @@ const Message = styled.div`
   margin-top: 0.25rem;
 `;
 
+const Icon = styled.button`
+  position: absolute;
+  cursor: pointer;
+  top: 1rem;
+  right: 1rem;
+  color: ${colors.primary};
+
+  &:hover {
+    color: ${colors.secondary};
+  }
+`;
+
 function Addresses() {
   const [addresses, setAddresses] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
@@ -306,6 +319,7 @@ function Addresses() {
                     }}
                   >
                     <EditHeading>Edit your address</EditHeading>
+                    <Icon onClick={() => setIsEditing(false)}><Close /></Icon>
                     <Form
                       onSubmit={async (e) => {
                         e.preventDefault();

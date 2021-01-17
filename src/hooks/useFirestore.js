@@ -348,6 +348,23 @@ export function useFirestore() {
     return cardsList;
   };
 
+  const editCard = (userId, id, name, number, date, cvc) => {
+    return firestore.collection('users').doc(userId).collection('cards').doc(id).update({
+      name,
+      number,
+      date,
+      cvc
+    })
+  }
+
+  const cardListener = (userId, callback) => {
+    return firestore
+      .collection('users')
+      .doc(userId)
+      .collection('cards')
+      .onSnapshot(callback);
+  }
+
   // -- ORDERS --
 
   // Create an order
@@ -425,6 +442,8 @@ export function useFirestore() {
     addCard,
     deleteCard,
     getCards,
+    editCard,
+    cardListener,
     createOrder,
     getOrder,
     getOrders,
