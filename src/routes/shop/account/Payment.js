@@ -253,6 +253,12 @@ function Payment() {
       <Heading>Payment</Heading>
       <div>
         <Subheading>Current Cards</Subheading>
+        {cards.length === 0 ? (
+          <Instructions>
+            <div>You do not currently have any saved cards.</div>
+            <div>Add one by completing the form below.</div>
+          </Instructions>
+        ) : (
         <CardsList>
           {cards.map((card) => {
             return (
@@ -370,6 +376,7 @@ function Payment() {
             );
           })}
         </CardsList>
+        )}
       </div>
 
       <FormHeading onClick={() => setIsDropdownOpen(!isDropdownOpen)}>

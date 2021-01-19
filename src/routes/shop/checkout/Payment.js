@@ -126,9 +126,9 @@ const CheckboxLabel = styled.label`
     margin-right: 0.5rem;
     border-radius: 2px;
     border: 1px solid ${colors.secondary};
-    background-color: ${(props) => (props.isChecked ? colors.secondary : '')};
-    background-image: ${(props) => (props.isChecked ? `url(${check})` : '')};
-    background-position: ${(props) => (props.isChecked ? 'center' : '')};
+    background-color: ${(props) => props.isChecked && colors.secondary};
+    background-image: ${(props) => props.isChecked && `url(${check})`};
+    background-position: ${(props) => props.isChecked && 'center'};
   }
 `;
 
