@@ -277,6 +277,12 @@ const Icon = styled.span`
 function ItemDetails({ match }) {
   const [item, setItem] = useState({});
   const [loading, setLoading] = useState(true);
+  const [currentPrice, setCurrentPrice] = useState(0);
+  const [currentDimensions, setCurrentDimensions] = useState({
+    width: 0,
+    height: 0,
+    depth: 0
+  })
   const [currentColor, setCurrentColor] = useState('');
   const [currentOption, setCurrentOption] = useState([]);
   const [quantity, setQuantity] = useState(1);
@@ -302,6 +308,8 @@ function ItemDetails({ match }) {
       const itemId = match.params.itemId;
       const item = await getItem(itemId);
       setItem(item);
+      setCurrentPrice(item.price);
+      setCurrentDimensions(item.dimensions);
       setLoading(false);
     })();
   }, []);
@@ -309,16 +317,24 @@ function ItemDetails({ match }) {
   // Sets the default color and the default option (if there are any)
   useEffect(() => {
     if (Object.keys(item).length === 0) return;
-    setCurrentColor(item.colors[0].description);
+    setCurrentColor(item.colors[0]);
 
     if (Object.keys(item.options).length !== 0) {
       const options = [];
       for (let key of Object.keys(item.options)) {
-        options.push({ [key]: item.options[key][0].option });
+        options.push({ [key]: item.options[key][0] });
       }
       setCurrentOption(options);
     }
   }, [item]);
+
+  // Changes the item's price and dimensions depending on the options (number of seats, size...) the user chooses.
+  useEffect(() => {
+    if (currentOption.length === 0) return;
+    const optionName = Object.keys(currentOption[0])[0];
+    setCurrentPrice(currentOption[0][optionName].price);
+    setCurrentDimensions(currentOption[0][optionName].dimensions);
+  }, [currentOption])
 
   const handleAddToCart = async (e) => {
     e.preventDefault();
@@ -339,14 +355,14 @@ function ItemDetails({ match }) {
         userId,
         item.id,
         item.name,
-        item.images[0],
+        currentColor.image,
         currentColor,
         currentOption,
         quantity,
         item.type,
-        item.price
+        currentPrice
       );
-      setMessage(`${item.name} in ${currentColor} was added to your cart.`);
+      setMessage(`${item.name} in ${currentColor.description} was added to your cart.`);
     } catch (e) {
       setMessage(
         'Sorry, there was an error: we were not able to add the item to your cart.'
@@ -392,7 +408,7 @@ function ItemDetails({ match }) {
                   {favorites.includes(item.id) ? <HeartFilled /> : <Heart />}
                 </Icon>
               </Row>
-              <Price>£{item.price}</Price>
+              <Price>£{currentPrice}</Price>
               <Description>
                 {item.description.map((paragraph, index) => {
                   return <p key={'description' + index}>{paragraph}</p>;
@@ -402,7 +418,7 @@ function ItemDetails({ match }) {
               <Selection onSubmit={handleAddToCart}>
                 <div>
                   <TextLabel>Color: </TextLabel>
-                  <Choice> {currentColor}</Choice>
+                  <Choice> {currentColor.description}</Choice>
                 </div>
                 <ColorList>
                   {item.colors.map((color) => {
@@ -412,13 +428,13 @@ function ItemDetails({ match }) {
                           htmlFor={color.description}
                           value={color.value}
                           title={color.description}
-                          isSelected={currentColor === color.description}
+                          isSelected={currentColor.description === color.description}
                         />
                         <Checkbox
                           type='checkbox'
                           id={color.description}
                           name={color.description}
-                          onClick={(e) => setCurrentColor(e.target.name)}
+                          onClick={() => setCurrentColor(color)}
                         />
                       </li>
                     );
@@ -433,11 +449,11 @@ function ItemDetails({ match }) {
                         <Options>
                           {item.options[option].map((choice) => {
                             return (
-                              <>
+                              <React.Fragment key={choice.option}>
                                 <OptionLabel
                                   htmlFor={choice.option}
                                   isSelected={
-                                    currentOption[index][option] ===
+                                    currentOption[index][option].option ===
                                     choice.option
                                   }
                                 >
@@ -447,14 +463,14 @@ function ItemDetails({ match }) {
                                   type='checkbox'
                                   id={choice.option}
                                   name={choice.option}
-                                  onClick={() =>
+                                  onChange={() =>
                                     setCurrentOption((prev) => {
                                       return [...prev].map((prevOption) => {
                                         if (
                                           Object.keys(prevOption)[0] ===
                                           option
                                         ) {
-                                          return { [option]: choice.option };
+                                          return { [option]: choice };
                                         } else {
                                           return prevOption;
                                         }
@@ -462,7 +478,7 @@ function ItemDetails({ match }) {
                                     })
                                   }
                                 />
-                              </>
+                              </React.Fragment>
                             );
                           })}
                         </Options>
@@ -523,13 +539,13 @@ function ItemDetails({ match }) {
                     <DropdownColumn>
                       <TextLabel>Dimensions (cm)</TextLabel>
                       <ul>
-                        {Object.keys(item.dimensions).map((dimension) => {
+                        {Object.keys(currentDimensions).map((dimension) => {
                           return (
                             <Li key={dimension}>
                               <AdditionalLabel>{dimension}:</AdditionalLabel>
                               <AdditionalInfo>
                                 {' '}
-                                {item.dimensions[dimension]}
+                                {currentDimensions[dimension]}
                               </AdditionalInfo>
                             </Li>
                           );

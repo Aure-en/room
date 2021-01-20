@@ -12,6 +12,7 @@ import Favorite from '../../routes/shop/account/Favorite';
 import ItemDetails from '../../routes/shop/ItemDetails';
 import PublicRoute from '../../routes/types/PublicRoute';
 import Entry from '../../routes/shop/account/Entry';
+import HandleShop from '../HandleShop';
 import Tracking from './orders/Tracking';
 
 const Wrapper = styled.div`
@@ -44,6 +45,7 @@ function Shop({ match }) {
           <Route exact path={`${match.path}/confirmation/:id`} component={Confirmation} />
           <Route exact path={`${match.path}/favorite`} component={Favorite} />
           <Route exact path={`${match.path}/tracking`} component={Tracking} />
+          <Route exact path={`${match.path}/handleshop`} component={HandleShop} />
           <Route exact path={`${match.path}/item/:itemId`} component={ItemDetails} />
           <Route exact path={`${match.path}/:category`} component={Category} />
         </Switch>

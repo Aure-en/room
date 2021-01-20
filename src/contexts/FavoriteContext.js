@@ -33,14 +33,23 @@ export function FavoriteProvider({ children }) {
   };
 
   // Delete favorite
-  const deleteFavorite = (userId, id) => {
-    return firestore
+  const deleteFavorite = async (userId, id) => {
+    await firestore
       .collection('favorites')
       .doc(userId)
       .update({
         [id]: firebase.firestore.FieldValue.delete(),
       });
+
+    const favorites = await getFavorites(userId);
+    if (Object.keys(favorites).length === 0) {
+      deleteFavoriteList(userId);
+    }
   };
+
+  const deleteFavoriteList = (userId) => {
+    return firestore.collection('favorites').doc(userId).delete();
+  }
 
   useEffect(() => {
     if (!currentUser) return;

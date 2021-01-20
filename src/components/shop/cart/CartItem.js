@@ -92,14 +92,14 @@ function CartItem({ item }) {
         <div>
           <Name><Link to={`/shop/item/${item.id}`}>{item.name}</Link></Name>
           <Type>
-            {item.type} - {item.color}
+            {item.type} - {item.color.description}
           </Type>
           <div>
             {item.options.map((option) => {
               return (
-                <Option option={option} key={option}>
+                <Option option={option} key={Object.keys(option)[0]}>
                   <Capitalize>{Object.keys(option)[0]}</Capitalize> -{' '}
-                  {Object.values(option)[0]}
+                  {option[Object.keys(option)[0]].option}
                 </Option>
               );
             })}

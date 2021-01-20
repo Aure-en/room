@@ -5,6 +5,7 @@ const colors = {
   primary: 'hsl(0, 0%, 45%)', // Grey
   secondary: 'hsl(0, 0%, 27%)', // Darker grey - background
   tertiary: 'hsl(0, 0%, 0%)', // Black
+  quaternary: 'hsl(0, 0%, 55%)'
 };
 
 const Container = styled.div`
@@ -35,9 +36,17 @@ const Price = styled.div`
   justify-self: end;
 `;
 
-const Type = styled.span`
+const Type = styled.div`
   font-size: 0.9rem;
   color: ${colors.primary};
+`;
+
+const Option = styled(Type)`
+  color: ${colors.quaternary};
+`;
+
+const Capitalize = styled.span`
+  text-transform: capitalize;
 `;
 
 const Review = styled.div`
@@ -64,7 +73,15 @@ function CartPreview({ cart }) {
               <Image src={product.image} alt='Product preview'></Image>
               <div>
                 <Name>{product.name}</Name>
-                <Type>{product.type} in {product.color}</Type>
+                <Type>{product.type} in {product.color.description}</Type>
+                {product.options.map((option) => {
+                    return (
+                      <Option option={option} key={Object.keys(option)[0]}>
+                        <Capitalize>{Object.keys(option)[0]}</Capitalize> -{' '}
+                        {option[Object.keys(option)[0]].option}
+                      </Option>
+                    );
+                  })}
               </div>
               <div>{product.quantity}</div>
               <Price>£{product.price}</Price>

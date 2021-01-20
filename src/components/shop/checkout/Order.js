@@ -64,6 +64,10 @@ const Type = styled.div`
   color: ${colors.small};
 `;
 
+const Capitalize = styled.span`
+  text-transform: capitalize;
+`;
+
 const Quantity = styled.div`
   font-size: 0.9rem;
   justify-self: end;
@@ -125,8 +129,16 @@ function Order() {
                 <div>
                   <Name>{item.name}</Name>
                   <Type>
-                    {item.type} in {item.color}
+                    {item.type} in {item.color.description}
                   </Type>
+                  {item.options.map((option) => {
+                    return (
+                      <div option={option} key={Object.keys(option)[0]}>
+                        <Capitalize>{Object.keys(option)[0]}</Capitalize> -{' '}
+                        {option[Object.keys(option)[0]].option}
+                      </div>
+                    );
+                  })}
                 </div>
                 <Quantity>{item.quantity}</Quantity>
                 <Price>£{item.price}</Price>

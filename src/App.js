@@ -6,7 +6,6 @@ import Home from './routes/Home'
 import Contact from './routes/Contact'
 import Shop from './routes/shop/Shop'
 import Account from './routes/shop/account/Account';
-import HandleShop from './routes/HandleShop';
 import Modal from 'react-modal';
 
 Modal.setAppElement('#root');
@@ -20,7 +19,6 @@ function App() {
               <Route exact path='/' component={Home} />
               <Route exact path='/about' component={About} />
               <Route exact path='/contact' component={Contact} />
-              <Route exact path='/handleshop' component={HandleShop} />
               <Route path='/shop' component={Shop} />
               <Route path='/account' component={Account} />
             </Switch>

@@ -8,7 +8,6 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  cursor: zoom-in;
 `;
 
 const ImageContainer = styled.div`
@@ -27,12 +26,14 @@ const Zoom = styled.div`
   z-index: ${(props) => (props.isZooming ? '2' : '-1')};
   background-repeat: no-repeat;
   transition: all ease-in;
+  cursor: zoom-out;
 `;
 
 const Image = styled.img`
   height: 100%;
   width: 100%;
   object-fit: cover;
+  cursor: zoom-in;
 `;
 
 function ImageMagnifier({ image }) {

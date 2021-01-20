@@ -11,5 +11,5 @@ export function useStorage() {
       .then((snapshot) => snapshot.ref.getDownloadURL());
   };
 
-  return [uploadItemImage];
+  return { uploadItemImage };
 }

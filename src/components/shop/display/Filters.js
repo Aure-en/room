@@ -408,7 +408,6 @@ function Filters({ items, handleFilters }) {
         </Filter>
         <Row>
           <Range
-            type='range'
             min={price.min}
             max={price.max}
             step={0.5}
