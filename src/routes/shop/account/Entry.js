@@ -19,6 +19,7 @@ const Container = styled.div`
   flex: 1;
   background: url(${background});
   background-size: cover;
+  padding: 3rem 0;
 `;
 
 const Main = styled.div`

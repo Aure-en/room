@@ -13,8 +13,8 @@ const ShopList = styled.ul`
 `;
 
 const Shop = styled.div`
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: auto 1fr;
   padding-top: 5rem;
   max-width: 80%;
 `;

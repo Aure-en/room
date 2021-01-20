@@ -284,7 +284,7 @@ function Addresses() {
           <AddressBook>
             {addresses.map((address) => {
               return (
-                <>
+                <React.Fragment key={address.id}>
                   <Address>
                     <strong>
                       {address.firstName} {address.lastName}
@@ -447,7 +447,7 @@ function Addresses() {
                       <Message>{messageEdit}</Message>
                     </Form>
                   </EditModal>
-                </>
+                </React.Fragment>
               );
             })}
           </AddressBook>

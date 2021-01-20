@@ -135,6 +135,12 @@ const Button = styled.button`
   align-self: center;
   padding: 0.5rem 1rem;
   cursor: pointer;
+
+  &:disabled {
+    background: ${colors.input};
+    cursor: not-allowed;
+  }
+
 `;
 
 const Preview = styled.div`
@@ -152,6 +158,13 @@ const Row = styled.div`
   grid-template-columns: 1fr auto;
 `;
 
+const Message = styled.div`
+  text-align: center;
+  font-size: 0.825rem;
+  color: ${colors.primary};
+  margin-top: 0.25rem;
+`;
+
 function AddShopItem() {
   const [name, setName] = useState('');
   const [price, setPrice] = useState(0);
@@ -160,10 +173,10 @@ function AddShopItem() {
     height: 0,
     width: 0,
   });
-  const [materials, setMaterials] = useState(['']);
+  const [materials, setMaterials] = useState(['', '', '']);
   const [images, setImages] = useState([]);
   const [description, setDescription] = useState(['']);
-  const [categories, setCategories] = useState(['']);
+  const [categories, setCategories] = useState(['', '', '']);
   const [colors, setColors] = useState([
     {
       description: '',
@@ -195,7 +208,9 @@ function AddShopItem() {
     },
   ]);
   const [imagesPreview, setImagesPreview] = useState([]);
-  const [seats, setSeats] = useState([1]);
+  const [seats, setSeats] = useState([]);
+  const [type, setType] = useState('');
+  const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
   const { createItem, addItem } = useFirestore();
@@ -203,6 +218,8 @@ function AddShopItem() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setMessage('');
+    setLoading(true);
 
     const item = await createItem();
     const itemId = item.id;
@@ -333,34 +350,27 @@ function AddShopItem() {
       queries.seats = seats;
     }
 
-    console.log(
-      itemId,
-      name,
-      price,
-      dimensions,
-      imagesUrls,
-      description,
-      formattedColors,
-      formattedAdditional,
-      formattedOptions,
-      formattedCategories,
-      queries
-    )
-
     // Adds the shop item information in the firestore.
-    addItem(
-      itemId,
-      name,
-      price,
-      dimensions,
-      imagesUrls,
-      description,
-      formattedColors,
-      formattedAdditional,
-      formattedOptions,
-      formattedCategories,
-      queries
-    );
+    try {
+      addItem(
+        itemId,
+        name,
+        price,
+        type,
+        dimensions,
+        imagesUrls,
+        description,
+        formattedColors,
+        formattedAdditional,
+        formattedOptions,
+        formattedCategories,
+        queries
+      );
+      setMessage('The item has been successfully added.')
+    } catch (e) {
+      setMessage('Sorry, we could not add the item.')
+    }
+    setLoading(false);
   };
 
   const addImages = (e) => {
@@ -380,7 +390,7 @@ function AddShopItem() {
       <Heading>Add an item to the shop</Heading>
       <Form onSubmit={handleSubmit}>
         <Category>General</Category>
-        <Fields fields={2}>
+        <Fields fields={3}>
           <Field>
             <Label htmlFor='name'>Name</Label>
             <Input
@@ -402,6 +412,18 @@ function AddShopItem() {
               type='number'
               value={price}
               onChange={(e) => setPrice(+e.target.value)}
+              required
+            />
+          </Field>
+
+          <Field>
+            <Label htmlFor='type'>Type</Label>
+            <Input
+              id='type'
+              name='type'
+              type='text'
+              value={type}
+              onChange={(e) => setType(e.target.value)}
               required
             />
           </Field>
@@ -1120,7 +1142,8 @@ function AddShopItem() {
           </Preview>
         </Field>
 
-        <Button type='submit'>Add an item</Button>
+        <Button type='submit' disabled={loading}>Add an item</Button>
+        <Message>{message}</Message>
       </Form>
     </Container>
   );

@@ -34,7 +34,7 @@ const Container = styled.nav`
   background: ${colors.secondary};
   font-size: 0.825rem;
   font-family: 'Source Sans Pro', sans-serif;
-  transition: all 0.3s linear;
+  transition: all 0.15s linear;
   transform: translateX(${(props) => (props.isNavOpen ? '0' : '-100')}%);
 
   @media all and (max-width: 600px) {

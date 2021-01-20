@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import Modal from 'react-modal';
 import { useAuth } from '../../../contexts/AuthContext';
 import { useUserSettings } from '../../../hooks/useUserSettings';
 import { useFirestore } from '../../../hooks/useFirestore';
-import AccountNav from '../../../components/shop/account/AccountNav';
-import styled from 'styled-components';
 
 // Styled Components
 const colors = {
@@ -12,6 +12,7 @@ const colors = {
   tertiary: 'hsl(0, 0%, 90%)',
   input: 'hsl(0, 0%, 70%)', // Input lines
   black: 'hsl(0, 0%, 0%)',
+  background: 'hsl(0, 0%, 100%)'
 };
 
 const Heading = styled.h1`
@@ -19,6 +20,14 @@ const Heading = styled.h1`
   font-size: 2rem;
   line-height: 2.75rem;
   font-family: 'Playfair Display', sans-serif;
+`;
+
+const Subheading = styled.h2`
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  line-height: 1.5rem;
+  font-family: 'Playfair Display', sans-serif;
+  text-align: center;
 `;
 
 const Form = styled.form`
@@ -67,27 +76,65 @@ const Message = styled.div`
   margin-top: 0.25rem;
 `;
 
+const Buttons = styled.div`
+  margin: 0 auto;
+  
+  & > *:first-child {
+    margin-right: 1rem;
+  }
+
+`;
+
 const Button = styled.button`
   margin-top: 1.5rem;
   font-family: 'Source Sans Pro', sans-serif;
   text-transform: uppercase;
-  font-size: 0.9rem;
   color: ${colors.tertiary};
   background: ${colors.secondary};
+  border: 1px solid ${colors.secondary};
   align-self: center;
   padding: 0.5rem 1rem;
   cursor: pointer;
 `;
 
+const ButtonEmpty = styled(Button)`
+  background: transparent;
+  color: ${colors.secondary};
+  border: 1px solid ${colors.secondary};
+
+  &:hover {
+    color: ${colors.dark};
+  }
+`;
+
+const DeleteModal = styled(Modal)`
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid black;
+  padding: 3rem;
+  max-width: 30rem;
+  text-align: justify;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: ${colors.background};
+
+  & > p:first-of-type {
+    margin-bottom: 1rem;
+  }
+`;
+
 function Settings() {
-  const { currentUser } = useAuth();
-  const { getUserName, updateFirstName, updateLastName } = useFirestore();
+  const { currentUser, deleteUser } = useAuth();
+  const { getUserName, updateFirstName, updateLastName, deleteUserData } = useFirestore();
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [currentName, setCurrentName] = useState({
     firstName: '',
     lastName: '',
   });
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const {
     email,
     setEmail,
@@ -142,6 +189,11 @@ function Settings() {
     }
   };
 
+  const handleDeleteUser = async () => {
+    await deleteUserData(currentUser.uid);
+    deleteUser();
+  }
+
   return (
     <section>
       <Heading>Settings</Heading>
@@ -156,6 +208,7 @@ function Settings() {
               id='first_name'
               onChange={(e) => setFirstName(e.target.value)}
               placeholder='Enter your first name'
+              required
             />
           </Field>
 
@@ -167,6 +220,7 @@ function Settings() {
               id='last_name'
               onChange={(e) => setLastName(e.target.value)}
               placeholder='Enter your last name'
+              required
             />
           </Field>
 
@@ -178,6 +232,7 @@ function Settings() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder='Enter your email'
+              required
             />
             {emailError && <Message>{emailError}</Message>}
           </Field>
@@ -225,9 +280,26 @@ function Settings() {
           </Field>
         </Fields>
 
-        <Button type='submit'>Save Changes</Button>
+        <Buttons>
+          <Button type='submit'>Save Changes</Button>
+          <ButtonEmpty type='button' onClick={() => setIsDeleteModalOpen(true)}>Delete Account</ButtonEmpty>
+        </Buttons>
         <Message>{message}</Message>
       </Form>
+
+      <DeleteModal
+        isOpen={isDeleteModalOpen}
+        onRequestClose={() => setIsDeleteModalOpen(false)}>
+        <Subheading>Delete your account</Subheading>
+        <p>If you delete your account, you will become unable to recover your saved addresses, payment cards, and favorite items.
+        You will, however, be able to continue tracking your orders with their numbers and your mail address.</p>
+        <p>Are you sure you would like to delete your account?</p>
+        <Buttons>
+          <Button onClick={handleDeleteUser}>Delete</Button>
+          <ButtonEmpty onClick={() => setIsDeleteModalOpen(false)}>Cancel</ButtonEmpty>
+        </Buttons>
+      </DeleteModal>
+
     </section>
   );
 }

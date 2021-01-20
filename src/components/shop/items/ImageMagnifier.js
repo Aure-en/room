@@ -26,14 +26,14 @@ const Zoom = styled.div`
   z-index: ${(props) => (props.isZooming ? '2' : '-1')};
   background-repeat: no-repeat;
   transition: all ease-in;
-  cursor: zoom-out;
+  cursor: pointer;
 `;
 
 const Image = styled.img`
   height: 100%;
   width: 100%;
   object-fit: cover;
-  cursor: zoom-in;
+  cursor: pointer;
 `;
 
 function ImageMagnifier({ image }) {

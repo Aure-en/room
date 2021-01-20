@@ -223,7 +223,7 @@ function Personal({ location }) {
                 <Addresses>
                   {addresses.map(address => {
                     return (
-                      <div>
+                      <div key={address.id}>
                         <div>{address.firstName} {address.lastName}</div>
                         <div>{address.address}</div>
                         <div>{address.zipCode} {address.city}</div>

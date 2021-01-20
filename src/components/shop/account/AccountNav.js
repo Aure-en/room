@@ -45,8 +45,8 @@ const CurrentLink = styled.span`
     position: absolute;
     background: ${colors.secondary};
     transition: height 0.3s ease 0s, top 0.3s ease 0s;
-    height: 110%;
-    top: -5%;
+    height: ${(props) => (props.isSelected ? '110%' : '0')};
+    top: ${(props) => (props.isSelected ? '-5%' : '50%')};
   }
 `;
 
@@ -63,7 +63,7 @@ function AccountNav({ currentLink }) {
     <Nav>
       {links.map((link) => {
         return currentLink === link ? (
-          <CurrentLink key={link}>{link}</CurrentLink>
+          <CurrentLink key={link} isSelected={currentLink === link}>{link}</CurrentLink>
         ) : (
           <NavLink to={`/account/${link}`} key={link}>{link}</NavLink>
         );

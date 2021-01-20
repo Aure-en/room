@@ -38,10 +38,6 @@ export function AuthProvider({ children }) {
     return auth.sendPasswordResetEmail(email)
   }
 
-  const deleteUser = () => {
-    return currentUser.delete();
-  }
-
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setCurrentUser(user);
@@ -57,8 +53,7 @@ export function AuthProvider({ children }) {
     signInAnonymously,
     signUpFromAnonymous,
     currentUser,
-    resetPassword,
-    deleteUser
+    resetPassword
   }
 
   return (

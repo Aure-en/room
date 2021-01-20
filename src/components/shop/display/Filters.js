@@ -231,7 +231,7 @@ function Filters({ items, handleFilters }) {
     // Set materials filters
     const materialsList = new Set();
     for (const item of items) {
-      for (const material of item.materials) {
+      for (const material of item.queries.materials) {
         if (!materialsList.has(material)) materialsList.add(material);
       }
     }

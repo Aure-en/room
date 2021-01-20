@@ -48,6 +48,7 @@ export function useFirestore() {
     id,
     name,
     price,
+    type,
     dimensions,
     images,
     description,
@@ -63,15 +64,17 @@ export function useFirestore() {
       .set({
         id,
         name,
-        images,
         price,
+        type,
         dimensions,
+        images,
         description,
         colors,
         additional,
         options,
         categories,
-        queries
+        queries,
+        new: false
       });
   };
 
@@ -204,10 +207,6 @@ export function useFirestore() {
     const user = await firestore.collection('users').doc(userId).get();
     return user.data();
   };
-
-  const deleteUser = (userId) => {
-    return firestore.collection.doc(userId).delete();
-  }
 
   // -- ADDRESSES --
 
@@ -446,7 +445,6 @@ export function useFirestore() {
     cartListener,
     createUser,
     getUser,
-    deleteUser,
     addAddress,
     deleteAddress,
     editAddress,
