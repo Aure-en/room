@@ -13,10 +13,13 @@ const colors = {
   primary: 'hsl(0, 0%, 0%)', // Black
   secondary: 'hsl(0, 0%, 45%)', // Grey
   tertiary: 'hsl(0, 0%, 70%)', // Bright grey
+  quaternary: 'hsl(0, 0%, 27%)',
+  new: 'hsl(0, 0%, 85%)',
 };
 
 const Container = styled.div`
-  padding: 2rem;
+  position: relative;
+  padding: 2.5rem;
   border: 1px solid transparent;
 
   &:hover {
@@ -24,9 +27,30 @@ const Container = styled.div`
   }
 `;
 
+const New = styled.span`
+  position: absolute;
+  font-size: 0.825rem;
+  text-transform: uppercase;
+  color: ${colors.new};
+  background: ${colors.quaternary};
+  padding: 0.2rem 0.35rem;
+  border-radius: 2px;
+  top: 0.5rem;
+  left: 0.5rem;
+`;
+
+const ImageContainer = styled.div`
+  margin-bottom: 0.5rem;
+  min-width: 10rem;
+  min-height: 10rem;
+  width: 10vw;
+  height: 10vw;
+`;
+
 const Image = styled.img`
   max-width: 100%;
-  margin-bottom: 0.5rem;
+  max-height: 100%;
+  object-fit: cover;
 `;
 
 const Name = styled.div`
@@ -49,7 +73,7 @@ const Icon = styled.span`
   cursor: pointer;
 `;
 
-function ShopItemPreview({ name, images, price, id, isFavorite }) {
+function ShopItemPreview({ name, images, price, id, isFavorite, isNew }) {
   const [image, setImage] = useState(images[0]);
   const { addFavorite, deleteFavorite } = useFavorite();
   const { currentUser, signInAnonymously } = useAuth();
@@ -67,16 +91,19 @@ function ShopItemPreview({ name, images, price, id, isFavorite }) {
       userId = user.user.uid;
     }
     isFavorite ? deleteFavorite(userId, id) : addFavorite(userId, id);
-  }
+  };
 
   return (
     <Container>
       <Link to={`/shop/item/${id}`}>
-        <Image
-          src={image}
-          onMouseOver={changeImage}
-          onMouseLeave={changeImage}
-        />
+        {isNew && <New>New</New>}
+        <ImageContainer>
+          <Image
+            src={image}
+            onMouseOver={changeImage}
+            onMouseLeave={changeImage}
+          />
+        </ImageContainer>
       </Link>
       <Description>
         <div>

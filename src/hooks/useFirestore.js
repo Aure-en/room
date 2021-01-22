@@ -31,6 +31,16 @@ export function useFirestore() {
     return itemsList;
   };
 
+  const getNewItems = async () => {
+    const itemsList = [];
+    const items = await firestore
+      .collection('products')
+      .where('new', '==', true)
+      .get();
+    items.docs.map((doc) => itemsList.push(doc.data()));
+    return itemsList;
+  };
+
   // Gets an item's data
   const getItem = async (id) => {
     const doc = await firestore.collection('products').doc(id).get();
@@ -58,30 +68,31 @@ export function useFirestore() {
     categories,
     queries
   ) => {
-    return firestore
-      .collection('products')
-      .doc(id)
-      .set({
-        id,
-        name,
-        price,
-        type,
-        dimensions,
-        images,
-        description,
-        colors,
-        additional,
-        options,
-        categories,
-        queries,
-        new: false
-      });
+    return firestore.collection('products').doc(id).set({
+      id,
+      name,
+      price,
+      type,
+      dimensions,
+      images,
+      description,
+      colors,
+      additional,
+      options,
+      categories,
+      queries,
+      new: false,
+    });
   };
 
   // Search for an item
   const searchItem = (query) => {
-    return firestore.collection('products').where('name', '>=', query).where('name', '<=', query+'\uf8ff').get();
-  }
+    return firestore
+      .collection('products')
+      .where('name', '>=', query)
+      .where('name', '<=', query + '\uf8ff')
+      .get();
+  };
 
   // -- CART --
 
@@ -293,7 +304,7 @@ export function useFirestore() {
         city,
         country,
         phone,
-        email
+        email,
       });
   };
 
@@ -352,13 +363,18 @@ export function useFirestore() {
   };
 
   const editCard = (userId, id, name, number, date, cvc) => {
-    return firestore.collection('users').doc(userId).collection('cards').doc(id).update({
-      name,
-      number,
-      date,
-      cvc
-    })
-  }
+    return firestore
+      .collection('users')
+      .doc(userId)
+      .collection('cards')
+      .doc(id)
+      .update({
+        name,
+        number,
+        date,
+        cvc,
+      });
+  };
 
   const cardListener = (userId, callback) => {
     return firestore
@@ -366,7 +382,7 @@ export function useFirestore() {
       .doc(userId)
       .collection('cards')
       .onSnapshot(callback);
-  }
+  };
 
   // -- ORDERS --
 
@@ -397,10 +413,16 @@ export function useFirestore() {
   // Search order
   const searchOrder = async (email, id) => {
     let order;
-    const query = await firestore.collection('orders').where('shipping.email', '==', email).where('id', '==', id).get();
-    query.forEach((doc) => { order = doc.data(); });
+    const query = await firestore
+      .collection('orders')
+      .where('shipping.email', '==', email)
+      .where('id', '==', id)
+      .get();
+    query.forEach((doc) => {
+      order = doc.data();
+    });
     return order;
-  }
+  };
 
   // Get a user's orders
   const getOrders = async (userId) => {
@@ -433,6 +455,7 @@ export function useFirestore() {
     getShopCategories,
     getShopItems,
     getCategoryItems,
+    getNewItems,
     createItem,
     addItem,
     getItem,

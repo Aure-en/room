@@ -19,7 +19,7 @@ const Shop = styled.div`
   max-width: 80%;
 `;
 
-function Category({ match }) {
+function NewIn() {
   const [items, setItems] = useState([]); // All items that belong in the category
   const [filters, setFilters] = useState({
     colors: [],
@@ -32,18 +32,16 @@ function Category({ match }) {
     }
   });
   const [displayedItems, setDisplayedItems] = useState([]); // Items displayed after filters are applied
-  const { getCategoryItems } = useFirestore();
+  const { getNewItems } = useFirestore();
   const { favorites } = useFavorite();
 
   // Loads all category items and sets up filters
   useEffect(() => {
     (async () => {
-      const itemsList = await getCategoryItems(
-        decodeURIComponent(match.params.category)
-      );
+      const itemsList = await getNewItems();
       setItems(itemsList);
     })();
-  }, [match]);
+  }, []);
 
   // Modify filters
   const handleFilters = (field, value) => {
@@ -111,4 +109,4 @@ function Category({ match }) {
   );
 }
 
-export default Category;
+export default NewIn;

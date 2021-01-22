@@ -30,6 +30,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   margin-top: 2rem;
+  padding: 1rem 0 5rem 0;
 `;
 
 const Center = styled.section`
@@ -75,6 +76,7 @@ const Description = styled.div`
 
 const Details = styled.div`
   margin-left: 5rem;
+  min-width: 30rem;
 
   & > * {
     margin-bottom: 1.5rem;
@@ -259,7 +261,6 @@ const DropdownColumn = styled.div`
 const Column = styled.div`
   display: flex;
   flex-direction: column;
-  width: 168px; // Size of button
 `;
 
 const Message = styled.div`

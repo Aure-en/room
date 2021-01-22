@@ -16,6 +16,7 @@ import HandleShop from '../HandleShop';
 import Tracking from './orders/Tracking';
 import Main from './Main';
 import Footer from '../../components/shop/nav/Footer';
+import NewIn from './NewIn';
 
 const Wrapper = styled.div`
   display: flex;
@@ -50,6 +51,7 @@ function Shop({ match }) {
           <Route exact path={`${match.path}/tracking`} component={Tracking} />
           <Route exact path={`${match.path}/handleshop`} component={HandleShop} />
           <Route exact path={`${match.path}/item/:itemId`} component={ItemDetails} />
+          <Route exact path={`${match.path}/new_in`} component={NewIn} />
           <Route exact path={`${match.path}/:category`} component={Category} />
         </Switch>
       </Container>
