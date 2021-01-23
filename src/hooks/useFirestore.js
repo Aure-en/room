@@ -47,6 +47,42 @@ export function useFirestore() {
     return doc.data();
   };
 
+  // Gets similar items to recommend them to the user
+  const getRecommendations = async (id) => {
+    const item = await getItem(id);
+    const recommendations = [];
+
+    const sameCollection = await firestore
+      .collection('products')
+      .where('name', '==', item.name)
+      .where('id', '!=', item.id)
+      .limit(12)
+      .get();
+
+    const sameCategory = await firestore
+      .collection('products')
+      .where(
+        'categories',
+        'array-contains',
+        item.categories[item.categories.length - 1]
+      )
+      .limit(12)
+      .get();
+
+    sameCollection.docs.forEach((item) => recommendations.push(item.data()));
+    sameCategory.docs.forEach((item) => recommendations.push(item.data()));
+    return recommendations;
+  };
+
+  // Get designed rooms
+  const getDesigns = async () => {
+    const designsList = [];
+
+    const designs = await firestore.collection('designs').get();
+    designs.docs.forEach((design) => designsList.push(design.data()));
+    return designsList;
+  };
+
   // Create a document where we'll store an item.
   // Returns the id we will attribute to the item.
   const createItem = async () => {
@@ -54,7 +90,7 @@ export function useFirestore() {
   };
 
   // Puts the item data in the document.
-  const addItem = (
+  const addItem = async (
     id,
     name,
     price,
@@ -68,7 +104,7 @@ export function useFirestore() {
     categories,
     queries
   ) => {
-    return firestore.collection('products').doc(id).set({
+    await firestore.collection('products').doc(id).set({
       id,
       name,
       price,
@@ -83,6 +119,7 @@ export function useFirestore() {
       queries,
       new: false,
     });
+    return id;
   };
 
   // Search for an item
@@ -427,7 +464,11 @@ export function useFirestore() {
   // Get a user's orders
   const getOrders = async (userId) => {
     const ordersList = [];
-    const orders = await firestore.collection('orders').orderBy('date').get();
+    const orders = await firestore
+      .collection('orders')
+      .where('user', '==', userId)
+      .orderBy('date')
+      .get();
     orders.forEach((order) => ordersList.push(order.data()));
     return ordersList;
   };
@@ -455,6 +496,8 @@ export function useFirestore() {
     getShopCategories,
     getShopItems,
     getCategoryItems,
+    getRecommendations,
+    getDesigns,
     getNewItems,
     createItem,
     addItem,

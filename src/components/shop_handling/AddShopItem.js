@@ -352,7 +352,7 @@ function AddShopItem() {
 
     // Adds the shop item information in the firestore.
     try {
-      addItem(
+      const id = await addItem(
         itemId,
         name,
         price,
@@ -366,7 +366,7 @@ function AddShopItem() {
         formattedCategories,
         queries
       );
-      setMessage('The item has been successfully added.')
+      setMessage(`The item has been successfully added. Item Id: ${id}.`)
     } catch (e) {
       setMessage('Sorry, we could not add the item.')
     }

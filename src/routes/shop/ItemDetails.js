@@ -7,6 +7,7 @@ import { useFavorite } from '../../contexts/FavoriteContext';
 import { formatNavLink } from '../../utils/utils';
 import ImagesPreview from '../../components/shop/items/ImagesPreview';
 import { CSSTransition } from 'react-transition-group';
+import Recommendations from '../../components/shop/display/Recommendations'
 
 // Icons
 import { ReactComponent as AngleRight } from '../../assets/icons/icon-small-arrow.svg';
@@ -27,6 +28,7 @@ const colors = {
 
 const Container = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   margin-top: 2rem;
@@ -577,6 +579,7 @@ function ItemDetails({ match }) {
           </Informations>
         </Center>
       )}
+      {Object.keys(item).length !== 0 && <Recommendations id={item.id} />}
     </Container>
   );
 }

@@ -216,6 +216,11 @@ const Message = styled(Error)`
   cursor: pointer;
 `;
 
+const BasketIcon = styled(Basket)`
+  max-width: 30rem;
+  max-height: 30rem;
+`;
+
 function Cart() {
   const [cart, setCart] = useState([]);
   const { getCart, cartListener } = useFirestore();
@@ -257,7 +262,7 @@ function Cart() {
       return (
         <EmptyCart>
           <Heading>Shopping Cart</Heading>
-          <Basket />
+          <BasketIcon />
           <EmptyCartText>Oh no, it seems that your cart is empty.</EmptyCartText>
           <div>We have a lot of lovely ideas to help you fill it.</div>
           <Link to='/shop'><Button>Inspire Me</Button></Link>

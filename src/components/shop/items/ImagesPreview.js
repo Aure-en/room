@@ -3,7 +3,7 @@ import ImageMagnifier from './ImageMagnifier';
 import styled from 'styled-components';
 import { CSSTransition } from 'react-transition-group';
 
-// Svgs
+// Icons
 import { ReactComponent as AngleLeft } from '../../../assets/icons/icon-angle-left.svg';
 import { ReactComponent as AngleRight } from '../../../assets/icons/icon-angle-right.svg';
 

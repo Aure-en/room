@@ -146,12 +146,14 @@ function Carousel() {
 
   const cardRef = useRef();
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [slides, setSlides] = useState([...images]);
-  const [transition, setTransition] = useState(0);
+  const [slides, setSlides] = useState([images[images.length - 1], ...images]);
+  const [transition, setTransition] = useState(-100);
   const [transitionDuration, setTransitionDuration] = useState(0.3);
+  const [isNext, setIsNext] = useState(false); // Indicates the carousel direction (previous/next)
 
   // Functions
   const next = () => {
+    setIsNext(true);
     setTransition((prev) => prev - 100);
     setCurrentSlide((prev) => {
       return prev === images.length - 1 ? 0 : prev + 1;
@@ -160,10 +162,12 @@ function Carousel() {
   };
 
   const previous = () => {
+    setIsNext(false);
     setTransition((prev) => prev + 100);
     setCurrentSlide((prev) => {
       return prev === 0 ? images.length - 1 : prev - 1;
     });
+    cardRef.current.classList.add('active');
   };
 
   /* At the end of each transition:
@@ -173,13 +177,27 @@ function Carousel() {
   */
   const handleTransitionEnd = () => {
     setTransitionDuration(0);
-    setTransition(0);
-    setSlides((prev) => {
-      const slides = [...prev];
-      const prevSlide = slides.shift();
-      slides.push(prevSlide);
-      return slides;
-    });
+    setTransition(-100);
+
+    if (isNext) {
+      setSlides((prev) => {
+        const slides = [...prev];
+        slides.pop();
+        const prevSlide = slides.shift();
+        slides.push(prevSlide);
+        slides.push(slides[0]);
+        return slides;
+      });
+    } else {
+      setSlides((prev) => {
+        const slides = [...prev];
+        slides.shift();
+        const lastSlide = slides.pop();
+        slides.unshift(lastSlide);
+        slides.unshift(slides[slides.length - 1]);
+        return slides;
+      })
+    }
     cardRef.current.classList.remove('active');
   };
 
