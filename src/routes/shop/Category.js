@@ -4,7 +4,6 @@ import { useFirestore } from '../../hooks/useFirestore';
 import { useFavorite } from '../../contexts/FavoriteContext';
 import styled from 'styled-components';
 import Filter from '../../components/shop/display/Filters';
-import Designs from '../../components/shop/display/Designs';
 
 const ShopList = styled.ul`
   display: grid;

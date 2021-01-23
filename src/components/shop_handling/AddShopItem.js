@@ -285,7 +285,7 @@ function AddShopItem() {
     for (const material of formattedMaterials) {
       queries.search.concat(...material.split('_'));
     }
-    queries.search.concat(...name.split(' '));
+    queries.search = queries.search.concat(...name.toLowerCase().split(' '));
 
     // Material filters
     queries.materials = formattedMaterials;

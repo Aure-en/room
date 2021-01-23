@@ -83,6 +83,12 @@ export function useFirestore() {
     return designsList;
   };
 
+  // Get specific design data
+  const getDesign = async (id) => {
+    const design = await firestore.collection('designs').doc(id).get();
+    return design.data();
+  }
+
   // Create a document where we'll store an item.
   // Returns the id we will attribute to the item.
   const createItem = async () => {
@@ -497,6 +503,7 @@ export function useFirestore() {
     getShopItems,
     getCategoryItems,
     getRecommendations,
+    getDesign,
     getDesigns,
     getNewItems,
     createItem,

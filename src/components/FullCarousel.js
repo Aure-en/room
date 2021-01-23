@@ -92,7 +92,7 @@ const Button = styled.button`
   background: ${colors.button};
   padding: 1.5rem 1rem;
   cursor: pointer;
-  color: ${colors.text};
+  color: ${colors.arrow};
 
   &:hover {
     background: ${colors.buttonHover};
@@ -126,8 +126,8 @@ function FullCarousel() {
       link: '/shop/new_in',
     },
     {
-      title: 'Featured Look',
-      text: "Discover our designers' seasonal creation.",
+      title: 'Featured Designs',
+      text: "Discover our designers' seasonal creations.",
       link: '/shop#featured',
     },
   ];

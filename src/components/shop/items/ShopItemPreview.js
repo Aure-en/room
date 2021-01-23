@@ -41,8 +41,8 @@ const New = styled.span`
 
 const ImageContainer = styled.div`
   margin-bottom: 0.5rem;
-  min-width: 10rem;
-  min-height: 10rem;
+  min-width: 12.5rem;
+  min-height: 12.5rem;
   width: 10vw;
   height: 10vw;
 `;

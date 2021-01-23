@@ -158,7 +158,6 @@ function Designs({ designs }) {
       slidesGroups[slidesGroups.length - 1].push(null);
     }
     setSlidesGroups([slidesGroups[slidesGroups.length - 1], ...slidesGroups]);
-    console.log(slidesGroups);
   }, []);
 
   return (
