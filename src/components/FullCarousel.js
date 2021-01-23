@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
+import { HashLink } from 'react-router-hash-link';
 
 // Images
 import { ReactComponent as AngleLeft } from '../assets/icons/icon-angle-left.svg';
@@ -12,7 +13,7 @@ const colors = {
   arrow: 'hsl(0, 0%, 100%)',
   button: 'hsl(0, 0%, 27%)',
   buttonHover: 'hsl(0, 0%, 5%)',
-  text: 'hsl(0, 0%, 0%)'
+  text: 'hsl(0, 0%, 0%)',
 };
 
 const Container = styled.div`
@@ -34,23 +35,34 @@ const Text = styled.div`
   top: 50%;
   transform: translateY(-50%);
   color: ${colors.arrow};
-  font-size: 1.75rem;
-  line-height: 3.25rem;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  font-size: 1.25rem;
+  line-height: 2.5rem;
+
+  @media all and (min-width: 768px) {
+    font-size: 1.75rem;
+    line-height: 3.25rem;
+    align-items: flex-start;
+  }
 `;
 
 const Title = styled.div`
   text-transform: uppercase;
-  font-size: 3.75rem;
-  letter-spacing: 6px;
+  font-size: 2.5rem;
+  letter-spacing: 3px;
+
+  @media all and (min-width: 768px) {
+    font-size: 3.75rem;
+    letter-spacing: 6px;
+  }
 `;
 
 const ShopButton = styled.span`
   background: ${colors.arrow};
   padding: 0 1rem;
-  margin-top: .5rem;
+  margin-top: 0.5rem;
   color: ${colors.button};
   text-transform: uppercase;
   font-size: 1.125rem;
@@ -136,12 +148,16 @@ function FullCarousel() {
 
   // Functions
   const next = () => {
-    currentSlide === images.length - 1 ? setCurrentSlide(0) : setCurrentSlide((prev) => prev + 1);
+    currentSlide === images.length - 1
+      ? setCurrentSlide(0)
+      : setCurrentSlide((prev) => prev + 1);
     setIsChanging(true);
   };
 
   const previous = () => {
-    currentSlide === 0 ? setCurrentSlide(images.length + 1) : setCurrentSlide((prev) => prev - 1);
+    currentSlide === 0
+      ? setCurrentSlide(images.length + 1)
+      : setCurrentSlide((prev) => prev - 1);
     setIsChanging(true);
   };
 
@@ -159,9 +175,19 @@ function FullCarousel() {
             <Text>
               <Title>{text[currentSlide].title}</Title>
               <div>{text[currentSlide].text}</div>
-              <Link to={text[currentSlide].link}>
-                <ShopButton>Shop now <Arrow /></ShopButton>
-              </Link>
+              {text[currentSlide].link.includes('#') ? (
+                <HashLink to={text[currentSlide].link}>
+                  <ShopButton>
+                    Shop now <Arrow />
+                  </ShopButton>
+                </HashLink>
+              ) : (
+                <Link to={text[currentSlide].link}>
+                  <ShopButton>
+                    Shop now <Arrow />
+                  </ShopButton>
+                </Link>
+              )}
             </Text>
           </>
         </CSSTransition>

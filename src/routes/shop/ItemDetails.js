@@ -32,7 +32,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   margin-top: 2rem;
-  padding: 1rem 0 5rem 0;
+  padding: 1rem 3rem 5rem 3rem;
 `;
 
 const Center = styled.section`
@@ -77,8 +77,8 @@ const Description = styled.div`
 `;
 
 const Details = styled.div`
-  margin-left: 5rem;
-  min-width: 30rem;
+  padding: 0 5rem;
+  min-width: 20rem;
 
   & > * {
     margin-bottom: 1.5rem;

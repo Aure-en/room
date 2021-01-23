@@ -49,7 +49,7 @@ const Column = styled.div`
   margin: 0 1rem;
 `;
 
-const Category = styled.span`
+const Category = styled(Link)`
   cursor: pointer;
   flex: 1;
   text-align: center;
@@ -64,9 +64,10 @@ const Category = styled.span`
   }
 `;
 
-const Subcategory = styled.span`
+const Subcategory = styled(Link)`
   position: relative;
   display: inline-block;
+  width: 100%;
   color: ${colors.primary};
   text-transform: uppercase;
   cursor: pointer;
@@ -78,11 +79,12 @@ const Subcategory = styled.span`
   }
 `;
 
-const Item = styled.span`
+const Item = styled(Link)`
   padding: 0.25rem 0;
   cursor: pointer;
   display: block;
   color: ${colors.secondary};
+  width: 100%;
   border-bottom: 1px solid transparent;
 
   &:hover {
@@ -119,15 +121,14 @@ function ShopNav() {
           .map((category, index) => {
             return (
               <Category
+                to={`/shop/${encodeURIComponent(category)}`}
                 key={category + index}
                 onMouseOver={() => {
                   setDropdown(true);
                   setHovered(category);
                 }}
               >
-                <Link to={`/shop/${encodeURIComponent(category)}`}>
-                  {formatNavLink(category)}
-                </Link>
+                {formatNavLink(category)}
               </Category>
             );
           })}
@@ -146,20 +147,21 @@ function ShopNav() {
               .map((subcategory, index) => {
                 return (
                   <Column key={subcategory + index}>
-                    <Subcategory>
-                      <Link to={`/shop/${encodeURIComponent(subcategory)}`}>
-                        {formatNavLink(subcategory)}
-                      </Link>
+                    <Subcategory
+                      to={`/shop/${encodeURIComponent(subcategory)}`}
+                    >
+                      {formatNavLink(subcategory)}
                     </Subcategory>
                     <div>
                       {categories[hovered].categories[
                         subcategory
                       ].categories.map((item, index) => {
                         return (
-                          <Item key={item + index}>
-                            <Link to={`/shop/${encodeURIComponent(item)}`}>
-                              {formatNavLink(item)}
-                            </Link>
+                          <Item
+                            key={item + index}
+                            to={`/shop/${encodeURIComponent(item)}`}
+                          >
+                            {formatNavLink(item)}
                           </Item>
                         );
                       })}

@@ -11,9 +11,21 @@ const colors = {
   secondary: 'hsl(0, 0%, 27%)', // Dark Grey
   tertiary: 'hsl(0, 0%, 70%)', // Bright Grey
   text: 'hsl(0, 0%, 85%)',
-  label: 'hsl(0, 0%, 100%)',
-  dark: 'hsl(0, 0%, 0%)',
+  label: 'hsl(0, 0%, 100%)'
 };
+
+const filterColors = {
+  beige: 'hsl(20, 49%, 73%)',
+  black: 'hsl(0, 0%, 0%)',
+  blue: 'hsl(213, 95%, 36%)',
+  brown: 'hsl(20, 35%, 29%)',
+  green: 'hsl(141, 28%, 29%)',
+  grey: 'hsl(0, 0%, 50%)',
+  orange: 'hsl(9, 39%, 51%)',
+  red: 'hsl(0, 50%, 38%)',
+  white: 'hsl(0, 0%, 100%)',
+  yellow: 'hsl(39, 39%, 53%)'
+}
 
 const Container = styled.div`
   line-height: 1.5rem;
@@ -62,11 +74,11 @@ const Color = styled.button`
   font-weight: ${(props) => props.isSelected && '600'};
 
   &:before {
-    background-color: ${(props) => props.color};
+    background-color: ${(props) => filterColors[props.color] || props.color};
   }
 `;
 
-const Material = styled.button`
+const Checkbox = styled.button`
   ${filterButton}
   font-weight: ${(props) => props.isSelected && '600'};
 
@@ -164,6 +176,7 @@ function Filters({ items, handleFilters }) {
   });
   const [price, setPrice] = useState({});
   const [materials, setMaterials] = useState([]);
+  const [seats, setSeats] = useState([]);
 
   // Filters values
   const [currentColors, setCurrentColors] = useState([]);
@@ -174,6 +187,7 @@ function Filters({ items, handleFilters }) {
   });
   const [currentPrice, setCurrentPrice] = useState(Infinity);
   const [currentMaterials, setCurrentMaterials] = useState([]);
+  const [currentSeats, setCurrentSeats] = useState([]);
 
   // Load filter values
   useEffect(() => {
@@ -251,6 +265,17 @@ function Filters({ items, handleFilters }) {
     }
     setPrice(price);
     setCurrentPrice(price.max);
+
+    // Set seats filters
+    const seatsList = new Set();
+    for (const item of items) {
+      if (item.queries.seats) {
+        for (const seat of item.queries.seats) {
+          if (!seatsList.has(seat)) seatsList.add(seat);
+        }
+      }
+    }
+    setSeats(Array.from(seatsList));
   }, [items]);
 
   // Give filters values to parent (Category)
@@ -270,6 +295,10 @@ function Filters({ items, handleFilters }) {
     handleFilters('materials', currentMaterials);
   }, [currentMaterials]);
 
+  useEffect(() => {
+    handleFilters('seats', currentSeats);
+  }, [currentSeats])
+
   // Reset filters
   const reset = () => {
     setCurrentColors([]);
@@ -280,13 +309,14 @@ function Filters({ items, handleFilters }) {
     });
     setCurrentPrice(+price.max);
     setCurrentMaterials([]);
+    setCurrentSeats([]);
   };
 
   return (
     <Container>
       <div>
         <Filter>Colors</Filter>
-        {colors.map((color) => {
+        {colors.sort((a, b) => a.localeCompare(b)).map((color) => {
           return (
             <Color
               key={color}
@@ -377,9 +407,9 @@ function Filters({ items, handleFilters }) {
       <div>
         <Filter>Materials</Filter>
         <div>
-          {materials.map((material) => {
+          {materials.sort((a, b) => a.localeCompare(b)).map((material) => {
             return (
-              <Material
+              <Checkbox
                 key={material}
                 isSelected={currentMaterials.includes(material)}
                 onClick={() =>
@@ -393,7 +423,32 @@ function Filters({ items, handleFilters }) {
                 }
               >
                 {formatNavLink(material)}
-              </Material>
+              </Checkbox>
+            );
+          })}
+        </div>
+      </div>
+
+      <div>
+        <Filter>Seats</Filter>
+        <div>
+          {seats.sort((a, b) => a - b).map((number) => {
+            return (
+              <Checkbox
+                key={number}
+                isSelected={currentSeats.includes(number)}
+                onClick={() =>
+                  setCurrentSeats((prevSeats) => {
+                    return prevSeats.includes(number)
+                      ? [...prevSeats].filter(
+                          (prevMaterial) => prevMaterial !== number
+                        )
+                      : [...prevSeats, number];
+                  })
+                }
+              >
+                {number}
+              </Checkbox>
             );
           })}
         </div>

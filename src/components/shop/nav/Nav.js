@@ -88,11 +88,11 @@ function Nav() {
             <SideNav nav={navRef} />
           </NavIconLink>
           <NavIconLink>
-            <Link to='/shop'><Home /></Link>
+            <Link to='/'><Home /></Link>
           </NavIconLink>
         </NavLeft>
 
-        <Link to='/'>
+        <Link to='/shop'>
           <Brand>
             <Logo />
           </Brand>

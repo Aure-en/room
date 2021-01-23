@@ -29,7 +29,8 @@ function Category({ match }) {
       width: Infinity,
       height: Infinity,
       depth: Infinity,
-    }
+    },
+    seats: []
   });
   const [displayedItems, setDisplayedItems] = useState([]); // Items displayed after filters are applied
   const { getCategoryItems } = useFirestore();
@@ -84,6 +85,16 @@ function Category({ match }) {
           item.queries.dimensions.height.min <= filters.dimensions.height &&
           item.queries.dimensions.depth.min <= filters.dimensions.depth
       );
+
+      // Seats filter
+      if (filters.seats.length > 0) {
+        displayedItems = displayedItems.filter((item) => 
+          item.queries.seats && item.queries.seats.some((number) =>
+            filters.seats.includes(number)
+          )
+        );
+      }
+
       return displayedItems;
     });
   }, [items, filters]);

@@ -18,7 +18,7 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   flex: 1;
-  margin: 5rem;
+  padding: 5rem 1rem;
 `;
 
 const Heading = styled.h1`
@@ -30,8 +30,16 @@ const Heading = styled.h1`
 
 const ItemsList = styled.ul`
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   grid-gap: 3vw;
+
+  @media all and (min-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media all and (min-width: 1200px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
 `;
 
 const Empty = styled.div`

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useFirestore } from '../../hooks/useFirestore';
 import styled from 'styled-components';
+import { useFirestore } from '../../hooks/useFirestore';
 import FullCarousel from '../../components/FullCarousel';
 import Designs from '../../components/shop/display/Designs';
 
@@ -135,7 +135,7 @@ function Main() {
 
       {designs.length !== 0 && (
         <>
-          <Featured>Featured Rooms</Featured>
+          <Featured id='featured'>Featured Rooms</Featured>
           <Designs designs={designs} />
         </>
       )}

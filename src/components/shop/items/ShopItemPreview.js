@@ -41,10 +41,15 @@ const New = styled.span`
 
 const ImageContainer = styled.div`
   margin-bottom: 0.5rem;
-  min-width: 12.5rem;
-  min-height: 12.5rem;
-  width: 10vw;
-  height: 10vw;
+  min-width: 10rem;
+  min-height: 10rem;
+  width: 15vw;
+  height: 15vw;
+
+  @media all and (min-width: 1200px) {
+    width: 12.5vw;
+    height: 12.5vw;
+  }
 `;
 
 const Image = styled.img`
