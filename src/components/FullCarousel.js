@@ -202,6 +202,7 @@ function FullCarousel() {
         <ImageButtons>
           {images.map((image, index) => (
             <ImageButton
+              key={image}
               onClick={() => {
                 setCurrentSlide(index);
                 setIsChanging(true);

@@ -1,12 +1,13 @@
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { AuthProvider } from './contexts/AuthContext';
 import { FavoriteProvider } from './contexts/FavoriteContext';
-import About from './routes/About'
-import Home from './routes/Home'
-import Contact from './routes/Contact'
+import About from './routes/general/About'
+import Home from './routes/general/Home'
+import Contact from './routes/general/Contact'
 import Shop from './routes/shop/Shop'
-import Account from './routes/shop/account/Account';
+import Account from './routes/account/Account';
 import Modal from 'react-modal';
+import './styles.css';
 
 Modal.setAppElement('#root');
 function App() {

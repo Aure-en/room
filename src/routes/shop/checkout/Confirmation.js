@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { useFirestore } from '../../../hooks/useFirestore';
+import { useOrder } from '../../../hooks/useOrder';
 import CartPreview from '../../../components/shop/cart/CartPreview';
 
 const colors = {
@@ -99,7 +99,7 @@ const Button = styled.button`
 function Confirmation({ match, location }) {
   const [order, setOrder] = useState({});
   const [loading, setLoading] = useState(true);
-  const { getOrder } = useFirestore();
+  const { getOrder } = useOrder();
 
   console.log(location);
   console.log(match.params.id);

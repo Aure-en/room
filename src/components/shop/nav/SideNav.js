@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useFirestore } from '../../../hooks/useFirestore';
 import styled from 'styled-components';
+import { useShop } from '../../../hooks/useShop';
 import { formatNavLink } from '../../../utils/utils';
 
 // Icons
@@ -138,7 +138,7 @@ const Item = styled.a`
 `;
 
 function SideNav({ nav }) {
-  const { getShopCategories } = useFirestore();
+  const { getShopCategories } = useShop();
   const [categories, setCategories] = useState([]);
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);

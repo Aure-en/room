@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useFirestore } from '../../../hooks/useFirestore';
+import { Redirect, useHistory } from 'react-router-dom';
+import { useAddress } from '../../../hooks/useAddress';
 import { useAuth } from '../../../contexts/AuthContext';
 import Order from '../../../components/shop/checkout/Order';
-import { Redirect, useHistory } from 'react-router-dom';
 
 // Icon
 import check from '../../../assets/icons/icon-check.svg';
@@ -146,20 +146,31 @@ function Personal({ location }) {
     - location.state.isPaying : true if user comes from /shop/cart.
   */
 
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [address, setAddress] = useState('');
-  const [city, setCity] = useState('');
-  const [zipCode, setZipCode] = useState('');
-  const [country, setCountry] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
   const [additional, setAdditional] = useState('');
   const [remember, setRemember] = useState(false);
   const [addresses, setAddresses] = useState([]);
 
   const { currentUser } = useAuth();
-  const { addAddress, getAddresses } = useFirestore();
+  const {
+    handleAddAddress,
+    getAddresses,
+    firstName,
+    setFirstName,
+    lastName,
+    setLastName,
+    address,
+    setAddress,
+    city,
+    setCity,
+    zipCode,
+    setZipCode,
+    country,
+    setCountry,
+    email,
+    setEmail,
+    phone,
+    setPhone,
+  } = useAddress();
   const history = useHistory();
 
   // If the user is logged in, they might have saved addresses.
@@ -170,23 +181,13 @@ function Personal({ location }) {
       const addresses = await getAddresses(currentUser.uid);
       setAddresses(addresses);
     })();
-  }, [])
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (remember) {
-      addAddress(
-        currentUser.uid,
-        firstName,
-        lastName,
-        address,
-        zipCode,
-        city,
-        country,
-        phone,
-        email,
-      );
+      handleAddAddress(currentUser.uid);
     }
 
     history.push({
@@ -200,7 +201,7 @@ function Personal({ location }) {
           address,
           city,
           zipCode,
-          country
+          country,
         },
       },
     });
@@ -217,44 +218,51 @@ function Personal({ location }) {
             <Form onSubmit={handleSubmit}>
               <Heading>Personal Details</Heading>
 
-              {!currentUser.isAnonymous && addresses.length !== 0 &&
+              {!currentUser.isAnonymous && addresses.length !== 0 && (
                 <>
-                <Subheading>Address Book</Subheading>
-                <Addresses>
-                  {addresses.map(address => {
-                    return (
-                      <div key={address.id}>
-                        <div>{address.firstName} {address.lastName}</div>
-                        <div>{address.address}</div>
-                        <div>{address.zipCode} {address.city}</div>
-                        <div>{address.country}</div>
-                        <Button onClick={() => {
-                          history.push({
-                            pathname: '/shop/payment',
-                            state: {
-                              personal: {
-                                firstName: address.firstName,
-                                lastName: address.lastName,
-                                address: address.address,
-                                zipCode: address.zipCode,
-                                country: address.country,
-                                city: address.city,
-                                email: address.email,
-                                phone: address.phone,
-                                additional,
-                              },
-                            }
-                          })
-                        }}>Use this address</Button>
-                      </div>
-                    )
-                  })}
-                </Addresses>
+                  <Subheading>Address Book</Subheading>
+                  <Addresses>
+                    {addresses.map((address) => {
+                      return (
+                        <div key={address.id}>
+                          <div>
+                            {address.firstName} {address.lastName}
+                          </div>
+                          <div>{address.address}</div>
+                          <div>
+                            {address.zipCode} {address.city}
+                          </div>
+                          <div>{address.country}</div>
+                          <Button
+                            onClick={() => {
+                              history.push({
+                                pathname: '/shop/payment',
+                                state: {
+                                  personal: {
+                                    firstName: address.firstName,
+                                    lastName: address.lastName,
+                                    address: address.address,
+                                    zipCode: address.zipCode,
+                                    country: address.country,
+                                    city: address.city,
+                                    email: address.email,
+                                    phone: address.phone,
+                                    additional,
+                                  },
+                                },
+                              });
+                            }}
+                          >
+                            Use this address
+                          </Button>
+                        </div>
+                      );
+                    })}
+                  </Addresses>
 
-                <Subheading>Use another address</Subheading>
-
+                  <Subheading>Use another address</Subheading>
                 </>
-              }
+              )}
 
               <CategoryName>General</CategoryName>
               <Category>

@@ -2,12 +2,12 @@
 // Looks different from the normal nav, and displays links for shopping categories, a shopping cart, the user's saved items, a search bar...
 
 import React, { useRef } from 'react';
+import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../../contexts/AuthContext';
 import { useFavorite } from '../../../contexts/FavoriteContext';
-import styled from 'styled-components';
 import SideNav from './SideNav';
-import AccessSettings from '../../../components/shop/account/AccessSettings';
+import AccessSettings from '../../../components/account/AccessSettings';
 
 // Icons
 import { ReactComponent as Logo } from '../../../assets/icons/logo.svg';

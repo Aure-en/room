@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useFirestore } from '../../../hooks/useFirestore';
 import styled from 'styled-components';
-import { formatNavLink } from '../../../utils/utils';
 import { Link } from 'react-router-dom';
+import { useShop } from '../../../hooks/useShop';
+import { formatNavLink } from '../../../utils/utils';
 
 // Styled components
 
@@ -95,7 +95,7 @@ const Item = styled(Link)`
 
 // Displays shopping categories (types of furnitures...)
 function ShopNav() {
-  const { getShopCategories } = useFirestore();
+  const { getShopCategories } = useShop();
   const [categories, setCategories] = useState([]);
   const [dropdown, setDropdown] = useState(false);
   const [hovered, setHovered] = useState('');

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import CartItem from '../../../components/shop/cart/CartItem';
-import { useFirestore } from '../../../hooks/useFirestore';
+import { useCart } from '../../../hooks/useCart';
 import { useAuth } from '../../../contexts/AuthContext';
 import { useSignIn } from '../../../hooks/useSignIn';
 import { Link } from 'react-router-dom';
@@ -223,7 +223,7 @@ const BasketIcon = styled(Basket)`
 
 function Cart() {
   const [cart, setCart] = useState([]);
-  const { getCart, cartListener } = useFirestore();
+  const { getCart, cartListener } = useCart();
 
   // Used to sign in before checking out.
   const { currentUser } = useAuth();

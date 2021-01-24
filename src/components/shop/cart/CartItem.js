@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useAuth } from '../../../contexts/AuthContext';
-import { useFirestore } from '../../../hooks/useFirestore';
+import { useCart } from '../../../hooks/useCart';
 import { Link } from 'react-router-dom';
 
 // Icon
@@ -79,7 +79,7 @@ const Button = styled.button`
 function CartItem({ item }) {
   const [quantity, setQuantity] = useState(item.quantity);
   const { currentUser } = useAuth();
-  const { deleteFromCart, updateCartQuantity } = useFirestore();
+  const { deleteFromCart, updateCartQuantity } = useCart();
 
   useEffect(() => {
     updateCartQuantity(currentUser.uid, item.id, quantity)

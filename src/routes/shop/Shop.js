@@ -3,21 +3,21 @@ import { Switch, Route } from 'react-router-dom'
 import styled from 'styled-components';
 import Nav from '../../components/shop/nav/Nav';
 import ShopNav from '../../components/shop/nav/ShopNav';
-import Category from '../../routes/shop/Category';
-import Cart from '../../routes/shop/checkout/Cart';
-import Payment from '../../routes/shop/checkout/Payment';
-import Personal from '../../routes/shop/checkout/Personal';
-import Confirmation from '../../routes/shop/checkout/Confirmation';
-import Favorite from '../../routes/shop/account/Favorite';
-import ItemDetails from '../../routes/shop/ItemDetails';
-import PublicRoute from '../../routes/types/PublicRoute';
-import Entry from '../../routes/shop/account/Entry';
-import HandleShop from '../HandleShop';
-import Tracking from './orders/Tracking';
-import Main from './Main';
 import Footer from '../../components/shop/nav/Footer';
-import NewIn from './NewIn';
-import Design from './Design';
+import Favorite from '../account/Favorite';
+import Entry from '../account/Entry';
+import PublicRoute from '../types/PublicRoute';
+import HandleShop from '../general/HandleShop';
+import Tracking from './orders/Tracking';
+import Category from './display/Category';
+import ItemDetails from './display/ItemDetails';
+import Main from './display/Main';
+import NewIn from './display/NewIn';
+import Design from './display/Design';
+import Cart from './checkout/Cart';
+import Payment from './checkout/Payment';
+import Personal from './checkout/Personal';
+import Confirmation from './checkout/Confirmation';
 
 const Wrapper = styled.div`
   display: flex;

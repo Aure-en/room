@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useFirestore } from '../../../hooks/useFirestore';
-import Order from '../../../components/shop/account/Order';
+import { useOrder } from '../../../hooks/useOrder';
+import Order from '../../../components/account/Order';
 
 // Styled Components
 const colors = {
@@ -100,7 +100,7 @@ function Tracking() {
   const [orderId, setOrderId] = useState('');
   const [order, setOrder] = useState();
   const [message, setMessage] = useState('');
-  const { searchOrder } = useFirestore();
+  const { searchOrder } = useOrder();
 
   const handleSearchOrder = async (e) => {
     e.preventDefault();

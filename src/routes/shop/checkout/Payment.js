@@ -3,7 +3,9 @@ import styled from 'styled-components';
 import Order from '../../../components/shop/checkout/Order';
 import { Redirect, useHistory } from 'react-router-dom';
 import { useAuth } from '../../../contexts/AuthContext';
-import { useFirestore } from '../../../hooks/useFirestore';
+import { useCart } from '../../../hooks/useCart';
+import { useOrder } from '../../../hooks/useOrder';
+import { usePayment } from '../../../hooks/usePayment';
 
 // Icon
 import check from '../../../assets/icons/icon-check.svg';
@@ -185,12 +187,14 @@ function Payment({ location }) {
   const history = useHistory();
   const { currentUser } = useAuth();
   const {
-    addCard,
-    getCards,
     getCart,
-    createOrder,
-    deleteCart,
-  } = useFirestore();
+    deleteCart
+  } = useCart();
+  const {
+    addCard,
+    getCards
+  } = usePayment();
+  const { createOrder } = useOrder();
 
   // If the user is logged in, they might have saved cards.
   // We display them so that they can checkout faster.

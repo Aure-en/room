@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { useFirestore } from '../hooks/useFirestore';
+import { useUser } from './useUser';
 
 export function useSignUp() {
   const [email, setEmail] = useState('');
@@ -14,7 +14,7 @@ export function useSignUp() {
   const [loading, setLoading] = useState(false);
 
   const { currentUser, signUp, signUpFromAnonymous } = useAuth();
-  const { createUser } = useFirestore();
+  const { createUser } = useUser();
 
   useEffect(() => {
     email && firstName && lastName && password && terms

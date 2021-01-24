@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useAuth } from '../../../contexts/AuthContext';
-import { useFirestore } from '../../../hooks/useFirestore';
+import { useCart } from '../../../hooks/useCart';
 import { Link } from 'react-router-dom';
 
 const colors = {
@@ -107,7 +107,7 @@ const GoBack = styled.div`
 
 function Order() {
   const [cart, setCart] = useState([]);
-  const { getCart } = useFirestore();
+  const { getCart } = useCart();
   const { currentUser } = useAuth();
 
   useEffect(() => {

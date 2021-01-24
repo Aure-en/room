@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useFirestore } from '../../hooks/useFirestore';
+import { useShop } from '../../hooks/useShop';
 import { useStorage } from '../../hooks/useStorage';
 import styled from 'styled-components';
 
@@ -140,7 +140,6 @@ const Button = styled.button`
     background: ${colors.input};
     cursor: not-allowed;
   }
-
 `;
 
 const Preview = styled.div`
@@ -213,7 +212,7 @@ function AddShopItem() {
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const { createItem, addItem } = useFirestore();
+  const { createItem, addItem } = useShop();
   const { uploadItemImage } = useStorage();
 
   const handleSubmit = async (e) => {
@@ -247,12 +246,12 @@ function AddShopItem() {
     }
 
     // Remove empty fields
-    const formattedMaterials = [...materials].filter(
-      (material) => material !== ''
-    );
-    const formattedCategories = [...categories].filter(
-      (category) => category !== ''
-    );
+    const formattedMaterials = [...materials]
+      .filter((material) => material !== '')
+      .map((material) => material.toLowerCase());
+    const formattedCategories = [...categories]
+      .filter((category) => category !== '')
+      .map((category) => category.toLowerCase());
 
     const formattedOptions = {};
     for (let option of options) {
@@ -366,9 +365,9 @@ function AddShopItem() {
         formattedCategories,
         queries
       );
-      setMessage(`The item has been successfully added. Item Id: ${id}.`)
+      setMessage(`The item has been successfully added. Item Id: ${id}.`);
     } catch (e) {
-      setMessage('Sorry, we could not add the item.')
+      setMessage('Sorry, we could not add the item.');
     }
     setLoading(false);
   };
@@ -983,11 +982,15 @@ function AddShopItem() {
                       const newOptions = [...options];
                       newOptions[indexOption].options = [
                         ...options[indexOption].options,
-                        { option: '', price: 0, dimensions: {
-                          width: 0,
-                          height: 0,
-                          depth: 0,
-                        } },
+                        {
+                          option: '',
+                          price: 0,
+                          dimensions: {
+                            width: 0,
+                            height: 0,
+                            depth: 0,
+                          },
+                        },
                       ];
                       setOptions(newOptions);
                     }}
@@ -1137,12 +1140,16 @@ function AddShopItem() {
 
           <Preview>
             {imagesPreview.map((image, index) => {
-              return <Image key={`preview_${index}`} src={image} alt='preview' />;
+              return (
+                <Image key={`preview_${index}`} src={image} alt='preview' />
+              );
             })}
           </Preview>
         </Field>
 
-        <Button type='submit' disabled={loading}>Add an item</Button>
+        <Button type='submit' disabled={loading}>
+          Add an item
+        </Button>
         <Message>{message}</Message>
       </Form>
     </Container>
