@@ -2,7 +2,7 @@
 
 Room - View site
 
-A furniture e-commerce website, made with React and Firebase, as an expansion of the Room Homepage Front End Mentors' project.
+A furniture e-commerce website, made with React and Firebase, as an expansion of the Room Homepage Front End Mentors' project (https://www.frontendmentor.io/challenges/room-homepage-BtdBY_ENq/intro).
 
 ## Features implemented
 
