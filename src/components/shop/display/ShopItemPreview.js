@@ -21,7 +21,6 @@ const Container = styled.div`
   position: relative;
   padding: 2.5rem;
   border: 1px solid transparent;
-  max-width: calc(15vw + 5rem);
 
   &:hover {
     border: 1px solid ${colors.tertiary};
@@ -46,14 +45,17 @@ const New = styled.span`
 
 const ImageContainer = styled.div`
   margin-bottom: 0.5rem;
-  min-width: 10rem;
-  min-height: 10rem;
-  width: 15vw;
-  height: 15vw;
+  width: 8.5rem;
+  height: 8.5rem;
 
-  @media all and (min-width: 1200px) {
-    width: 12.5vw;
-    height: 12.5vw;
+  @media all and (min-width: 600px) {
+    width: 10rem;
+    height: 10rem;
+  }
+
+  @media all and (min-width: 730px) {
+    width: 12.5rem;
+    height: 12.5rem;
   }
 `;
 

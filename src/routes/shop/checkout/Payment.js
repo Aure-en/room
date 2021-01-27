@@ -6,6 +6,7 @@ import { useAuth } from '../../../contexts/AuthContext';
 import { useCart } from '../../../hooks/useCart';
 import { useOrder } from '../../../hooks/useOrder';
 import { usePayment } from '../../../hooks/usePayment';
+import { useWindowSize } from '../../../hooks/useWindowSize';
 
 // Icon
 import check from '../../../assets/icons/icon-check.svg';
@@ -28,10 +29,15 @@ const Container = styled.div`
   margin: 5rem;
 `;
 
-const Main = styled.div`
-  display: flex;
-  align-items: start;
-  max-width: 1400px;
+const Content = styled.div`
+  width: 100%;
+
+  @media all and (min-width: 900px) {
+    display: flex;
+    align-items: start;
+    max-width: 1400px;
+    width: 80%;
+  }
 `;
 
 const Left = styled.div`
@@ -185,6 +191,7 @@ function Payment({ location }) {
   const [cards, setCards] = useState([]);
 
   const history = useHistory();
+  const { windowSize } = useWindowSize();
   const { currentUser } = useAuth();
   const {
     getCart,
@@ -241,7 +248,7 @@ function Payment({ location }) {
     <>
       {location.state ? (
           <Container>
-            <Main>
+            <Content>
               <Left>
                 <Heading>Checkout</Heading>
 
@@ -386,9 +393,8 @@ function Payment({ location }) {
                   </Form>
                 </Category>
               </Left>
-
-              <Order />
-            </Main>
+              {windowSize.width > 900 && <Order />}
+            </Content>
           </Container>
       ) : (
         <Redirect to='/shop/cart' />

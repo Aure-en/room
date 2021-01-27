@@ -18,7 +18,7 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   flex: 1;
-  padding: 5rem 1rem;
+  padding: 5rem 3rem;
 `;
 
 const Heading = styled.h1`
@@ -33,7 +33,7 @@ const ItemsList = styled.ul`
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 3vw;
 
-  @media all and (min-width: 768px) {
+  @media all and (min-width: 992px) {
     grid-template-columns: repeat(3, 1fr);
   }
 
@@ -84,9 +84,9 @@ function Favorite() {
   return (
     <Container>
       <div>
+        <Heading>Favorites</Heading>
         {favorites.length === 0 ? (
           <Empty>
-            <Heading>Favorites</Heading>
             <Basket />
             <EmptyText>It seems that you haven't saved any items yet.</EmptyText>
             <div>We have a lot of lovely ideas to help you fill it.</div>
@@ -94,7 +94,6 @@ function Favorite() {
           </Empty>
         ) : (
           <>
-            <Heading>Favorites</Heading>
             <ItemsList>
               {favoriteItems.map((item) => {
                 return (

@@ -19,10 +19,12 @@ const Container = styled.div`
   margin: 5rem;
 `;
 
-const Main = styled.div`
-  display: flex;
-  align-items: start;
-  max-width: 1400px;
+const Content = styled.div`
+  @media all and (min-width: 900px) {
+    display: flex;
+    align-items: start;
+    max-width: 1400px;
+  }
 `;
 
 const Order = styled.div`
@@ -35,7 +37,13 @@ const Summary = styled.div`
 `;
 
 const Message = styled.aside`
-  margin-left: 5rem;
+
+  @media all and (min-width: 900px) {
+    margin-left: 5rem;
+    margin-top: 0;
+  }
+
+  margin-top: 3rem;
   background: ${colors.secondary};
   color: ${colors.text};
   padding: 4rem;
@@ -115,7 +123,7 @@ function Confirmation({ match, location }) {
   return (
     <div>
       <Container>
-        <Main>
+        <Content>
           {!loading && (
             <Order>
               <Heading>Order Confirmation</Heading>
@@ -164,7 +172,7 @@ function Confirmation({ match, location }) {
               <Link to='/shop'>Continue Shopping</Link>
             </Button>
           </Message>
-        </Main>
+        </Content>
       </Container>
     </div>
   );

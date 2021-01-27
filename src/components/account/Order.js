@@ -24,13 +24,18 @@ const Container = styled.div`
 
 const Top = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, auto) 1fr auto;
-  grid-column-gap: 3rem;
+  // grid-template-columns: repeat(4, auto) 1fr auto;
+  // grid-column-gap: 3rem;
   background: ${colors.secondary};
   padding: 0.75rem 1rem;
   color: ${colors.text};
   line-height: 1.125rem;
   border-radius: 5px 5px 0 0;
+
+  grid-template-columns: repeat(3, auto) 1fr auto;
+  grid-template-row: repeat(2, auto);
+  grid-gap: 1rem;
+
 `;
 
 const Icon = styled.div`

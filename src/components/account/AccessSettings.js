@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useHistory } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import Modal from 'react-modal';
 
@@ -56,6 +56,13 @@ function AccessSettings() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const iconRef = useRef();
   const menuRef = useRef();
+  const location = useLocation();
+  const history = useHistory();
+
+  const handleSignOut = async () => {
+      await signOut();
+      history.push('/shop');
+  }
 
   return (
     <Container>
@@ -75,19 +82,23 @@ function AccessSettings() {
             },
           }}
         >
-          <Link to='/account/orders'>
+          <Link to='/account/orders' onClick={() => {
+            if (location.pathname !== '/account/orders') setIsModalOpen(false)}}>
             <ModalLink>Orders</ModalLink>
           </Link>
-          <Link to='/account/addresses'>
+          <Link to='/account/addresses' onClick={() => {
+            if (location.pathname !== '/account/addresses') setIsModalOpen(false)}}>
             <ModalLink>Addresses</ModalLink>
           </Link>
-          <Link to='/account/payment'>
+          <Link to='/account/payment' onClick={() => {
+            if (location.pathname !== '/account/payment') setIsModalOpen(false)}}>
             <ModalLink>Payment</ModalLink>
           </Link>
-          <Link to='/account/user'>
+          <Link to='/account/user' onClick={() => {
+            if (location.pathname !== '/account/user') setIsModalOpen(false)}}>
             <ModalLink>Settings</ModalLink>
           </Link>
-          <ModalLink onClick={signOut}>Log out</ModalLink>
+          <ModalLink onClick={handleSignOut}>Log out</ModalLink>
         </UserModal>
       )}
     </Container>

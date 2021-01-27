@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Redirect, useHistory } from 'react-router-dom';
 import { useAddress } from '../../../hooks/useAddress';
 import { useAuth } from '../../../contexts/AuthContext';
+import { useWindowSize } from '../../../hooks/useWindowSize';
 import Order from '../../../components/shop/checkout/Order';
 
 // Icon
@@ -25,10 +26,14 @@ const Container = styled.div`
   margin: 5rem;
 `;
 
-const OrderRecap = styled.div`
-  display: flex;
-  align-items: start;
-  max-width: 1400px;
+const Content = styled.div`
+  width: 80%;
+
+  @media all and (min-width: 900px) {
+    display: flex;
+    align-items: start;
+    max-width: 1400px;
+  }
 `;
 
 const Form = styled.form`
@@ -151,6 +156,7 @@ function Personal({ location }) {
   const [addresses, setAddresses] = useState([]);
 
   const { currentUser } = useAuth();
+  const { windowSize } = useWindowSize();
   const {
     handleAddAddress,
     getAddresses,
@@ -214,7 +220,7 @@ function Personal({ location }) {
        - Otherwise, ask for their personal details. */}
       {location.state ? (
         <Container>
-          <OrderRecap>
+          <Content>
             <Form onSubmit={handleSubmit}>
               <Heading>Personal Details</Heading>
 
@@ -274,6 +280,7 @@ function Personal({ location }) {
                     id='first_name'
                     onChange={(e) => setFirstName(e.target.value)}
                     placeholder='Enter your first name'
+                    required
                   />
                 </Field>
 
@@ -285,6 +292,7 @@ function Personal({ location }) {
                     id='last_name'
                     onChange={(e) => setLastName(e.target.value)}
                     placeholder='Enter your last name'
+                    required
                   />
                 </Field>
 
@@ -296,6 +304,7 @@ function Personal({ location }) {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder='Enter your email'
+                    required
                   />
                 </Field>
 
@@ -307,6 +316,7 @@ function Personal({ location }) {
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder='Enter your phone number'
+                    required
                   />
                 </Field>
               </Category>
@@ -321,6 +331,7 @@ function Personal({ location }) {
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
                     placeholder='Enter your address'
+                    required
                   />
                 </Field>
 
@@ -332,6 +343,7 @@ function Personal({ location }) {
                     value={zipCode}
                     onChange={(e) => setZipCode(e.target.value)}
                     placeholder='Enter your zip code'
+                    required
                   />
                 </Field>
 
@@ -343,6 +355,7 @@ function Personal({ location }) {
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
                     placeholder='Enter your city'
+                    required
                   />
                 </Field>
 
@@ -354,6 +367,7 @@ function Personal({ location }) {
                     value={country}
                     onChange={(e) => setCountry(e.target.value)}
                     placeholder='Enter your country'
+                    required
                   />
                 </Field>
 
@@ -386,8 +400,8 @@ function Personal({ location }) {
 
               <Button type='submit'>Proceed to Payment</Button>
             </Form>
-            <Order />
-          </OrderRecap>
+            {windowSize.width > 900 && <Order />}
+          </Content>
         </Container>
       ) : (
         <Redirect to='/shop/cart' />

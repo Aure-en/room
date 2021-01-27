@@ -210,7 +210,6 @@ function Addresses() {
     phone,
     setPhone,
     message,
-    setMessage,
     isEditing,
     setIsEditing,
     firstNameEdit,
@@ -230,7 +229,6 @@ function Addresses() {
     phoneEdit,
     setPhoneEdit,
     messageEdit,
-    setMessageEdit,
   } = useAddress();
 
   useEffect(() => {

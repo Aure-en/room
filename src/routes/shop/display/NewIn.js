@@ -3,7 +3,7 @@ import ShopItemPreview from '../../../components/shop/display/ShopItemPreview';
 import { useShop } from '../../../hooks/useShop';
 import { useFavorite } from '../../../contexts/FavoriteContext';
 import styled from 'styled-components';
-import Filter from '../../../components/shop/display/Filters';
+import SideFilters from '../../../components/shop/display/SideFilters';
 
 const ShopList = styled.ul`
   display: grid;
@@ -88,7 +88,7 @@ function NewIn() {
 
   return (
     <Shop>
-      <Filter items={items} handleFilters={handleFilters} />
+      <SideFilters items={items} handleFilters={handleFilters} />
       <ShopList>
         {displayedItems.map((item) => {
           return (

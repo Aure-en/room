@@ -123,15 +123,15 @@ function Designs({ designs }) {
         >
           {galleryRef.current && (
             <>
-              {slidesGroups.map((slide, index) => {
+              {slidesGroups.map((slide, indexGroup) => {
                 return (
-                  <Slide key={index} size={galleryRef.current.clientWidth}>
+                  <Slide key={indexGroup} size={galleryRef.current.clientWidth}>
                     {slide &&
                       slide.map((slide, index) => {
                         if (slide) {
                           return (
                             <Preview
-                              key={slide.id}
+                              key={`${slide.id}-${indexGroup}`}
                               onMouseEnter={() => setIsHovered(slide.id)}
                               onMouseLeave={() => setIsHovered('')}
                             >

@@ -17,14 +17,16 @@ const Container = styled.div`
   margin-left: 5rem;
   background: ${colors.secondary};
   color: ${colors.text};
-  padding: 3rem;
+  padding: 3rem 4rem;
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex: 1;
 `;
 
 const Cart = styled.div`
   line-height: 1.25rem;
+  width: 100%;
 `;
 
 const Heading = styled.h3`

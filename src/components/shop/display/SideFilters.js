@@ -5,7 +5,6 @@ import { CSSTransition } from 'react-transition-group';
 
 // Icons
 import check from '../../../assets/icons/icon-check.svg';
-import { ReactComponent as FilterIcon } from '../../../assets/icons/icon-filter.svg';
 import { ReactComponent as AngleDown } from '../../../assets/icons/icon-angle-down.svg';
 import { ReactComponent as AngleUp } from '../../../assets/icons/icon-angle-up.svg';
 
@@ -15,7 +14,7 @@ const colors = {
   secondary: 'hsl(0, 0%, 27%)', // Dark Grey
   tertiary: 'hsl(0, 0%, 70%)', // Bright Grey
   text: 'hsl(0, 0%, 85%)',
-  label: 'hsl(0, 0%, 100%)',
+  label: 'hsl(0, 0%, 100%)'
 };
 
 const filterColors = {
@@ -28,36 +27,31 @@ const filterColors = {
   orange: 'hsl(9, 39%, 51%)',
   red: 'hsl(0, 50%, 38%)',
   white: 'hsl(0, 0%, 100%)',
-  yellow: 'hsl(39, 39%, 53%)',
-};
+  yellow: 'hsl(39, 39%, 53%)'
+}
 
-const Dropdown = styled.div`
+const Container = styled.div`
   line-height: 1.5rem;
+  margin-right: 1rem;
   display: flex;
   flex-direction: column;
-  grid-column: 1 / -1;
+
+  & > * {
+    margin-bottom: 1.5rem;
+  }
 `;
 
 const Filter = styled.h3`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   text-transform: uppercase;
   font-weight: 600;
   margin: 0.5rem 0;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
 `;
 
 const Row = styled.div`
   display: flex;
-`;
-
-const Buttons = styled.div`
-  display: flex;
-  justify-content: center;
-
-  & > *:first-child {
-    margin-right: 2rem;
-  }
 `;
 
 const filterButton = `
@@ -173,24 +167,7 @@ const Button = styled.button`
   }
 `;
 
-const ButtonEmpty = styled(Button)`
-  background: transparent;
-  color: ${colors.secondary};
-  border: 1px solid ${colors.secondary};
-
-  &:hover {
-    color: initial;
-  }
-`;
-
-const OpenButton = styled(Button)`
-  display: flex;
-  justify-content: space-between;
-  text-transform: initial;
-  margin-top: 0;
-`;
-
-function Filters({ items, handleFilters }) {
+function SideFilters({ items, handleFilters }) {
   // Filters
   const [colors, setColors] = useState([]);
   const [dimensions, setDimensions] = useState({
@@ -212,13 +189,11 @@ function Filters({ items, handleFilters }) {
   const [currentPrice, setCurrentPrice] = useState(Infinity);
   const [currentMaterials, setCurrentMaterials] = useState([]);
   const [currentSeats, setCurrentSeats] = useState([]);
-
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [areColorsOpen, setAreColorsOpen] = useState(false);
-  const [areMaterialsOpen, setAreMaterialsOpen] = useState(false);
-  const [arePricesOpen, setArePricesOpen] = useState(false);
-  const [areDimensionsOpen, setAreDimensionsOpen] = useState(false);
-  const [areSeatsOpen, setAreSeatsOpen] = useState(false);
+  const [areColorsOpen, setAreColorsOpen] = useState(true);
+  const [areMaterialsOpen, setAreMaterialsOpen] = useState(true);
+  const [arePricesOpen, setArePricesOpen] = useState(true);
+  const [areDimensionsOpen, setAreDimensionsOpen] = useState(true);
+  const [areSeatsOpen, setAreSeatsOpen] = useState(true);
 
   // Load filter values
   useEffect(() => {
@@ -328,7 +303,7 @@ function Filters({ items, handleFilters }) {
 
   useEffect(() => {
     handleFilters('seats', currentSeats);
-  }, [currentSeats]);
+  }, [currentSeats])
 
   // Reset filters
   const reset = () => {
@@ -343,28 +318,9 @@ function Filters({ items, handleFilters }) {
     setCurrentSeats([]);
   };
 
-  const closeAll = () => {
-    setAreColorsOpen(false);
-    setAreMaterialsOpen(false);
-    setArePricesOpen(false);
-    setAreDimensionsOpen(false);
-    setAreSeatsOpen(false);
-  };
-
   return (
-    <>
-      <OpenButton
-        type='button'
-        onClick={() => {
-          if (isDropdownOpen) closeAll();
-          setIsDropdownOpen(!isDropdownOpen);
-        }}
-      >
-        Filters <FilterIcon />
-      </OpenButton>
-      {isDropdownOpen && (
-        <Dropdown>
-          <Filter onClick={() => setAreColorsOpen(!areColorsOpen)}>
+    <Container>
+      <Filter onClick={() => setAreColorsOpen(!areColorsOpen)}>
             Colors {areColorsOpen ? <AngleUp /> : <AngleDown />}
           </Filter>
           <CSSTransition
@@ -577,18 +533,11 @@ function Filters({ items, handleFilters }) {
             </CSSTransition>
           </div>
 
-          <Buttons>
-            <Button type='button' onClick={() => setIsDropdownOpen(false)}>
-              Apply
-            </Button>
-            <ButtonEmpty type='button' onClick={reset}>
-              Reset
-            </ButtonEmpty>
-          </Buttons>
-        </Dropdown>
-      )}
-    </>
+      <Button type='button' onClick={reset}>
+        Reset
+      </Button>
+    </Container>
   );
 }
 
-export default Filters;
+export default SideFilters;

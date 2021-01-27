@@ -42,6 +42,7 @@ const Slides = styled.div`
 const Slide = styled.div`
   display: grid;
   grid-template-columns: repeat(${props => props.slidesNumber}, 1fr);
+  min-width: 0;
 `;
 
 const Button = styled.button`
@@ -59,6 +60,8 @@ const Preview = styled.div`
   width: 100%;
   height: 100%;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
 `;
 
 const Heading = styled.h2`
@@ -86,7 +89,7 @@ const Heading = styled.h2`
   }
 `;
 
-function Recommendations({ recommendations }) {
+function Recommendations({ recommendations, number }) {
   const { favorites } = useFavorite();
   const {
     slidesNumber,
@@ -96,8 +99,8 @@ function Recommendations({ recommendations }) {
     previous,
     next,
     handleTransitionEnd,
-  } = useCarousel(recommendations, 4);
-  useCarousel(recommendations, 4);
+  } = useCarousel(recommendations, number);
+  useCarousel(recommendations, number);
 
   return (
     <>

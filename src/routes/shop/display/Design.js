@@ -19,20 +19,39 @@ const Container = styled.div`
 
 const ShopList = styled.ul`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
+  // grid-template-columns: repeat(3, 1fr);
   grid-gap: 3vw;
 `;
 
 const ImageContainer = styled.div`
   width: 100%;
   height: 100%;
+
+  @media all and (min-width: 900px) {
+    width: 40rem;
+    height: 25rem;
+  }
+
+  @media all and (min-width: 1000px) {
+    width: 50rem;
+    height: 35rem;
+  }
 `;
 
 const Presentation = styled.div`
-  width: 50rem;
-  height: 35rem;
   position: relative;
-  margin-bottom: 7.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  & > *:first-child {
+    margin-bottom: 5rem;
+  }
+
+  @media all and (min-width: 1000px) {
+    margin-bottom: 7.5rem;
+  }
 `;
 
 const Heading = styled.h2`
@@ -73,9 +92,6 @@ const Image = styled.img`
 `;
 
 const Text = styled.div`
-  position: absolute;
-  bottom: -5rem;
-  right: -5rem;
   display: flex;
   flex-direction: column;
   background: ${colors.background};
@@ -95,6 +111,12 @@ const Text = styled.div`
 
   & > p:last-child {
     margin-bottom: 0;
+  }
+
+  @media all and (min-width: 1000px) {
+    position: absolute;
+    bottom: -5rem;
+    right: -5rem;
   }
 `;
 

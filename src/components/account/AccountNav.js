@@ -4,18 +4,25 @@ import { Link } from 'react-router-dom';
 
 const colors = {
   primary: 'hsl(0, 0%, 0%)', // Black
-  secondary: 'hsl(0, 0%, 27%)', // Grey
+  secondary: 'hsl(0, 0%, 37%)', // Grey
 };
 
 const Nav = styled.nav`
-  margin-right: 5rem;
+  margin-bottom: 1rem;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   font-family: 'Source Sans Pro', sans-serif;
   text-transform: capitalize;
+  max-width: 80vw;
 
   & > * {
     margin: .5rem 0;
+  }
+
+  @media all and (min-width: 930px) {
+    flex-direction: column;
+    margin-bottom: 0;
+    margin-right: 5rem;
   }
 `;
 
@@ -25,9 +32,12 @@ const NavLink = styled(Link)`
 
   &:hover {
     color: ${colors.primary};
+    text-decoration: underline;
+  }
+
+  @media all and (min-width: 930px) {
     transform: translateX(${(props) => (props.selected ? '0' : '3')}%);
   }
-  
 `;
 
 const CurrentLink = styled.span`
@@ -37,16 +47,26 @@ const CurrentLink = styled.span`
 
   &:after {
     background: none repeat scroll 0 0 transparent;
-    bottom: 0;
+    left: 0;
     content: '';
     display: block;
-    width: 2px;
-    left: -1rem;
+    height: 2px;
+    bottom: -.5rem;
     position: absolute;
     background: ${colors.secondary};
-    transition: height 0.3s ease 0s, top 0.3s ease 0s;
-    height: ${(props) => (props.isSelected ? '110%' : '0')};
-    top: ${(props) => (props.isSelected ? '-5%' : '50%')};
+    transition: all 0.3s ease 0s, top 0.3s ease 0s;
+    width: ${(props) => (props.isSelected ? '110%' : '0')};
+    left: ${(props) => (props.isSelected ? '-2.5%' : '50%')};
+  }
+
+  @media all and (min-width: 930px) {
+    &:after {
+      bottom: 0;
+      width: 2px;
+      left: -1rem;
+      height: ${(props) => (props.isSelected ? '110%' : '0')};
+      top: ${(props) => (props.isSelected ? '5%' : '50%')};
+    }
   }
 `;
 

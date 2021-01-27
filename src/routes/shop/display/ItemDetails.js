@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
 import { useShop } from '../../../hooks/useShop';
 import { useCart } from '../../../hooks/useCart';
+import { useWindowSize } from '../../../hooks/useWindowSize';
 import { useAuth } from '../../../contexts/AuthContext';
 import { useFavorite } from '../../../contexts/FavoriteContext';
 import { formatNavLink } from '../../../utils/utils';
@@ -33,11 +34,21 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   margin-top: 2rem;
-  padding: 1rem 3rem 5rem 3rem;
+
+  @media all and (min-width: 1200px) {
+    padding: 1rem 3rem 5rem 3rem;
+  }
 `;
 
 const Center = styled.section`
   max-width: 1200px;
+  display: grid;
+  justify-items: center;
+
+  @media all and (min-width: 1000px) {
+    display: block;
+    margin-bottom: 3rem;
+  }
 `;
 
 // Category Links above the item preview
@@ -48,6 +59,14 @@ const Category = styled.div`
   font-size: 0.825rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
+
+  @media all and (min-width: 1000px) {
+    padding-left: 2rem;
+  }
+
+  @media all and (min-width: 1200px) {
+    padding-left: 0;
+  }
 `;
 
 const CategoryLink = styled.span`
@@ -67,7 +86,12 @@ const ArrowIcon = styled.span`
 // Informations about the item
 const Informations = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  justify-items: center;
+
+  @media all and (min-width: 1000px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
 `;
 
 const Description = styled.div`
@@ -79,11 +103,15 @@ const Description = styled.div`
 `;
 
 const Details = styled.div`
-  padding: 0 5rem;
   min-width: 25rem;
+  padding: 5rem 5rem 2rem 5rem;
 
   & > * {
     margin-bottom: 1.5rem;
+  }
+
+  @media all and (min-width: 1100px) {
+    padding: 0 5rem;
   }
 `;
 
@@ -272,6 +300,7 @@ const Message = styled.div`
   font-size: 0.825rem;
   color: ${colors.primary};
   margin-top: 0.25rem;
+  max-width: 168px; // Size of button
 `;
 
 const Icon = styled.span`
@@ -298,6 +327,7 @@ function ItemDetails({ match }) {
   const { favorites, addFavorite, deleteFavorite } = useFavorite();
   const { getItem, getRecommendations } = useShop();
   const { addToCart } = useCart();
+  const { windowSize } = useWindowSize();
 
   const handleFavorite = async (id) => {
     let userId = currentUser && currentUser.uid;
@@ -355,7 +385,6 @@ function ItemDetails({ match }) {
 
     if (!currentUser) {
       const user = await signInAnonymously();
-      console.log(user);
       userId = user.user.uid;
     }
 
@@ -550,7 +579,7 @@ function ItemDetails({ match }) {
                 <CSSTransition
                   in={areDetailsOpen}
                   timeout={500}
-                  classNames='details'
+                  classNames='dropdown'
                   mountOnEnter={true}
                 >
                   <Dropdown>
@@ -596,7 +625,15 @@ function ItemDetails({ match }) {
           </Informations>
         </Center>
       )}
-      {recommendations.length !== 0 && <Recommendations recommendations={recommendations} />}
+      {recommendations.length !== 0 && windowSize.width > 1300 && (
+        <Recommendations recommendations={recommendations} number={4} />
+      )}
+      {recommendations.length !== 0 &&
+        windowSize.width > 800 &&
+        windowSize.width <= 1300 && (
+        <Recommendations recommendations={recommendations} number={3} />
+      )}
+      {recommendations.length !== 0 && windowSize.width <= 800 && <Recommendations recommendations={recommendations} number={2} />}
     </Container>
   );
 }

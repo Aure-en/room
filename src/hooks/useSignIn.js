@@ -11,7 +11,8 @@ export function useSignIn() {
   const { signIn, resetPassword } = useAuth();
   const history = useHistory();
 
-  async function handleSignIn() {
+  async function handleSignIn(isPaying) {
+    console.log(1);
     clearErrors();
 
     if (!password && !email) {
@@ -29,7 +30,7 @@ export function useSignIn() {
     setLoading(true);
     try {
       await signIn(email, password);
-      history.push('/');
+      isPaying ? history.push('/shop/cart') : history.push('/shop');
       setLoading(false);
     } catch (err) {
       switch (err.code) {
@@ -47,10 +48,8 @@ export function useSignIn() {
     }
   }
 
-  const handleForgotPassword = async (event) => {
-    event.preventDefault();
+  const handleForgotPassword = async () => {
     clearErrors();
-
     if (!email) {
       setEmailError('This field is required');
       return;

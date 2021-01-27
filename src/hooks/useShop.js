@@ -36,6 +36,7 @@ export function useShop() {
       categories,
       queries,
       new: false,
+      date: new Date()
     });
     return id;
   };

@@ -68,6 +68,10 @@ export function FavoriteProvider({ children }) {
     return unsubscribe;
   }, [currentUser]);
 
+  useEffect(() => {
+    if (!currentUser) setFavorites([]);
+  }, [currentUser])
+
   const value = {
     addFavorite,
     deleteFavorite,

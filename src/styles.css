@@ -9,7 +9,7 @@ b, u, i, center,
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
+article, aside, canvas, dropdown, embed, 
 figure, figcaption, footer, header, hgroup, 
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
@@ -21,7 +21,7 @@ time, mark, audio, video {
 	vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
+article, aside, dropdown, figcaption, figure, 
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
@@ -111,32 +111,33 @@ textarea:focus {
 	overflow: hidden;
 }
 
-.details-enter {
+.dropdown-enter {
 	max-height: 0;
 	overflow: hidden;
 }
 
-.details-enter-active {
+.dropdown-enter-active {
 	max-height: 25rem;
 	transition: all .3s linear;
 }
 
-.details-enter-done {
-	max-height: initial;
+.dropdown-enter-done {
+	max-height: 25rem;
+	overflow: auto;
 }
 
-.details-exit {
+.dropdown-exit {
 	max-height: 25rem;
 	overflow: hidden;
 	transition: all .3s linear;
 }
 
-.details-exit-active {
+.dropdown-exit-active {
 	max-height: 0;
 	transition: all .3s linear;
 }
 
-.details-exit-done {
+.dropdown-exit-done {
 	max-height: 0;
 	overflow: hidden;
 }

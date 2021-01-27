@@ -27,6 +27,7 @@ const Information = styled.div`
   display: flex;
   align-items: center;
   line-height: 1.125rem;
+  padding: 1rem 0;
   width: 20rem;
 `;
 
@@ -34,6 +35,7 @@ const Image = styled.img`
   width: 10rem;
   height: 10rem;
   margin-right: 1rem;
+  object-fit: cover;
 `;
 
 const Name = styled.div`
@@ -60,7 +62,17 @@ const Capitalize = styled.span`
   text-transform: capitalize;
 `;
 
-const Quantity = styled.input`
+const Quantity = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  @media all and (min-width: 600px) {
+    flex-direction: row;
+  }
+`;
+
+const QuantityInput = styled.input`
   font-family: 'Source Sans Pro', sans-serif;
   width: 2rem;
   height: 2rem;
@@ -108,13 +120,13 @@ function CartItem({ item }) {
       </Information>
       <Price>£{item.price}</Price>
 
-      <div>
+      <Quantity>
         <Button
           onClick={() => setQuantity((prev) => (+prev < 2 ? '1' : prev - 1))}
         >
           -
         </Button>
-        <Quantity
+        <QuantityInput
           value={quantity}
           onChange={(e) => {
             let quantity = e.target.value.replace(/[^0-9]/g, '');
@@ -125,7 +137,7 @@ function CartItem({ item }) {
         <Button onClick={() => setQuantity((prev) => +prev + 1)}>
           +
         </Button>
-      </div>
+      </Quantity>
       <Price>£{item.price * quantity}</Price>
       <Button onClick={() => deleteFromCart(currentUser.uid, item.id)}><Delete/></Button>
     </Item>

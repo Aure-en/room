@@ -39,14 +39,16 @@ const DropdownContainer = styled.div`
 const Dropdown = styled.div`
   display: grid;
   grid-auto-flow: column;
+  grid-template-rows: repeat(2, auto);
+  grid-gap: 2rem;
   justify-content: center;
   padding: 1.5rem;
   background: ${colors.tertiary};
   font-size: 0.825rem;
-`;
 
-const Column = styled.div`
-  margin: 0 1rem;
+  @media all and (min-width: 576px) {
+    grid-template-rows: auto;
+  }
 `;
 
 const Category = styled(Link)`
@@ -146,7 +148,7 @@ function ShopNav() {
               )
               .map((subcategory, index) => {
                 return (
-                  <Column key={subcategory + index}>
+                  <div key={subcategory + index}>
                     <Subcategory
                       to={`/shop/${encodeURIComponent(subcategory)}`}
                     >
@@ -166,7 +168,7 @@ function ShopNav() {
                         );
                       })}
                     </div>
-                  </Column>
+                  </div>
                 );
               })}
           </Dropdown>

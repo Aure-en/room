@@ -20,7 +20,9 @@ const Container = styled.div`
 `;
 
 const Content = styled.div`
-  display: flex;
+  @media all and (min-width: 930px) {
+    display: flex;
+  }
 `;
 
 const Tab = styled.div`

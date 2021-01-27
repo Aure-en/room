@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import { useShop } from '../../../hooks/useShop';
 import { formatNavLink } from '../../../utils/utils';
+import { Link } from 'react-router-dom';
 
 // Icons
 import { ReactComponent as Hamburger } from '../../../assets/icons/icon-hamburger.svg';
@@ -38,8 +39,8 @@ const Container = styled.nav`
   transform: translateX(${(props) => (props.isNavOpen ? '0' : '-100')}%);
 
   @media all and (max-width: 600px) {
-    width: ${props => props.isDropdownOpen ? '100vw' : 'initial'};
-    max-width: ${props => props.isDropdownOpen ? '100%' : 'initial'};
+    width: ${(props) => (props.isDropdownOpen ? '100vw' : 'initial')};
+    max-width: ${(props) => (props.isDropdownOpen ? '100%' : 'initial')};
   }
 
   @media all and (max-width: 500px) {
@@ -54,7 +55,7 @@ const Nav = styled.ul`
   padding: 1rem 0;
 `;
 
-const Category = styled.a`
+const category = `
   position: relative;
   cursor: pointer;
   text-align: center;
@@ -63,10 +64,8 @@ const Category = styled.a`
   color: ${colors.tertiary};
   padding: 0.75rem 2rem calc(0.75rem - 2px) 2rem;
   transition: all 0.3s ease;
-
-  &:hover {
-    transform: translateX(${(props) => (props.selected ? '0' : '3')}%);
-  }
+  width: 100%;
+  text-align: start;
 
   &:after {
     background: none repeat scroll 0 0 transparent;
@@ -78,6 +77,30 @@ const Category = styled.a`
     position: absolute;
     background: #fff;
     transition: height 0.3s ease 0s, top 0.3s ease 0s;
+  }
+`;
+
+const Category = styled.div`
+  ${category}
+
+  &:hover {
+    transform: translateX(${(props) => (props.selected ? '0' : '3')}%);
+  }
+
+  &:after {
+    height: ${(props) => (props.selected ? '90%' : '0')};
+    top: ${(props) => (props.selected ? '5%' : '50%')};
+  }
+`;
+
+const CategoryLink = styled(Link)`
+  ${category}
+
+  &:hover {
+    transform: translateX(${(props) => (props.selected ? '0' : '3')}%);
+  }
+
+  &:after {
     height: ${(props) => (props.selected ? '90%' : '0')};
     top: ${(props) => (props.selected ? '5%' : '50%')};
   }
@@ -108,9 +131,9 @@ const Column = styled.div`
   margin: 0 1rem;
 `;
 
-const Subcategory = styled.a`
+const Subcategory = styled(Link)`
   position: relative;
-  display: inline-block;
+  display: block;
   color: ${colors.primary};
   text-transform: uppercase;
   cursor: pointer;
@@ -119,11 +142,11 @@ const Subcategory = styled.a`
   transition: all 0.15s ease;
 
   &:hover {
-    transform: translateX(${(props) => (props.selected ? '0' : '2')}%);
+    text-decoration: underline;
   }
 `;
 
-const Item = styled.a`
+const Item = styled(Link)`
   padding: 0.25rem 0;
   cursor: pointer;
   display: block;
@@ -133,17 +156,23 @@ const Item = styled.a`
 
   &:hover {
     color: ${colors.primary};
-    transform: translateX(${(props) => (props.selected ? '0' : '2')}%);
+    text-decoration: underline;
   }
+`;
+
+const SeeAll = styled.div`
+  grid-column: 1 / -1;
+  justify-self: center;
 `;
 
 function SideNav({ nav }) {
   const { getShopCategories } = useShop();
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState({});
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState('');
   const [height, setHeight] = useState(0);
+  const ref = useRef();
 
   useEffect(() => {
     (async () => {
@@ -156,71 +185,133 @@ function SideNav({ nav }) {
     setHeight(nav.current.offsetHeight);
   }, []);
 
+  useEffect(() => {
+    if (!isNavOpen) return;
+    const closeNavListener = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) {
+        setIsNavOpen(false);
+      }
+    };
+    document.addEventListener('click', closeNavListener);
+    return () => {
+      document.removeEventListener('click', closeNavListener);
+    };
+  }, [isNavOpen, ref]);
+
   return (
     <>
-      <Icon onClick={() => {
-        setIsNavOpen(!isNavOpen);
-        isNavOpen && setIsDropdownOpen(false);
-      }}>
+      <Icon
+        onClick={() => {
+          setIsNavOpen(!isNavOpen);
+          isNavOpen && setIsDropdownOpen(false);
+        }}
+      >
         <Hamburger />
       </Icon>
 
       <Container
+        ref={ref}
         top={height}
         isNavOpen={isNavOpen}
         isDropdownOpen={isDropdownOpen}
       >
         <Nav>
           {/* Sort the categories by order before displaying them */}
-          {Object.keys(categories)
-            .sort((a, b) => categories[a].order - categories[b].order)
-            .map((category, index) => {
-              return (
-                <Category
-                  key={category + index}
-                  selected={activeCategory === category}
-                  onClick={() => {
-                    setIsDropdownOpen(true);
-                    setActiveCategory(category);
-                  }}
-                >
-                  {formatNavLink(category)}
-                </Category>
-              );
-            })}
+          {Object.keys(categories).length !== 0 &&
+            Object.keys(categories)
+              .sort((a, b) => categories[a].order - categories[b].order)
+              .map((category, index) => {
+                if (Object.keys(categories[category].categories).length === 0) {
+                  return (
+                    <CategoryLink
+                      key={category + index}
+                      selected={activeCategory === category}
+                      to={`/shop/${encodeURIComponent(category)}`}
+                      onClick={() => {
+                        setIsDropdownOpen(false);
+                        setIsNavOpen(false);
+                        setActiveCategory(category);
+                      }}
+                    >
+                      {formatNavLink(category)}
+                    </CategoryLink>
+                  );
+                } else {
+                  return (
+                    <Category
+                      key={category + index}
+                      selected={activeCategory === category}
+                      onClick={() => {
+                        setIsDropdownOpen(true);
+                        setActiveCategory(category);
+                      }}
+                    >
+                      {formatNavLink(category)}
+                    </Category>
+                  );
+                }
+              })}
         </Nav>
 
-        {isDropdownOpen && Object.keys(categories[activeCategory].categories).length !== 0 && isNavOpen && (
-          <DropdownContainer>
-            <Dropdown>
-              {/* Sort the subcategories by order before displaying them */}
-              {Object.keys(categories[activeCategory].categories)
-                .sort(
-                  (a, b) =>
-                    categories[activeCategory].categories[a].order -
-                    categories[activeCategory].categories[b].order
-                )
-                .map((subcategory, index) => {
-                  return (
-                    <Column key={subcategory + index}>
-                      <Subcategory>{formatNavLink(subcategory)}</Subcategory>
-                      <div>
-                        {categories[activeCategory].categories[
-                          subcategory
-                        ].categories.map((item, index) => {
-                          return (
-                            <Item key={item + index}>
-                              {formatNavLink(item)}
-                            </Item>
-                          );
-                        })}
-                      </div>
-                    </Column>
-                  );
-                })}
-            </Dropdown>
-          </DropdownContainer>
-        )}
+        {isDropdownOpen &&
+          Object.keys(categories[activeCategory].categories).length !== 0 &&
+          isNavOpen && (
+            <DropdownContainer>
+              <Dropdown>
+                {/* Sort the subcategories by order before displaying them */}
+                {Object.keys(categories[activeCategory].categories)
+                  .sort(
+                    (a, b) =>
+                      categories[activeCategory].categories[a].order -
+                      categories[activeCategory].categories[b].order
+                  )
+                  .map((subcategory, index) => {
+                    return (
+                      <Column key={subcategory + index}>
+                        <Subcategory
+                          to={`/shop/${encodeURIComponent(subcategory)}`}
+                          onClick={() => {
+                            setIsDropdownOpen(false);
+                            setIsNavOpen(false);
+                          }}
+                        >
+                          {formatNavLink(subcategory)}
+                        </Subcategory>
+                        <div>
+                          {categories[activeCategory].categories[
+                            subcategory
+                          ].categories.map((item, index) => {
+                            return (
+                              <Item
+                                key={item + index}
+                                to={`/shop/${encodeURIComponent(item)}`}
+                                onClick={() => {
+                                  setIsDropdownOpen(false);
+                                  setIsNavOpen(false);
+                                }}
+                              >
+                                {formatNavLink(item)}
+                              </Item>
+                            );
+                          })}
+                        </div>
+                      </Column>
+                    );
+                  })}
+                <SeeAll>
+                  <Item
+                    to={`/shop/${encodeURIComponent(activeCategory)}`}
+                    onClick={() => {
+                      setIsDropdownOpen(false);
+                      setIsNavOpen(false);
+                    }}
+                  >
+                    See all {formatNavLink(activeCategory)}
+                  </Item>
+                </SeeAll>
+              </Dropdown>
+            </DropdownContainer>
+          )}
       </Container>
     </>
   );

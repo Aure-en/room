@@ -21,29 +21,43 @@ const colors = {
 
 const Container = styled.div`
   display: flex;
+  align-items: center;
   justify-content: center;
   flex: 1;
   margin: 5rem;
 `;
 
 const ShoppingCart = styled.div`
-  display: flex;
-  align-items: start;
-  max-width: 1400px;
+  @media all and (min-width: 900px) {
+    display: flex;
+    align-items: start;
+    max-width: 1400px;
+  }
 `;
 
 const ItemList = styled.div`
-  margin-right: 5rem;
+  padding: 0 2rem;
+
+  @media all and (min-width: 900px) {
+    padding: 0;
+    padding-left: 2rem;
+  }
 `;
 
 const Heading = styled.h1`
+  margin-left: 3rem;
   margin-bottom: 2rem;
   font-size: 2rem;
   line-height: 2.75rem;
   font-family: 'Playfair Display', sans-serif;
+
+  @media all and (min-width: 900px) {
+    margin-left: initial;
+  }
 `;
 
 const Legend = styled.div`
+  padding-left: .25rem;
   display: grid;
   grid-template-columns: repeat(4, 1fr) auto;
   border-bottom: 1px solid ${colors.border};
@@ -59,7 +73,7 @@ const Product = styled.div`
 `;
 
 const Placeholder = styled.div`
-  width: 20px;
+  width: 32px;
 `;
 
 const Subtotal = styled.div`
@@ -69,7 +83,7 @@ const Subtotal = styled.div`
 `;
 
 const Bottom = styled.div`
-  margin: 1rem 0;
+  margin: 1rem;
   color: ${colors.secondary};
   display: flex;
   justify-content: space-between;
@@ -80,7 +94,6 @@ const Bottom = styled.div`
 `;
 
 // Empty Cart
-
 const EmptyCart = styled.div`
   display: flex;
   flex-direction: column;
@@ -108,14 +121,28 @@ const Button = styled.button`
 const ToPayment = styled.div`
   background: ${colors.secondary};
   color: ${colors.text};
-  padding: 3rem;
   display: flex;
   flex-direction: column;
+  margin: 3rem;
+  padding: 3rem;
+
+  @media all and (min-width: 900px) {
+    padding: 2rem;
+  }
+
+  @media all and (min-width: 1100px) {
+    padding: 3rem;
+  }
 `;
 
 const PaymentText = styled.div`
   font-size: 0.9rem;
   line-height: 1.1rem;
+  text-align: center;
+
+  @media all and (min-width: 900px) {
+    text-align: initial;
+  }
 `;
 
 const PaymentTitle = styled.h2`
@@ -325,7 +352,10 @@ function Cart() {
             <PaymentChoice>Already a customer ?</PaymentChoice>
             <PaymentText>Sign in to continue shopping.</PaymentText>
 
-            <form onSubmit={handleSignIn}>
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              handleSignIn(true);
+            }}>
               <Form>
                 <Field>
                   <Label>Email</Label>
