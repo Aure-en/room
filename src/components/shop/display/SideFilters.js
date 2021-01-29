@@ -39,6 +39,11 @@ const Container = styled.div`
   & > * {
     margin-bottom: 1.5rem;
   }
+
+  @media all and (min-width: 1200px) {
+    margin-right: 5rem;
+  }
+
 `;
 
 const Filter = styled.h3`
@@ -165,6 +170,10 @@ const Button = styled.button`
   &:hover {
     color: ${colors.label};
   }
+`;
+
+const Icon = styled.button`
+  cursor: pointer;
 `;
 
 function SideFilters({ items, handleFilters }) {
@@ -321,7 +330,7 @@ function SideFilters({ items, handleFilters }) {
   return (
     <Container>
       <Filter onClick={() => setAreColorsOpen(!areColorsOpen)}>
-            Colors {areColorsOpen ? <AngleUp /> : <AngleDown />}
+            Colors<Icon>{areColorsOpen ? <AngleUp /> : <AngleDown />}</Icon>
           </Filter>
           <CSSTransition
             in={areColorsOpen}
@@ -357,7 +366,7 @@ function SideFilters({ items, handleFilters }) {
 
           <div>
             <Filter onClick={() => setAreDimensionsOpen(!areDimensionsOpen)}>
-              Dimensions{areDimensionsOpen ? <AngleUp /> : <AngleDown />}
+              Dimensions<Icon>{areDimensionsOpen ? <AngleUp /> : <AngleDown />}</Icon>
             </Filter>
             <CSSTransition
               in={areDimensionsOpen}
@@ -434,7 +443,7 @@ function SideFilters({ items, handleFilters }) {
 
           <div>
             <Filter onClick={() => setAreMaterialsOpen(!areMaterialsOpen)}>
-              Materials{areMaterialsOpen ? <AngleUp /> : <AngleDown />}
+              Materials<Icon>{areMaterialsOpen ? <AngleUp /> : <AngleDown />}</Icon>
             </Filter>
             <CSSTransition
             in={areMaterialsOpen}
@@ -470,7 +479,7 @@ function SideFilters({ items, handleFilters }) {
 
           <div>
             <Filter onClick={() => setAreSeatsOpen(!areSeatsOpen)}>
-              Seats{areSeatsOpen ? <AngleUp /> : <AngleDown />}
+              Seats<Icon>{areSeatsOpen ? <AngleUp /> : <AngleDown />}</Icon>
             </Filter>
             <CSSTransition
             in={areSeatsOpen}

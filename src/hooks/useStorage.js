@@ -6,7 +6,7 @@ export function useStorage() {
 
   const uploadItemImage = (id, image) => {
     return storageRef
-      .child(`products/${id}/${image.name}`)
+      .child(`products/${id}/${image.name}${id}`)
       .put(image)
       .then((snapshot) => snapshot.ref.getDownloadURL());
   };

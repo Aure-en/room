@@ -1151,7 +1151,7 @@ function AddShopItem() {
           Add an item
         </Button>
         <Message>{message}</Message>
-      </Form>
+      </Form>        
     </Container>
   );
 }

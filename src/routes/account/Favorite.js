@@ -37,7 +37,7 @@ const ItemsList = styled.ul`
     grid-template-columns: repeat(3, 1fr);
   }
 
-  @media all and (min-width: 1200px) {
+  @media all and (min-width: 1300px) {
     grid-template-columns: repeat(4, 1fr);
   }
 `;

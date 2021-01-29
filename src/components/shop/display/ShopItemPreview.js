@@ -21,13 +21,10 @@ const Container = styled.div`
   position: relative;
   padding: 2.5rem;
   border: 1px solid transparent;
-
+  max-width: 17.5rem;
+  
   &:hover {
     border: 1px solid ${colors.tertiary};
-  }
-
-  @media all and (min-width: 1200px) {
-    max-width: calc(12.5vw + 5rem);
   }
 `;
 

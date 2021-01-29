@@ -10,11 +10,11 @@ import Sort from '../../../components/shop/display/Sort';
 
 const ShopList = styled.ul`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, auto);
   grid-gap: 3vw;
 
-  @media all and (min-width: 1200px) {
-    grid-template-columns: repeat(3, 1fr);
+  @media all and (min-width: 1350px) {
+    grid-template-columns: repeat(3, auto);
   }
 `;
 

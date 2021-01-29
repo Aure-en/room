@@ -103,7 +103,6 @@ const Description = styled.div`
 `;
 
 const Details = styled.div`
-  min-width: 25rem;
   padding: 5rem 5rem 2rem 5rem;
 
   & > * {
@@ -220,7 +219,7 @@ const OptionLabel = styled.label`
   outline: 1px solid
     ${(props) => (props.isSelected ? colors.secondary : 'transparent')};
   padding: 0.5rem 1rem;
-  margin-left: 1rem;
+  margin: 0 0 .5rem 1rem;
 `;
 
 // Select a quantity
@@ -229,7 +228,7 @@ const Quantity = styled.input`
   width: 2rem;
   height: 2rem;
   text-align: center;
-  margin-left: 1rem;
+  margin: 0 1rem;
 `;
 
 // Additional informations dropdown

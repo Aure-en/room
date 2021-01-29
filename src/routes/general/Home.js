@@ -45,10 +45,19 @@ const Text = styled.p`
   color: ${colors.grey};
 `;
 
-const Image = styled.img`
+const ImageContainer = styled.div`
   width: 100%;
-  min-width: 0;
-  object-fit: cover;
+  overflow: hidden;
+`;
+
+const Image = styled.img`
+  object-fit: fill;
+  height: 100%;
+  width: 100%;
+
+  @media all and (min-width: 1200px) {
+    width: initial;
+  }
 `;
 
 const CarouselImages = [
@@ -82,10 +91,10 @@ function Home() {
       <Carousel images={CarouselImages} text={CarouselText} />
 
       <Row>
-        <Image
+        <ImageContainer><Image
           src='https://firebasestorage.googleapis.com/v0/b/room-f191c.appspot.com/o/home%2Fimage-about-dark.jpg?alt=media&token=7f917181-98fd-4916-a14b-ddc9971cd1a2'
           alt='Wooden table and two modern dark chairs'
-        />
+        /></ImageContainer>
         <Center>
           <Card>
             <About>About our furniture</About>
@@ -99,10 +108,10 @@ function Home() {
             </Text>
           </Card>
         </Center>
-        <Image
+        <ImageContainer><Image
           src='https://firebasestorage.googleapis.com/v0/b/room-f191c.appspot.com/o/home%2Fimage-about-light.jpg?alt=media&token=ae74300f-f87b-483e-ad89-baa45010fe8e'
           alt='White chair'
-        />
+        /></ImageContainer>
       </Row>
     </Container>
   );

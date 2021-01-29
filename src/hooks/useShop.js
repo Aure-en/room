@@ -40,7 +40,7 @@ export function useShop() {
     });
     return id;
   };
-
+  
   // Returns an object representing all the shopping categories.
   const getShopCategories = async () => {
     const categories = await firestore
