@@ -1,7 +1,6 @@
-import { storage } from '../firebase/firebase';
+import { storage } from "../firebase/firebase";
 
-export function useStorage() {
-
+function useStorage() {
   const storageRef = storage.ref();
 
   const uploadItemImage = (id, image) => {
@@ -13,3 +12,5 @@ export function useStorage() {
 
   return { uploadItemImage };
 }
+
+export default useStorage;

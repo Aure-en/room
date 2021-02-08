@@ -1,15 +1,15 @@
-import { useState, useEffect } from 'react';
-import { useAuth } from '../contexts/AuthContext';
-import { useUser } from './useUser';
+import { useState, useEffect } from "react";
+import { useAuth } from "../contexts/AuthContext";
+import useUser from "./useUser";
 
-export function useSignUp() {
-  const [email, setEmail] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [password, setPassword] = useState('');
+function useSignUp() {
+  const [email, setEmail] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [password, setPassword] = useState("");
   const [terms, setTerms] = useState(false);
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const [isFormCompleted, setIsFormCompleted] = useState(true);
   const [loading, setLoading] = useState(false);
 
@@ -24,23 +24,23 @@ export function useSignUp() {
 
   async function handleSignUp() {
     setLoading(true);
-    setEmailError('');
-    setPasswordError('');
+    setEmailError("");
+    setPasswordError("");
 
     try {
-      const user = (currentUser && currentUser.isAnonymous)
-        ? await signUpFromAnonymous(email, password)
-        : await signUp(email, password);
-      console.log(user);
+      const user =
+        currentUser && currentUser.isAnonymous
+          ? await signUpFromAnonymous(email, password)
+          : await signUp(email, password);
       await createUser(user.user.uid, firstName, lastName, email);
       setLoading(false);
     } catch (err) {
       switch (err.code) {
-        case 'auth/email-already-in-use':
-        case 'auth/invalid-email':
+        case "auth/email-already-in-use":
+        case "auth/invalid-email":
           setEmailError(err.message);
           break;
-        case 'auth/weak-password':
+        case "auth/weak-password":
           setPasswordError(err.message);
           break;
         default:
@@ -64,6 +64,8 @@ export function useSignUp() {
     passwordError,
     isFormCompleted,
     loading,
-    handleSignUp
-  }
+    handleSignUp,
+  };
 }
+
+export default useSignUp;

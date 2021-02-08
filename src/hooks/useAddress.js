@@ -1,32 +1,68 @@
-import { firestore } from '../firebase/firebase';
-import { useState } from 'react';
+import { useState } from "react";
+import { firestore } from "../firebase/firebase";
 
-export function useAddress() {
+function useAddress() {
   // Add address
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [address, setAddress] = useState('');
-  const [city, setCity] = useState('');
-  const [zipCode, setZipCode] = useState('');
-  const [country, setCountry] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [message, setMessage] = useState('');
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [address, setAddress] = useState("");
+  const [city, setCity] = useState("");
+  const [zipCode, setZipCode] = useState("");
+  const [country, setCountry] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [message, setMessage] = useState("");
 
   // Edit address
   const [isEditing, setIsEditing] = useState(false);
-  const [firstNameEdit, setFirstNameEdit] = useState('');
-  const [lastNameEdit, setLastNameEdit] = useState('');
-  const [addressEdit, setAddressEdit] = useState('');
-  const [cityEdit, setCityEdit] = useState('');
-  const [zipCodeEdit, setZipCodeEdit] = useState('');
-  const [countryEdit, setCountryEdit] = useState('');
-  const [emailEdit, setEmailEdit] = useState('');
-  const [phoneEdit, setPhoneEdit] = useState('');
-  const [messageEdit, setMessageEdit] = useState('');
+  const [firstNameEdit, setFirstNameEdit] = useState("");
+  const [lastNameEdit, setLastNameEdit] = useState("");
+  const [addressEdit, setAddressEdit] = useState("");
+  const [cityEdit, setCityEdit] = useState("");
+  const [zipCodeEdit, setZipCodeEdit] = useState("");
+  const [countryEdit, setCountryEdit] = useState("");
+  const [emailEdit, setEmailEdit] = useState("");
+  const [phoneEdit, setPhoneEdit] = useState("");
+  const [messageEdit, setMessageEdit] = useState("");
+
+  // Add an address to the user's address book
+  const addAddress = async (
+    userId,
+    firstName,
+    lastName,
+    address,
+    zipCode,
+    city,
+    country,
+    phone,
+    email
+  ) => {
+    const docRef = await firestore
+      .collection("users")
+      .doc(userId)
+      .collection("addresses")
+      .doc();
+    const { id } = docRef;
+    return firestore
+      .collection("users")
+      .doc(userId)
+      .collection("addresses")
+      .doc(id)
+      .set({
+        id,
+        firstName,
+        lastName,
+        address,
+        zipCode,
+        city,
+        country,
+        phone,
+        email,
+      });
+  };
 
   const handleAddAddress = async (userId) => {
-    setMessage('');
+    setMessage("");
     try {
       await addAddress(
         userId,
@@ -39,17 +75,17 @@ export function useAddress() {
         phone,
         email
       );
-      setFirstName('');
-      setLastName('');
-      setAddress('');
-      setZipCode('');
-      setCity('');
-      setCountry('');
-      setPhone('');
-      setEmail('');
-      setMessage('Your address was successfully saved.');
+      setFirstName("");
+      setLastName("");
+      setAddress("");
+      setZipCode("");
+      setCity("");
+      setCountry("");
+      setPhone("");
+      setEmail("");
+      setMessage("Your address was successfully saved.");
     } catch (e) {
-      setMessage('Sorry, we could not add your address.');
+      setMessage("Sorry, we could not add your address.");
     }
   };
 
@@ -66,8 +102,37 @@ export function useAddress() {
     setPhoneEdit(address.phone);
   };
 
+  const editAddress = (
+    userId,
+    id,
+    firstName,
+    lastName,
+    address,
+    zipCode,
+    city,
+    country,
+    phone,
+    email
+  ) => {
+    return firestore
+      .collection("users")
+      .doc(userId)
+      .collection("addresses")
+      .doc(id)
+      .update({
+        firstName,
+        lastName,
+        address,
+        zipCode,
+        city,
+        country,
+        phone,
+        email,
+      });
+  };
+
   const handleEditAddress = async (userId, addressId) => {
-    setMessageEdit('');
+    setMessageEdit("");
     try {
       await editAddress(
         userId,
@@ -83,52 +148,17 @@ export function useAddress() {
       );
       setIsEditing(false);
     } catch (e) {
-      setMessageEdit('Sorry, we could not update your address.');
+      setMessageEdit("Sorry, we could not update your address.");
     }
   };
 
-  // Add an address to the user's address book
-  const addAddress = async (
-    userId,
-    firstName,
-    lastName,
-    address,
-    zipCode,
-    city,
-    country,
-    phone,
-    email
-  ) => {
-    const docRef = await firestore
-      .collection('users')
-      .doc(userId)
-      .collection('addresses')
-      .doc();
-    const id = docRef.id;
-    return firestore
-      .collection('users')
-      .doc(userId)
-      .collection('addresses')
-      .doc(id)
-      .set({
-        id,
-        firstName,
-        lastName,
-        address,
-        zipCode,
-        city,
-        country,
-        phone,
-        email,
-      });
-  };
 
   // Remove an address from the user's address book
   const deleteAddress = (userId, id) => {
     return firestore
-      .collection('users')
+      .collection("users")
       .doc(userId)
-      .collection('addresses')
+      .collection("addresses")
       .doc(id)
       .delete();
   };
@@ -137,48 +167,19 @@ export function useAddress() {
   const getAddresses = async (userId) => {
     const addressBook = [];
     const addresses = await firestore
-      .collection('users')
+      .collection("users")
       .doc(userId)
-      .collection('addresses')
+      .collection("addresses")
       .get();
     addresses.forEach((address) => addressBook.push(address.data()));
     return addressBook;
   };
 
-  const editAddress = (
-    userId,
-    id,
-    firstName,
-    lastName,
-    address,
-    zipCode,
-    city,
-    country,
-    phone,
-    email
-  ) => {
-    return firestore
-      .collection('users')
-      .doc(userId)
-      .collection('addresses')
-      .doc(id)
-      .update({
-        firstName,
-        lastName,
-        address,
-        zipCode,
-        city,
-        country,
-        phone,
-        email,
-      });
-  };
-
   const addressListener = (userId, callback) => {
     return firestore
-      .collection('users')
+      .collection("users")
       .doc(userId)
-      .collection('addresses')
+      .collection("addresses")
       .onSnapshot(callback);
   };
 
@@ -230,3 +231,5 @@ export function useAddress() {
     setMessageEdit,
   };
 }
+
+export default useAddress;

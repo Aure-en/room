@@ -1,8 +1,7 @@
-import { firestore } from '../firebase/firebase';
+import { firestore } from "../firebase/firebase";
 
-export function useCart() {
-
-// Add an item to the user's cart
+function useCart() {
+  // Add an item to the user's cart
   // In the cart, each product chosen has their own id.
   const addToCart = async (
     userId,
@@ -17,12 +16,12 @@ export function useCart() {
   ) => {
     // If the same item is already in the cart, we simply increase the quantity.
     const sameItem = await firestore
-      .collection('carts')
+      .collection("carts")
       .doc(userId)
-      .collection('items')
-      .where('productId', '==', productId)
-      .where('color', '==', color)
-      .where('options', '==', options)
+      .collection("items")
+      .where("productId", "==", productId)
+      .where("color", "==", color)
+      .where("options", "==", options)
       .get();
 
     if (sameItem.docs.length > 0) {
@@ -33,17 +32,17 @@ export function useCart() {
 
     // If the item is not already in the cart, we create a document for it.
     const docRef = await firestore
-      .collection('carts')
+      .collection("carts")
       .doc(userId)
-      .collection('items')
+      .collection("items")
       .doc();
 
-    const id = docRef.id;
+    const { id } = docRef;
 
     return firestore
-      .collection('carts')
+      .collection("carts")
       .doc(userId)
-      .collection('items')
+      .collection("items")
       .doc(id)
       .set({
         id,
@@ -60,18 +59,18 @@ export function useCart() {
 
   const deleteFromCart = (userId, id) => {
     return firestore
-      .collection('carts')
+      .collection("carts")
       .doc(userId)
-      .collection('items')
+      .collection("items")
       .doc(id)
       .delete();
   };
 
   const updateCartQuantity = (userId, id, quantity) => {
     return firestore
-      .collection('carts')
+      .collection("carts")
       .doc(userId)
-      .collection('items')
+      .collection("items")
       .doc(id)
       .update({ quantity });
   };
@@ -80,9 +79,9 @@ export function useCart() {
   const deleteCart = async (userId) => {
     const itemsId = [];
     const docs = await firestore
-      .collection('carts')
+      .collection("carts")
       .doc(userId)
-      .collection('items')
+      .collection("items")
       .get();
     docs.forEach((doc) => itemsId.push(doc.id));
     for (const id of itemsId) {
@@ -94,9 +93,9 @@ export function useCart() {
   const getCart = async (userId) => {
     const cart = [];
     const items = await firestore
-      .collection('carts')
+      .collection("carts")
       .doc(userId)
-      .collection('items')
+      .collection("items")
       .get();
     items.forEach((item) => cart.push(item.data()));
     return cart;
@@ -104,9 +103,9 @@ export function useCart() {
 
   const cartListener = (userId, callback) => {
     return firestore
-      .collection('carts')
+      .collection("carts")
       .doc(userId)
-      .collection('items')
+      .collection("items")
       .onSnapshot(callback);
   };
 
@@ -116,6 +115,8 @@ export function useCart() {
     updateCartQuantity,
     deleteCart,
     getCart,
-    cartListener
+    cartListener,
   };
 }
+
+export default useCart;

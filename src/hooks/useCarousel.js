@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
-export function useCarousel(slides, number) {
+function useCarousel(slides, number) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [slidesNumber, setSlidesNumber] = useState(number);
   const [slidesGroups, setSlidesGroups] = useState([]);
   const [transition, setTransition] = useState(0);
   const [transitionDuration, setTransitionDuration] = useState(0.3);
   const [isNext, setIsNext] = useState(false); // Indicates the carousel direction (previous/next)
-  
+
   const previous = () => {
     setIsNext(false);
     setTransition((prev) => prev + 100 / slidesGroups.length);
@@ -90,3 +90,5 @@ export function useCarousel(slides, number) {
     handleTransitionEnd,
   };
 }
+
+export default useCarousel;

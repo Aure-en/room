@@ -1,10 +1,10 @@
-import { firestore } from '../firebase/firebase';
+import { firestore } from "../firebase/firebase";
 
-export function useShop() {
+function useShop() {
   // Create a document where we'll store an item.
   // Returns the id we will attribute to the item.
   const createItem = async () => {
-    return firestore.collection('products').add({});
+    return firestore.collection("products").add({});
   };
 
   // Puts the item data in the document.
@@ -22,7 +22,7 @@ export function useShop() {
     categories,
     queries
   ) => {
-    await firestore.collection('products').doc(id).set({
+    await firestore.collection("products").doc(id).set({
       id,
       name,
       price,
@@ -36,16 +36,16 @@ export function useShop() {
       categories,
       queries,
       new: false,
-      date: new Date()
+      date: new Date(),
     });
     return id;
   };
-  
+
   // Returns an object representing all the shopping categories.
   const getShopCategories = async () => {
     const categories = await firestore
-      .collection('navigation')
-      .doc('categories')
+      .collection("navigation")
+      .doc("categories")
       .get();
     return categories.data();
   };
@@ -53,7 +53,7 @@ export function useShop() {
   // Returns all the products we are selling.
   const getShopItems = async () => {
     const itemsList = [];
-    const items = await firestore.collection('products').get();
+    const items = await firestore.collection("products").get();
     items.docs.map((doc) => itemsList.push(doc.data()));
     return itemsList;
   };
@@ -62,8 +62,8 @@ export function useShop() {
   const getCategoryItems = async (category) => {
     const itemsList = [];
     const items = await firestore
-      .collection('products')
-      .where('categories', 'array-contains', category)
+      .collection("products")
+      .where("categories", "array-contains", category)
       .get();
     items.docs.map((doc) => itemsList.push(doc.data()));
     return itemsList;
@@ -72,8 +72,8 @@ export function useShop() {
   const getNewItems = async () => {
     const itemsList = [];
     const items = await firestore
-      .collection('products')
-      .where('new', '==', true)
+      .collection("products")
+      .where("new", "==", true)
       .get();
     items.docs.map((doc) => itemsList.push(doc.data()));
     return itemsList;
@@ -81,7 +81,7 @@ export function useShop() {
 
   // Gets an item's data
   const getItem = async (id) => {
-    const doc = await firestore.collection('products').doc(id).get();
+    const doc = await firestore.collection("products").doc(id).get();
     return doc.data();
   };
 
@@ -91,20 +91,20 @@ export function useShop() {
     const recommendations = [];
 
     const sameCollection = await firestore
-      .collection('products')
-      .where('name', '==', item.name)
-      .where('id', '!=', item.id)
+      .collection("products")
+      .where("name", "==", item.name)
+      .where("id", "!=", item.id)
       .limit(12)
       .get();
 
     const sameCategory = await firestore
-      .collection('products')
+      .collection("products")
       .where(
-        'categories',
-        'array-contains',
+        "categories",
+        "array-contains",
         item.categories[item.categories.length - 1]
       )
-      .where('id', '!=', item.id)
+      .where("id", "!=", item.id)
       .limit(12)
       .get();
 
@@ -122,8 +122,8 @@ export function useShop() {
   // Search for an item
   const searchItem = (query) => {
     return firestore
-      .collection('products')
-      .where('queries.search', 'array-contains', query)
+      .collection("products")
+      .where("queries.search", "array-contains", query)
       .get();
   };
 
@@ -139,3 +139,5 @@ export function useShop() {
     searchItem,
   };
 }
+
+export default useShop;

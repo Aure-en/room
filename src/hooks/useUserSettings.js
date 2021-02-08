@@ -1,32 +1,34 @@
-import { useState } from 'react';
-import firebase from 'firebase';
-import { useAuth } from '../contexts/AuthContext';
+import { useState } from "react";
+import firebase from "firebase";
+import { useAuth } from "../contexts/AuthContext";
 
-export function useUserSettings() {
-
+function useUserSettings() {
   const { currentUser } = useAuth();
 
-  const [email, setEmail] = useState('');
-  const [emailError, setEmailError] = useState('');
+  const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
 
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [currentPasswordError, setCurrentPasswordError] = useState('');
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [currentPasswordError, setCurrentPasswordError] = useState("");
 
-  const [newPassword, setNewPassword] = useState('');
-  const [newPasswordError, setNewPasswordError] = useState('');
+  const [newPassword, setNewPassword] = useState("");
+  const [newPasswordError, setNewPasswordError] = useState("");
 
-  const [newPasswordConfirmation, setNewPasswordConfirmation] = useState('');
-  const [newPasswordConfirmationError, setNewPasswordConfirmationError] = useState('');
+  const [newPasswordConfirmation, setNewPasswordConfirmation] = useState("");
+  const [
+    newPasswordConfirmationError,
+    setNewPasswordConfirmationError,
+  ] = useState("");
 
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
 
   const clearErrors = () => {
-    setEmailError('');
-    setCurrentPasswordError('');
-    setNewPasswordError('');
-    setNewPasswordConfirmationError('');
-    setMessage('');
-  }
+    setEmailError("");
+    setCurrentPasswordError("");
+    setNewPasswordError("");
+    setNewPasswordConfirmationError("");
+    setMessage("");
+  };
 
   const checkPassword = async () => {
     const credential = firebase.auth.EmailAuthProvider.credential(
@@ -38,23 +40,29 @@ export function useUserSettings() {
       return true;
     } catch (err) {
       switch (err.code) {
-        case 'wrong-password':
-          setCurrentPasswordError('Enter your password properly to save the changes.');
+        case "wrong-password":
+          setCurrentPasswordError(
+            "Enter your password properly to save the changes."
+          );
           break;
         default:
       }
       return false;
     }
-  }
+  };
 
   const checkNewPasswords = () => {
     if (newPassword !== newPasswordConfirmation) {
-      setNewPasswordError('New password and password confirmation do not match.');
-      setNewPasswordConfirmationError('New password and password confirmation do not match.');
+      setNewPasswordError(
+        "New password and password confirmation do not match."
+      );
+      setNewPasswordConfirmationError(
+        "New password and password confirmation do not match."
+      );
       return false;
     }
     return true;
-  }
+  };
 
   const handleUpdateEmail = async () => {
     const isPasswordCorrect = await checkPassword();
@@ -62,20 +70,20 @@ export function useUserSettings() {
     try {
       await currentUser.updateEmail(email);
       setEmail(email);
-      setMessage('Your information was successfully updated.');
+      setMessage("Your information was successfully updated.");
     } catch (err) {
       switch (err.code) {
-        case 'auth/invalid-email':
-          setEmailError('Not a well formed email address.');
+        case "auth/invalid-email":
+          setEmailError("Not a well formed email address.");
           break;
-        case 'auth/email-already-in-use':
-          setEmailError('Email is already registered.');
+        case "auth/email-already-in-use":
+          setEmailError("Email is already registered.");
           break;
         default:
       }
-      setMessage('Sorry, we were unable to update your information.');
+      setMessage("Sorry, we were unable to update your information.");
     }
-  }
+  };
 
   const handleUpdatePassword = async () => {
     if (!checkNewPasswords()) return;
@@ -83,26 +91,26 @@ export function useUserSettings() {
     if (!isPasswordCorrect) return;
     try {
       await currentUser.updatePassword(newPassword);
-      setMessage('Your information was successfully updated.');
-      setNewPassword('');
-      setNewPasswordConfirmation('');
-      setCurrentPassword('');
+      setMessage("Your information was successfully updated.");
+      setNewPassword("");
+      setNewPasswordConfirmation("");
+      setCurrentPassword("");
     } catch (err) {
       switch (err.code) {
-        case 'weak-password':
-          setNewPasswordError('Must be 6 or more in length.');
+        case "weak-password":
+          setNewPasswordError("Must be 6 or more in length.");
           break;
         default:
       }
-      setMessage('Sorry, we were unable to update your information.');
+      setMessage("Sorry, we were unable to update your information.");
     }
-  }
+  };
 
   const handleDeleteAccount = async () => {
     const isPasswordCorrect = await checkPassword();
     if (!isPasswordCorrect) return;
     await currentUser.delete();
-  }
+  };
 
   return {
     email,
@@ -122,6 +130,8 @@ export function useUserSettings() {
     clearErrors,
     handleUpdateEmail,
     handleUpdatePassword,
-    handleDeleteAccount
-  }
+    handleDeleteAccount,
+  };
 }
+
+export default useUserSettings;
