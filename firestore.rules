@@ -1,9 +1,30 @@
-rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /{document=**} {
-      allow read, write: if
-          request.time < timestamp.date(2021, 1, 31);
+    match /products/{product} {
+      allow write: if request.auth != null && request.auth.uid == '4VkuLKG8OMbw6fkOW0RvHalbcy62'
+      allow read: if true;
+    }
+    
+    match /navigation/{navigation} {
+      allow write: if request.auth != null && request.auth.uid == '4VkuLKG8OMbw6fkOW0RvHalbcy62'
+      allow read: if true;
+    }
+    
+    match /designs/{design} {
+      allow write: if request.auth != null && request.auth.uid == '4VkuLKG8OMbw6fkOW0RvHalbcy62'
+      allow read: if true;
+    }
+    
+    match /favorites/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    match /carts/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
     }
   }
 }
