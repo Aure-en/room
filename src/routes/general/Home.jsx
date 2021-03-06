@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 import Carousel from "../../components/Carousel";
 import Nav from "../../components/Nav";

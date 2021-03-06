@@ -214,6 +214,7 @@ function FullCarousel() {
                 setIsChanging(true);
               }}
               isSelected={currentSlide === index}
+              disabled={currentSlide === index}
             >
               {index + 1}
             </ImageButton>

@@ -29,19 +29,13 @@ const Main = styled.div`
 `;
 
 const Card = styled.div`
-  width: 100vw;
+  width: calc(100vw - 16px);
   max-width: 500px;
   border: 1px solid ${colors.secondary};
   height: 45rem;
   perspective: 150rem;
   padding: 0 5rem;
   background: ${colors.background};
-
-  @media all and (max-width: 600px) {
-    border: none;
-    height: 100%;
-    max-width: none;
-  }
 `;
 
 const CardInner = styled.div`
