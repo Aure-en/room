@@ -9,6 +9,61 @@ import { ReactComponent as Pinterest } from "../../../assets/icons/icon-pinteres
 import { ReactComponent as Twitter } from "../../../assets/icons/icon-twitter.svg";
 import { ReactComponent as Instagram } from "../../../assets/icons/icon-instagram.svg";
 
+function Footer() {
+  return (
+    <Container>
+      <Content>
+        <Room />
+        <div>
+          <Category>Discover Room</Category>
+          <ul>
+            <Li>About us</Li>
+            <Li>Contact</Li>
+            <Li>Terms & Conditions</Li>
+          </ul>
+        </div>
+
+        <div>
+          <Category>Room's Shop</Category>
+          <ul>
+            <Li>
+              <Link to="/account/user">My account</Link>
+            </Li>
+            <Li>
+              <Link to="/shop/tracking">Track an order</Link>
+            </Li>
+            <Li>Delivery</Li>
+            <Li>Returns</Li>
+            <Li>Payment</Li>
+          </ul>
+        </div>
+
+        <Contact>
+          <strong>+1 23 456 789</strong>
+          <div>enquiries@room.com</div>
+          <div>
+            <Icon>
+              <Facebook />
+            </Icon>
+            <Icon>
+              <Instagram />
+            </Icon>
+            <Icon>
+              <Pinterest />
+            </Icon>
+            <Icon>
+              <Twitter />
+            </Icon>
+          </div>
+        </Contact>
+      </Content>
+    </Container>
+  );
+}
+
+export default Footer;
+
+
 // Styled components
 const colors = {
   heading: "hsl(0, 0%, 95%)",
@@ -87,57 +142,3 @@ const Icon = styled.span`
     color: ${colors.primary};
   }
 `;
-
-function Footer() {
-  return (
-    <Container>
-      <Content>
-        <Room />
-        <div>
-          <Category>Discover Room</Category>
-          <ul>
-            <Li>About us</Li>
-            <Li>Contact</Li>
-            <Li>Terms & Conditions</Li>
-          </ul>
-        </div>
-
-        <div>
-          <Category>Room's Shop</Category>
-          <ul>
-            <Li>
-              <Link to="/account/user">My account</Link>
-            </Li>
-            <Li>
-              <Link to="/shop/tracking">Track an order</Link>
-            </Li>
-            <Li>Delivery</Li>
-            <Li>Returns</Li>
-            <Li>Payment</Li>
-          </ul>
-        </div>
-
-        <Contact>
-          <strong>+1 23 456 789</strong>
-          <div>enquiries@room.com</div>
-          <div>
-            <Icon>
-              <Facebook />
-            </Icon>
-            <Icon>
-              <Instagram />
-            </Icon>
-            <Icon>
-              <Pinterest />
-            </Icon>
-            <Icon>
-              <Twitter />
-            </Icon>
-          </div>
-        </Contact>
-      </Content>
-    </Container>
-  );
-}
-
-export default Footer;

@@ -8,6 +8,123 @@ import { ReactComponent as Instagram } from "../../assets/icons/icon-instagram.s
 import { ReactComponent as Pinterest } from "../../assets/icons/icon-pinterest.svg";
 import { ReactComponent as Twitter } from "../../assets/icons/icon-twitter.svg";
 
+function Contact() {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [message, setMessage] = useState("");
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+  };
+
+  return (
+    <>
+      <Nav />
+      <Container>
+        <Image>
+          <Heading>We'd love to hear from you</Heading>
+        </Image>
+        <Center>
+          <Heading2>Contact Us</Heading2>
+          <Form onSubmit={handleFormSubmit}>
+            <Field>
+              <Label htmlFor="first_name">First Name</Label>
+              <Input
+                type="text"
+                value={firstName}
+                id="first_name"
+                onChange={(e) => setFirstName(e.target.value)}
+                placeholder="Enter your first name"
+              />
+            </Field>
+
+            <Field>
+              <Label htmlFor="last_name">Last Name</Label>
+              <Input
+                type="text"
+                value={lastName}
+                id="last_name"
+                onChange={(e) => setLastName(e.target.value)}
+                placeholder="Enter your last name"
+              />
+            </Field>
+
+            <Field>
+              <Label htmlFor="email">Email</Label>
+              <Input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email"
+              />
+            </Field>
+
+            <Field>
+              <Label htmlFor="phone">Phone Number</Label>
+              <Input
+                type="tel"
+                id="phone"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="Enter your phone number"
+              />
+            </Field>
+
+            <MessageField>
+              <Label htmlFor="message">Message</Label>
+              <TextArea
+                value={message}
+                id="message"
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder="Enter your message"
+                rows={1}
+              />
+            </MessageField>
+
+            <SubmitBtn>Send message ⟶</SubmitBtn>
+          </Form>
+
+          <Information>
+            <Field>
+              <InformationType>Email</InformationType>
+              <div>enquiries@room.com</div>
+            </Field>
+
+            <Field>
+              <InformationType>Phone</InformationType>
+              <div>+1 23 456 789</div>
+            </Field>
+          </Information>
+
+          <Social>
+            <InformationType>Follow us</InformationType>
+            <Icon href="#">
+              <Facebook />
+            </Icon>
+
+            <Icon href="#">
+              <Instagram />
+            </Icon>
+
+            <Icon href="#">
+              <Pinterest />
+            </Icon>
+
+            <Icon href="#">
+              <Twitter />
+            </Icon>
+          </Social>
+        </Center>
+      </Container>
+    </>
+  );
+}
+
+export default Contact;
+
 // Styled Components
 const colors = {
   white: "hsl(0, 100%, 100%)",
@@ -188,120 +305,3 @@ const Icon = styled.a`
     color: ${colors.black};
   }
 `;
-
-function Contact() {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [message, setMessage] = useState("");
-
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-  };
-
-  return (
-    <>
-      <Nav />
-      <Container>
-        <Image>
-          <Heading>We'd love to hear from you</Heading>
-        </Image>
-        <Center>
-          <Heading2>Contact Us</Heading2>
-          <Form onSubmit={handleFormSubmit}>
-            <Field>
-              <Label htmlFor="first_name">First Name</Label>
-              <Input
-                type="text"
-                value={firstName}
-                id="first_name"
-                onChange={(e) => setFirstName(e.target.value)}
-                placeholder="Enter your first name"
-              />
-            </Field>
-
-            <Field>
-              <Label htmlFor="last_name">Last Name</Label>
-              <Input
-                type="text"
-                value={lastName}
-                id="last_name"
-                onChange={(e) => setLastName(e.target.value)}
-                placeholder="Enter your last name"
-              />
-            </Field>
-
-            <Field>
-              <Label htmlFor="email">Email</Label>
-              <Input
-                type="email"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email"
-              />
-            </Field>
-
-            <Field>
-              <Label htmlFor="phone">Phone Number</Label>
-              <Input
-                type="tel"
-                id="phone"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                placeholder="Enter your phone number"
-              />
-            </Field>
-
-            <MessageField>
-              <Label htmlFor="message">Message</Label>
-              <TextArea
-                value={message}
-                id="message"
-                onChange={(e) => setMessage(e.target.value)}
-                placeholder="Enter your message"
-                rows={1}
-              />
-            </MessageField>
-
-            <SubmitBtn>Send message ⟶</SubmitBtn>
-          </Form>
-
-          <Information>
-            <Field>
-              <InformationType>Email</InformationType>
-              <div>enquiries@room.com</div>
-            </Field>
-
-            <Field>
-              <InformationType>Phone</InformationType>
-              <div>+1 23 456 789</div>
-            </Field>
-          </Information>
-
-          <Social>
-            <InformationType>Follow us</InformationType>
-            <Icon href="#">
-              <Facebook />
-            </Icon>
-
-            <Icon href="#">
-              <Instagram />
-            </Icon>
-
-            <Icon href="#">
-              <Pinterest />
-            </Icon>
-
-            <Icon href="#">
-              <Twitter />
-            </Icon>
-          </Social>
-        </Center>
-      </Container>
-    </>
-  );
-}
-
-export default Contact;

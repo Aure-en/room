@@ -13,33 +13,6 @@ import Addresses from "./settings/Addresses";
 import PaymentCards from "./settings/Payment";
 import Settings from "./settings/Settings";
 
-const Container = styled.div`
-  display: grid;
-  grid-template-columns = auto 1fr;
-  justify-content: center;
-  align-content: center;
-  margin: 5rem 0;
-
-  @media all and (min-width: 576px) {
-    margin: 5rem;
-  }
-`;
-
-const Content = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  @media all and (min-width: 930px) {
-    flex-direction: row;
-    align-items: start;
-  }
-`;
-
-const Tab = styled.div`
-  min-width: 50vw;
-`;
-
 function Account({ match }) {
   const { currentUser } = useAuth();
   const { windowSize } = useWindowSize();
@@ -96,3 +69,30 @@ Account.propTypes = {
 };
 
 export default Account;
+
+const Container = styled.div`
+  display: grid;
+  grid-template-columns = auto 1fr;
+  justify-content: center;
+  align-content: center;
+  margin: 5rem 0;
+
+  @media all and (min-width: 576px) {
+    margin: 5rem;
+  }
+`;
+
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  @media all and (min-width: 930px) {
+    flex-direction: row;
+    align-items: start;
+  }
+`;
+
+const Tab = styled.div`
+  min-width: 50vw;
+`;

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { CSSTransition } from "react-transition-group";
 import { useAuth } from "../../../contexts/AuthContext";
@@ -18,300 +19,6 @@ import { ReactComponent as Minus } from "../../../assets/icons/icon-minus.svg";
 import { ReactComponent as Heart } from "../../../assets/icons/icon-heart.svg";
 import { ReactComponent as HeartFilled } from "../../../assets/icons/icon-heart-filled.svg";
 import iconX from "../../../assets/icons/icon-x.svg";
-
-// Styled Components
-const colors = {
-  primary: "hsl(0, 0%, 45%)", // Grey
-  secondary: "hsl(0, 0%, 15%)", // Dark Grey
-  tertiary: "hsl(0, 0%, 70%)", // Bright Grey
-  text: "hsl(0, 0%, 35%)",
-  button: "hsl(0, 0%, 100%)", // White
-};
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-top: 2rem;
-
-  @media all and (min-width: 1200px) {
-    padding: 1rem 3rem 5rem 3rem;
-  }
-`;
-
-const Center = styled.section`
-  max-width: 1200px;
-  display: grid;
-  justify-items: center;
-
-  @media all and (min-width: 1000px) {
-    display: block;
-    margin-bottom: 3rem;
-  }
-`;
-
-// Category Links above the item preview
-const Category = styled.div`
-  display: flex;
-  align-items: center;
-  text-transform: uppercase;
-  font-size: 0.825rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-
-  @media all and (min-width: 1000px) {
-    padding: 0;
-    padding-left: 2rem;
-  }
-
-  @media all and (min-width: 1200px) {
-    padding-left: 0;
-  }
-`;
-
-const CategoryLink = styled.span`
-  color: ${colors.primary};
-
-  &:hover {
-    color: ${colors.secondary};
-  }
-`;
-
-const ArrowIcon = styled.span`
-  display: inline-block;
-  margin: 2px 0.5rem 0 0.5rem;
-  color: ${colors.primary};
-`;
-
-// Informations about the item
-const Informations = styled.div`
-  display: grid;
-  justify-items: center;
-
-  @media all and (min-width: 1000px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-`;
-
-const Description = styled.div`
-  display: grid;
-  grid-gap: 1rem;
-  text-align: justify;
-  color: ${colors.text};
-  line-height: 1.25rem;
-`;
-
-const Details = styled.div`
-  padding: 3rem 1rem 0 1rem;
-
-  & > * {
-    margin-bottom: 1.5rem;
-  }
-
-  @media all and (min-width: 500px) {
-    padding: 5rem 5rem 2rem 5rem;
-  }
-
-  @media all and (min-width: 1100px) {
-    padding: 0 5rem;
-  }
-`;
-
-const Name = styled.h2`
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-size: 1.25rem;
-`;
-
-const Price = styled.div`
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: ${colors.secondary};
-`;
-
-// Selection and adding to basket
-
-const Selection = styled.form`
-  border-top: 1px solid ${colors.tertiary};
-  border-bottom: 1px solid ${colors.tertiary};
-  padding: 0.5rem 0;
-
-  & > * {
-    margin: 1rem 0;
-  }
-`;
-
-const Choice = styled.span`
-  text-transform: uppercase;
-  font-size: 0.9rem;
-  color: ${colors.text};
-`;
-
-const TextLabel = styled.span`
-  display: inline-block;
-  text-transform: uppercase;
-  color: ${colors.secondary};
-  font-weight: 600;
-`;
-
-const Label = styled.label`
-  text-transform: uppercase;
-  color: ${colors.secondary};
-  font-weight: 600;
-`;
-
-const Row = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const Checkbox = styled.input`
-  opacity: 0;
-  appearance: none;
-`;
-
-const SubmitBtn = styled.button`
-  font-family: "Source Sans Pro", sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-size: 0.825rem;
-  padding: 0.75rem 1.25rem;
-  color: ${colors.button};
-  background: ${colors.primary};
-  transition: all 0.15s linear;
-  cursor: pointer;
-  width: 10.5rem;
-
-  &:hover {
-    letter-spacing: 1.5px;
-  }
-`;
-
-// Select the item's color
-const ColorList = styled.ul`
-  display: flex;
-`;
-
-const ColorLabel = styled.label`
-  display: inline-block;
-  width: 2rem;
-  height: 2rem;
-  background-color: ${(props) => props.value};
-  border: 1px solid
-    ${(props) => (props.isSelected ? colors.primary : colors.tertiary)};
-  cursor: pointer;
-  margin-right: 0.5rem;
-`;
-
-// Select an option
-const Options = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr auto);
-`;
-
-const OptionsField = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const OptionLabel = styled.label`
-  cursor: pointer;
-  border: 1px solid
-    ${(props) => (props.isSelected ? colors.secondary : colors.text)};
-  color: ${(props) => (props.isSelected ? colors.secondary : colors.text)};
-  outline: 1px solid
-    ${(props) => (props.isSelected ? colors.secondary : "transparent")};
-  padding: 0.5rem 1rem;
-  margin: 0 0 0.5rem 1rem;
-`;
-
-// Select a quantity
-const Quantity = styled.input`
-  font-family: "Source Sans Pro", sans-serif;
-  width: 2rem;
-  height: 2rem;
-  text-align: center;
-  margin: 0 1rem;
-`;
-
-// Additional informations dropdown
-
-const Additional = styled.div`
-  border-bottom: 1px solid ${colors.tertiary};
-`;
-
-const AdditionalBtn = styled.button`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  font-family: "Source Sans Pro", sans-serif;
-  text-transform: uppercase;
-  color: ${colors.secondary};
-  font-weight: 600;
-  font-size: 0.95rem;
-  cursor: pointer;
-  padding: 0;
-  padding-bottom: 1.5rem;
-`;
-
-const Li = styled.li`
-  padding-left: 1rem;
-  text-indent: -1rem;
-  line-height: 1.25rem;
-
-  &:before {
-    content: "";
-    display: inline-block;
-    width: 15px;
-    height: 15px;
-    margin-bottom: -5px;
-    background: url(${iconX});
-  }
-`;
-
-const AdditionalLabel = styled.span`
-  font-weight: 600;
-  text-transform: capitalize;
-`;
-
-const AdditionalInfo = styled.span`
-  color: ${colors.text};
-`;
-
-const Dropdown = styled.div`
-  display: grid;
-
-  @media all and (min-width: 500px) {
-    grid-template-columns: 1fr 1.5fr;
-  }
-`;
-
-const DropdownColumn = styled.div`
-  padding-bottom: 1.5rem;
-
-  & > *:first-child {
-    margin-bottom: 0.5rem;
-  }
-`;
-
-const Column = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const Message = styled.div`
-  text-align: center;
-  font-size: 0.825rem;
-  color: ${colors.primary};
-  margin-top: 0.25rem;
-  max-width: 168px; // Size of button
-`;
-
-const Icon = styled.span`
-  color: ${colors.primary};
-  cursor: pointer;
-`;
 
 function ItemDetails({ match }) {
   const [item, setItem] = useState({});
@@ -657,3 +364,305 @@ function ItemDetails({ match }) {
 }
 
 export default ItemDetails;
+
+ItemDetails.propTypes = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      itemId: PropTypes.string,
+    }),
+  }).isRequired,
+};
+
+// Styled Components
+const colors = {
+  primary: "hsl(0, 0%, 45%)", // Grey
+  secondary: "hsl(0, 0%, 15%)", // Dark Grey
+  tertiary: "hsl(0, 0%, 70%)", // Bright Grey
+  text: "hsl(0, 0%, 35%)",
+  button: "hsl(0, 0%, 100%)", // White
+};
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2rem;
+
+  @media all and (min-width: 1200px) {
+    padding: 1rem 3rem 5rem 3rem;
+  }
+`;
+
+const Center = styled.section`
+  max-width: 1200px;
+  display: grid;
+  justify-items: center;
+
+  @media all and (min-width: 1000px) {
+    display: block;
+    margin-bottom: 3rem;
+  }
+`;
+
+// Category Links above the item preview
+const Category = styled.div`
+  display: flex;
+  align-items: center;
+  text-transform: uppercase;
+  font-size: 0.825rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+
+  @media all and (min-width: 1000px) {
+    padding: 0;
+    padding-left: 2rem;
+  }
+
+  @media all and (min-width: 1200px) {
+    padding-left: 0;
+  }
+`;
+
+const CategoryLink = styled.span`
+  color: ${colors.primary};
+
+  &:hover {
+    color: ${colors.secondary};
+  }
+`;
+
+const ArrowIcon = styled.span`
+  display: inline-block;
+  margin: 2px 0.5rem 0 0.5rem;
+  color: ${colors.primary};
+`;
+
+// Informations about the item
+const Informations = styled.div`
+  display: grid;
+  justify-items: center;
+
+  @media all and (min-width: 1000px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+`;
+
+const Description = styled.div`
+  display: grid;
+  grid-gap: 1rem;
+  text-align: justify;
+  color: ${colors.text};
+  line-height: 1.25rem;
+`;
+
+const Details = styled.div`
+  padding: 3rem 1rem 0 1rem;
+
+  & > * {
+    margin-bottom: 1.5rem;
+  }
+
+  @media all and (min-width: 500px) {
+    padding: 5rem 5rem 2rem 5rem;
+  }
+
+  @media all and (min-width: 1100px) {
+    padding: 0 5rem;
+  }
+`;
+
+const Name = styled.h2`
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 1.25rem;
+`;
+
+const Price = styled.div`
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: ${colors.secondary};
+`;
+
+// Selection and adding to basket
+
+const Selection = styled.form`
+  border-top: 1px solid ${colors.tertiary};
+  border-bottom: 1px solid ${colors.tertiary};
+  padding: 0.5rem 0;
+
+  & > * {
+    margin: 1rem 0;
+  }
+`;
+
+const Choice = styled.span`
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  color: ${colors.text};
+`;
+
+const TextLabel = styled.span`
+  display: inline-block;
+  text-transform: uppercase;
+  color: ${colors.secondary};
+  font-weight: 600;
+`;
+
+const Label = styled.label`
+  text-transform: uppercase;
+  color: ${colors.secondary};
+  font-weight: 600;
+`;
+
+const Row = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const Checkbox = styled.input`
+  opacity: 0;
+  appearance: none;
+`;
+
+const SubmitBtn = styled.button`
+  font-family: "Source Sans Pro", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.825rem;
+  padding: 0.75rem 1.25rem;
+  color: ${colors.button};
+  background: ${colors.primary};
+  transition: all 0.15s linear;
+  cursor: pointer;
+  width: 10.5rem;
+
+  &:hover {
+    letter-spacing: 1.5px;
+  }
+`;
+
+// Select the item's color
+const ColorList = styled.ul`
+  display: flex;
+`;
+
+const ColorLabel = styled.label`
+  display: inline-block;
+  width: 2rem;
+  height: 2rem;
+  background-color: ${(props) => props.value};
+  border: 1px solid
+    ${(props) => (props.isSelected ? colors.primary : colors.tertiary)};
+  cursor: pointer;
+  margin-right: 0.5rem;
+`;
+
+// Select an option
+const Options = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr auto);
+`;
+
+const OptionsField = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const OptionLabel = styled.label`
+  cursor: pointer;
+  border: 1px solid
+    ${(props) => (props.isSelected ? colors.secondary : colors.text)};
+  color: ${(props) => (props.isSelected ? colors.secondary : colors.text)};
+  outline: 1px solid
+    ${(props) => (props.isSelected ? colors.secondary : "transparent")};
+  padding: 0.5rem 1rem;
+  margin: 0 0 0.5rem 1rem;
+`;
+
+// Select a quantity
+const Quantity = styled.input`
+  font-family: "Source Sans Pro", sans-serif;
+  width: 2rem;
+  height: 2rem;
+  text-align: center;
+  margin: 0 1rem;
+`;
+
+// Additional informations dropdown
+
+const Additional = styled.div`
+  border-bottom: 1px solid ${colors.tertiary};
+`;
+
+const AdditionalBtn = styled.button`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  font-family: "Source Sans Pro", sans-serif;
+  text-transform: uppercase;
+  color: ${colors.secondary};
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  padding: 0;
+  padding-bottom: 1.5rem;
+`;
+
+const Li = styled.li`
+  padding-left: 1rem;
+  text-indent: -1rem;
+  line-height: 1.25rem;
+
+  &:before {
+    content: "";
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    margin-bottom: -5px;
+    background: url(${iconX});
+  }
+`;
+
+const AdditionalLabel = styled.span`
+  font-weight: 600;
+  text-transform: capitalize;
+`;
+
+const AdditionalInfo = styled.span`
+  color: ${colors.text};
+`;
+
+const Dropdown = styled.div`
+  display: grid;
+
+  @media all and (min-width: 500px) {
+    grid-template-columns: 1fr 1.5fr;
+  }
+`;
+
+const DropdownColumn = styled.div`
+  padding-bottom: 1.5rem;
+
+  & > *:first-child {
+    margin-bottom: 0.5rem;
+  }
+`;
+
+const Column = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Message = styled.div`
+  text-align: center;
+  font-size: 0.825rem;
+  color: ${colors.primary};
+  margin-top: 0.25rem;
+  max-width: 168px; // Size of button
+`;
+
+const Icon = styled.span`
+  color: ${colors.primary};
+  cursor: pointer;
+`;

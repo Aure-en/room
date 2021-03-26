@@ -9,6 +9,102 @@ import { ReactComponent as AngleLeft } from "../assets/icons/icon-angle-left.svg
 import { ReactComponent as AngleRight } from "../assets/icons/icon-angle-right.svg";
 import { ReactComponent as Arrow } from "../assets/icons/icon-small-arrow.svg";
 
+function FullCarousel() {
+  const images = [
+    "https://firebasestorage.googleapis.com/v0/b/room-f191c.appspot.com/o/images%2Fshop%2Fshop_main_1.jpg?alt=media&token=6955b061-b35e-445a-9c2f-7ea1b7389612",
+    "https://firebasestorage.googleapis.com/v0/b/room-f191c.appspot.com/o/images%2Fshop%2Fshop_main_2.jpg?alt=media&token=6c2dfbbc-116b-4488-bd9b-c8001a4bc1a3",
+  ];
+  const text = [
+    {
+      title: "New Arrivals",
+      text: "Discover our new furnitures and decorations.",
+      link: "/shop/new_in",
+    },
+    {
+      title: "Featured Designs",
+      text: "Discover our designers' seasonal creations.",
+      link: "/shop#featured",
+    },
+  ];
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isChanging, setIsChanging] = useState(false);
+
+  // Functions
+  const next = () => {
+    currentSlide === images.length - 1
+      ? setCurrentSlide(0)
+      : setCurrentSlide((prev) => prev + 1);
+    setIsChanging(true);
+  };
+
+  const previous = () => {
+    currentSlide === 0
+      ? setCurrentSlide(images.length + 1)
+      : setCurrentSlide((prev) => prev - 1);
+    setIsChanging(true);
+  };
+
+  return (
+    <Container>
+      <CarouselComponent>
+        <CSSTransition
+          in={isChanging}
+          timeout={500}
+          classNames="fade"
+          onEntered={() => setIsChanging(false)}
+        >
+          <>
+            <Image src={images[currentSlide]} alt="Hero" />
+            <Text>
+              <Title>{text[currentSlide].title}</Title>
+              <div>{text[currentSlide].text}</div>
+              {text[currentSlide].link.includes("#") ? (
+                <HashLink to={text[currentSlide].link}>
+                  <ShopButton>
+                    Shop now <Arrow />
+                  </ShopButton>
+                </HashLink>
+              ) : (
+                <Link to={text[currentSlide].link}>
+                  <ShopButton>
+                    Shop now <Arrow />
+                  </ShopButton>
+                </Link>
+              )}
+            </Text>
+          </>
+        </CSSTransition>
+
+        <ButtonLeft type="button" onClick={previous}>
+          <AngleLeft />
+        </ButtonLeft>
+        <ButtonRight type="button" onClick={next}>
+          <AngleRight />
+        </ButtonRight>
+
+        <ImageButtons>
+          {images.map((image, index) => (
+            <ImageButton
+              key={image}
+              onClick={() => {
+                setCurrentSlide(index);
+                setIsChanging(true);
+              }}
+              isSelected={currentSlide === index}
+              disabled={currentSlide === index}
+            >
+              {index + 1}
+            </ImageButton>
+          ))}
+        </ImageButtons>
+      </CarouselComponent>
+    </Container>
+  );
+}
+
+export default FullCarousel;
+
+
 const colors = {
   arrow: "hsl(0, 0%, 100%)",
   button: "hsl(0, 0%, 27%)",
@@ -131,98 +227,3 @@ const Image = styled.img`
   height: 100%;
   filter: brightness(70%);
 `;
-
-function FullCarousel() {
-  const images = [
-    "https://firebasestorage.googleapis.com/v0/b/room-f191c.appspot.com/o/images%2Fshop%2Fshop_main_1.jpg?alt=media&token=6955b061-b35e-445a-9c2f-7ea1b7389612",
-    "https://firebasestorage.googleapis.com/v0/b/room-f191c.appspot.com/o/images%2Fshop%2Fshop_main_2.jpg?alt=media&token=6c2dfbbc-116b-4488-bd9b-c8001a4bc1a3",
-  ];
-  const text = [
-    {
-      title: "New Arrivals",
-      text: "Discover our new furnitures and decorations.",
-      link: "/shop/new_in",
-    },
-    {
-      title: "Featured Designs",
-      text: "Discover our designers' seasonal creations.",
-      link: "/shop#featured",
-    },
-  ];
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [isChanging, setIsChanging] = useState(false);
-
-  // Functions
-  const next = () => {
-    currentSlide === images.length - 1
-      ? setCurrentSlide(0)
-      : setCurrentSlide((prev) => prev + 1);
-    setIsChanging(true);
-  };
-
-  const previous = () => {
-    currentSlide === 0
-      ? setCurrentSlide(images.length + 1)
-      : setCurrentSlide((prev) => prev - 1);
-    setIsChanging(true);
-  };
-
-  return (
-    <Container>
-      <CarouselComponent>
-        <CSSTransition
-          in={isChanging}
-          timeout={500}
-          classNames="fade"
-          onEntered={() => setIsChanging(false)}
-        >
-          <>
-            <Image src={images[currentSlide]} alt="Hero" />
-            <Text>
-              <Title>{text[currentSlide].title}</Title>
-              <div>{text[currentSlide].text}</div>
-              {text[currentSlide].link.includes("#") ? (
-                <HashLink to={text[currentSlide].link}>
-                  <ShopButton>
-                    Shop now <Arrow />
-                  </ShopButton>
-                </HashLink>
-              ) : (
-                <Link to={text[currentSlide].link}>
-                  <ShopButton>
-                    Shop now <Arrow />
-                  </ShopButton>
-                </Link>
-              )}
-            </Text>
-          </>
-        </CSSTransition>
-
-        <ButtonLeft type="button" onClick={previous}>
-          <AngleLeft />
-        </ButtonLeft>
-        <ButtonRight type="button" onClick={next}>
-          <AngleRight />
-        </ButtonRight>
-
-        <ImageButtons>
-          {images.map((image, index) => (
-            <ImageButton
-              key={image}
-              onClick={() => {
-                setCurrentSlide(index);
-                setIsChanging(true);
-              }}
-              isSelected={currentSlide === index}
-              disabled={currentSlide === index}
-            >
-              {index + 1}
-            </ImageButton>
-          ))}
-        </ImageButtons>
-      </CarouselComponent>
-    </Container>
-  );
-}
-
-export default FullCarousel;

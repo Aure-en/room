@@ -1,9 +1,80 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 import useDesign from "../../../hooks/useDesign";
 import useShop from "../../../hooks/useShop";
 import { useFavorite } from "../../../contexts/FavoriteContext";
 import ShopItemPreview from "../../../components/shop/display/ShopItemPreview";
+
+function Design({ match }) {
+  const [design, setDesign] = useState();
+  const [items, setItems] = useState([]);
+  const { favorites } = useFavorite();
+  const { getDesign } = useDesign();
+  const { getItem } = useShop();
+
+  useEffect(() => {
+    (async () => {
+      const design = await getDesign(match.params.id);
+      setDesign(design);
+
+      const items = [];
+      for (const itemId of design.items) {
+        const item = await getItem(itemId);
+        items.push(item);
+      }
+      setItems(items);
+    })();
+  }, []);
+
+  return (
+    <Container>
+      {design && (
+        <>
+          <Presentation>
+            <ImageContainer>
+              <Image src={design.image} alt={design.name} />
+            </ImageContainer>
+
+            <Text>
+              <Heading>{design.name}</Heading>
+              <Decoration>⬧</Decoration>
+              {design.description.map((paragraph) => {
+                return <p key={paragraph}>{paragraph}</p>;
+              })}
+            </Text>
+          </Presentation>
+
+          <ShopList>
+            {items.map((item) => {
+              return (
+                <ShopItemPreview
+                  key={item.id}
+                  name={item.name}
+                  images={item.images}
+                  price={item.price}
+                  id={item.id}
+                  isFavorite={favorites.includes(item.id)}
+                  isNew={item.new}
+                />
+              );
+            })}
+          </ShopList>
+        </>
+      )}
+    </Container>
+  );
+}
+
+export default Design;
+
+Design.propTypes = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.string,
+    }),
+  }).isRequired,
+};
 
 const colors = {
   primary: "hsl(0, 0%, 27%)", // Grey
@@ -19,9 +90,16 @@ const Container = styled.div`
 
 const ShopList = styled.ul`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  // grid-template-columns: repeat(3, 1fr);
+  margin-top: 3rem;
   grid-gap: 3vw;
+
+  @media all and (min-width: 500px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media all and (min-width: 1000px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
 `;
 
 const ImageContainer = styled.div`
@@ -101,7 +179,7 @@ const Text = styled.div`
   border: 5px solid ${colors.primary};
   outline: 2px solid ${colors.primary};
   outline-offset: 5px;
-  padding: 3rem;
+  padding: 2rem 1rem;
   line-height: 1.5rem;
   text-align: justify;
 
@@ -113,70 +191,13 @@ const Text = styled.div`
     margin-bottom: 0;
   }
 
+  @media all and (min-width: 500px) {
+    padding: 3rem;
+  }
+
   @media all and (min-width: 1000px) {
     position: absolute;
     bottom: -5rem;
     right: -5rem;
   }
 `;
-
-function Design({ match }) {
-  const [design, setDesign] = useState();
-  const [items, setItems] = useState([]);
-  const { favorites } = useFavorite();
-  const { getDesign } = useDesign();
-  const { getItem } = useShop();
-
-  useEffect(() => {
-    (async () => {
-      const design = await getDesign(match.params.id);
-      setDesign(design);
-
-      const items = [];
-      for (const itemId of design.items) {
-        const item = await getItem(itemId);
-        items.push(item);
-      }
-      setItems(items);
-    })();
-  }, []);
-
-  return (
-    <Container>
-      {design && (
-        <>
-          <Presentation>
-            <ImageContainer>
-              <Image src={design.image} alt={design.name} />
-            </ImageContainer>
-
-            <Text>
-              <Heading>{design.name}</Heading>
-              <Decoration>⬧</Decoration>
-              {design.description.map((paragraph) => {
-                return <p>{paragraph}</p>;
-              })}
-            </Text>
-          </Presentation>
-
-          <ShopList>
-            {items.map((item) => {
-              return (
-                <ShopItemPreview
-                  name={item.name}
-                  images={item.images}
-                  price={item.price}
-                  id={item.id}
-                  isFavorite={favorites.includes(item.id)}
-                  isNew={item.new}
-                />
-              );
-            })}
-          </ShopList>
-        </>
-      )}
-    </Container>
-  );
-}
-
-export default Design;

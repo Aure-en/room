@@ -7,120 +7,6 @@ import { Link } from "react-router-dom";
 import { ReactComponent as AngleLeft } from "../assets/icons/icon-angle-left.svg";
 import { ReactComponent as AngleRight } from "../assets/icons/icon-angle-right.svg";
 
-const colors = {
-  black: "hsl(0, 0%, 0%)",
-  darkGrey: "hsl(0, 0%, 27%)",
-};
-
-const size = `
-  width: 100%;
-  height: 100%;
-`;
-
-const Container = styled.div`
-  display: flex;
-
-  @media all and (max-width: 600px) {
-    flex-direction: column;
-  }
-`;
-
-const CarouselComponent = styled.div`
-  position: relative;
-  max-width: 840px;
-  max-height: 534px;
-  min-width: 0;
-  height: 100%;
-`;
-
-const Slider = styled.div`
-  ${size}
-  overflow: hidden;
-`;
-
-const Images = styled.div`
-  ${size}
-  transform: translateX(${(props) => props.transition}%);
-  transition: transform ${(props) => props.transitionDuration}s ease-in;
-  display: flex;
-`;
-
-const Menu = styled.div`
-  position: absolute;
-  display: flex;
-  left: 100%;
-  bottom: 0;
-
-  @media all and (max-width: 1170px) {
-    left: initial;
-    right: 0;
-  }
-`;
-
-const Button = styled.button`
-  background: ${colors.black};
-  padding: 1.5rem 2rem;
-  cursor: pointer;
-  color: #fff;
-
-  &:hover {
-    background: ${colors.darkGrey};
-  }
-`;
-
-const Image = styled.img`
-  width: 100%;
-  object-fit: cover;
-`;
-
-const Center = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem 0;
-`;
-
-const Card = styled.div`
-  max-width: 70%;
-  min-width: 450px;
-  padding: 2rem;
-  transition: all 0.25s ease-in-out;
-
-  @media all and (max-width: 576px) {
-    min-width: 0;
-    padding: 1rem;
-  }
-`;
-
-const ShopLink = styled.span`
-  text-transform: uppercase;
-  letter-spacing: 0.5rem;
-  font-weight: 300;
-  font-size: 1.25rem;
-  margin-top: 2rem;
-  display: inline-block;
-  cursor: pointer;
-
-  &:hover {
-    color: ${colors.grey};
-  }
-`;
-
-const Text = styled.p`
-  line-height: 1.25rem;
-  color: ${colors.grey};
-`;
-
-const Arrow = styled.svg`
-  margin-left: 2rem;
-`;
-
-const Title = styled.h1`
-  font-size: 2.75rem;
-  font-weight: 300;
-  margin-bottom: 2rem;
-`;
-
 function Carousel({ images, text }) {
   const cardRef = useRef();
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -247,3 +133,118 @@ Carousel.defaultProps = {
 };
 
 export default Carousel;
+
+
+const colors = {
+  black: "hsl(0, 0%, 0%)",
+  darkGrey: "hsl(0, 0%, 27%)",
+};
+
+const size = `
+  width: 100%;
+  height: 100%;
+`;
+
+const Container = styled.div`
+  display: flex;
+
+  @media all and (max-width: 600px) {
+    flex-direction: column;
+  }
+`;
+
+const CarouselComponent = styled.div`
+  position: relative;
+  max-width: 840px;
+  max-height: 534px;
+  min-width: 0;
+  height: 100%;
+`;
+
+const Slider = styled.div`
+  ${size}
+  overflow: hidden;
+`;
+
+const Images = styled.div`
+  ${size}
+  transform: translateX(${(props) => props.transition}%);
+  transition: transform ${(props) => props.transitionDuration}s ease-in;
+  display: flex;
+`;
+
+const Menu = styled.div`
+  position: absolute;
+  display: flex;
+  left: 100%;
+  bottom: 0;
+
+  @media all and (max-width: 1170px) {
+    left: initial;
+    right: 0;
+  }
+`;
+
+const Button = styled.button`
+  background: ${colors.black};
+  padding: 1.5rem 2rem;
+  cursor: pointer;
+  color: #fff;
+
+  &:hover {
+    background: ${colors.darkGrey};
+  }
+`;
+
+const Image = styled.img`
+  width: 100%;
+  object-fit: cover;
+`;
+
+const Center = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 0;
+`;
+
+const Card = styled.div`
+  max-width: 70%;
+  min-width: 450px;
+  padding: 2rem;
+  transition: all 0.25s ease-in-out;
+
+  @media all and (max-width: 576px) {
+    min-width: 0;
+    padding: 1rem;
+  }
+`;
+
+const ShopLink = styled.span`
+  text-transform: uppercase;
+  letter-spacing: 0.5rem;
+  font-weight: 300;
+  font-size: 1.25rem;
+  margin-top: 2rem;
+  display: inline-block;
+  cursor: pointer;
+
+  &:hover {
+    color: ${colors.grey};
+  }
+`;
+
+const Text = styled.p`
+  line-height: 1.25rem;
+  color: ${colors.grey};
+`;
+
+const Arrow = styled.svg`
+  margin-left: 2rem;
+`;
+
+const Title = styled.h1`
+  font-size: 2.75rem;
+  font-weight: 300;
+  margin-bottom: 2rem;
+`;

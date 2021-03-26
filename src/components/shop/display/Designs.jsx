@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import useCarousel from "../../../hooks/useCarousel";
 
@@ -8,8 +9,97 @@ import { ReactComponent as AngleLeft } from "../../../assets/icons/icon-angle-le
 import { ReactComponent as AngleRight } from "../../../assets/icons/icon-angle-right.svg";
 import { ReactComponent as Arrow } from "../../../assets/icons/icon-small-arrow.svg";
 
-// Styled components
+function Designs({ designs }) {
+  const [isHovered, setIsHovered] = useState("");
+  const galleryRef = useRef();
+  const {
+    slidesNumber,
+    transition,
+    transitionDuration,
+    slidesGroups,
+    previous,
+    next,
+    handleTransitionEnd,
+  } = useCarousel(designs, 3);
+  useCarousel(designs, 3);
 
+  return (
+    <Container>
+      <Button onClick={previous} disabled={slidesGroups.length < 3}>
+        <AngleLeft />
+      </Button>
+
+      <Gallery ref={galleryRef}>
+        <Slides
+          onTransitionEnd={handleTransitionEnd}
+          transition={transition}
+          transitionDuration={transitionDuration}
+          slidesNumber={slidesNumber}
+        >
+          {galleryRef.current && (
+            <>
+              {slidesGroups.map((slide, indexGroup) => {
+                return (
+                  <Slide key={indexGroup} size={galleryRef.current.clientWidth}>
+                    {slide &&
+                      slide.map((slide, index) => {
+                        if (slide) {
+                          return (
+                            <Preview
+                              key={`${slide.id}-${indexGroup}`}
+                              onMouseEnter={() => setIsHovered(slide.id)}
+                              onMouseLeave={() => setIsHovered("")}
+                            >
+                              <Link to={`/shop/design/${slide.id}`}>
+                                <Image
+                                  src={slide.image}
+                                  alt="Featured room design"
+                                  isHovered={isHovered === slide.id}
+                                  onTransitionEnd={(e) => e.stopPropagation()}
+                                />
+                                {isHovered === slide.id && (
+                                  <ShopButton>
+                                    Shop now 
+{' '}
+<Arrow />
+                                  </ShopButton>
+                                )}
+                              </Link>
+                            </Preview>
+                          );
+                        }
+                        return <Preview key={`empty-${index}`} />;
+                      })}
+                  </Slide>
+                );
+              })}
+            </>
+          )}
+        </Slides>
+      </Gallery>
+
+      <Button onClick={next} disabled={slidesGroups.length < 3}>
+        <AngleRight />
+      </Button>
+    </Container>
+  );
+}
+
+export default Designs;
+
+Designs.propTypes = {
+  designs: PropTypes.arrayOf(
+    PropTypes.shape({
+      description: PropTypes.arrayOf(PropTypes.string),
+      id: PropTypes.string,
+      image: PropTypes.string,
+      items: PropTypes.arrayOf(PropTypes.string),
+      name: PropTypes.string,
+    })
+  ).isRequired,
+};
+
+// Styled components
 const colors = {
   background: "hsl(0, 0%, 100%)",
   button: "hsl(0, 0%, 50%)",
@@ -93,81 +183,3 @@ const ShopButton = styled.span`
   left: 50%;
   transform: translateX(-50%);
 `;
-
-function Designs({ designs }) {
-  const [isHovered, setIsHovered] = useState("");
-  const galleryRef = useRef();
-  const {
-    slidesNumber,
-    transition,
-    transitionDuration,
-    slidesGroups,
-    previous,
-    next,
-    handleTransitionEnd,
-  } = useCarousel(designs, 3);
-  useCarousel(designs, 3);
-
-  return (
-    <Container>
-      <Button onClick={previous} disabled={slidesGroups.length < 3}>
-        <AngleLeft />
-      </Button>
-
-      <Gallery ref={galleryRef}>
-        <Slides
-          onTransitionEnd={handleTransitionEnd}
-          transition={transition}
-          transitionDuration={transitionDuration}
-          slidesNumber={slidesNumber}
-        >
-          {galleryRef.current && (
-            <>
-              {slidesGroups.map((slide, indexGroup) => {
-                return (
-                  <Slide key={indexGroup} size={galleryRef.current.clientWidth}>
-                    {slide &&
-                      slide.map((slide, index) => {
-                        if (slide) {
-                          return (
-                            <Preview
-                              key={`${slide.id}-${indexGroup}`}
-                              onMouseEnter={() => setIsHovered(slide.id)}
-                              onMouseLeave={() => setIsHovered("")}
-                            >
-                              <Link to={`/shop/design/${slide.id}`}>
-                                <Image
-                                  src={slide.image}
-                                  alt="Featured room design"
-                                  isHovered={isHovered === slide.id}
-                                  onTransitionEnd={(e) => e.stopPropagation()}
-                                />
-                                {isHovered === slide.id && (
-                                  <ShopButton>
-                                    Shop now 
-{' '}
-<Arrow />
-                                  </ShopButton>
-                                )}
-                              </Link>
-                            </Preview>
-                          );
-                        }
-                        return <Preview key={`empty-${index}`} />;
-                      })}
-                  </Slide>
-                );
-              })}
-            </>
-          )}
-        </Slides>
-      </Gallery>
-
-      <Button onClick={next} disabled={slidesGroups.length < 3}>
-        <AngleRight />
-      </Button>
-    </Container>
-  );
-}
-
-export default Designs;

@@ -8,6 +8,81 @@ import useCart from "../../../hooks/useCart";
 // Icon
 import { ReactComponent as Delete } from "../../../assets/icons/icon-x-med.svg";
 
+function CartItem({ item }) {
+  const [quantity, setQuantity] = useState(item.quantity);
+  const { currentUser } = useAuth();
+  const { deleteFromCart, updateCartQuantity } = useCart();
+
+  useEffect(() => {
+    updateCartQuantity(currentUser.uid, item.id, quantity);
+  }, [quantity]);
+
+  return (
+    <Item>
+      <Information>
+        <Image src={item.image} alt="Item preview" />
+        <div>
+          <Name>
+            <Link to={`/shop/item/${item.id}`}>{item.name}</Link>
+          </Name>
+          <Type>
+            {item.type} - {item.color.description}
+          </Type>
+          <div>
+            {item.options.map((option) => {
+              return (
+                <Option option={option} key={Object.keys(option)[0]}>
+                  <Capitalize>{Object.keys(option)[0]}</Capitalize> -{" "}
+                  {option[Object.keys(option)[0]].option}
+                </Option>
+              );
+            })}
+          </div>
+          <Price>£{item.price}</Price>
+        </div>
+      </Information>
+
+      <Quantity>
+        <Button
+          onClick={() => setQuantity((prev) => (+prev < 2 ? "1" : prev - 1))}
+        >
+          -
+        </Button>
+        <QuantityInput
+          value={quantity}
+          onChange={(e) => {
+            let quantity = e.target.value.replace(/[^0-9]/g, "");
+            if (+quantity < 1 || !quantity) quantity = "1";
+            setQuantity(quantity);
+          }}
+        />
+        <Button onClick={() => setQuantity((prev) => +prev + 1)}>+</Button>
+      </Quantity>
+      <Price>£{item.price * quantity}</Price>
+      <Button onClick={() => deleteFromCart(currentUser.uid, item.id)}>
+        <Delete />
+      </Button>
+    </Item>
+  );
+}
+
+CartItem.propTypes = {
+  item: PropTypes.shape({
+    price: PropTypes.number,
+    id: PropTypes.string,
+    type: PropTypes.string,
+    name: PropTypes.string,
+    quantity: PropTypes.number,
+    image: PropTypes.string,
+    color: PropTypes.shape({
+      description: PropTypes.string,
+    }),
+    options: PropTypes.object,
+  }).isRequired,
+};
+
+export default CartItem;
+
 // Styled Components
 const colors = {
   primary: "hsl(0, 0%, 45%)", // Grey
@@ -98,77 +173,3 @@ const Button = styled.button`
     color: initial;
   }
 `;
-function CartItem({ item }) {
-  const [quantity, setQuantity] = useState(item.quantity);
-  const { currentUser } = useAuth();
-  const { deleteFromCart, updateCartQuantity } = useCart();
-
-  useEffect(() => {
-    updateCartQuantity(currentUser.uid, item.id, quantity);
-  }, [quantity]);
-
-  return (
-    <Item>
-      <Information>
-        <Image src={item.image} alt="Item preview" />
-        <div>
-          <Name>
-            <Link to={`/shop/item/${item.id}`}>{item.name}</Link>
-          </Name>
-          <Type>
-            {item.type} -{item.color.description}
-          </Type>
-          <div>
-            {item.options.map((option) => {
-              return (
-                <Option option={option} key={Object.keys(option)[0]}>
-                  <Capitalize>{Object.keys(option)[0]}</Capitalize> -{" "}
-                  {option[Object.keys(option)[0]].option}
-                </Option>
-              );
-            })}
-          </div>
-          <Price>£{item.price}</Price>
-        </div>
-      </Information>
-
-      <Quantity>
-        <Button
-          onClick={() => setQuantity((prev) => (+prev < 2 ? "1" : prev - 1))}
-        >
-          -
-        </Button>
-        <QuantityInput
-          value={quantity}
-          onChange={(e) => {
-            let quantity = e.target.value.replace(/[^0-9]/g, "");
-            if (+quantity < 1 || !quantity) quantity = "1";
-            setQuantity(quantity);
-          }}
-        />
-        <Button onClick={() => setQuantity((prev) => +prev + 1)}>+</Button>
-      </Quantity>
-      <Price>£{item.price * quantity}</Price>
-      <Button onClick={() => deleteFromCart(currentUser.uid, item.id)}>
-        <Delete />
-      </Button>
-    </Item>
-  );
-}
-
-CartItem.propTypes = {
-  item: PropTypes.shape({
-    price: PropTypes.number,
-    id: PropTypes.string,
-    type: PropTypes.string,
-    name: PropTypes.string,
-    quantity: PropTypes.number,
-    image: PropTypes.string,
-    color: PropTypes.shape({
-      description: PropTypes.string,
-    }),
-    options: PropTypes.object,
-  }).isRequired,
-};
-
-export default CartItem;

@@ -8,6 +8,63 @@ import useShop from "../../hooks/useShop";
 // Icons
 import { ReactComponent as Basket } from "../../assets/icons/icon-basket.svg";
 
+function Favorite() {
+  const { getItem } = useShop();
+  const { favorites } = useFavorite([]);
+  const [favoriteItems, setFavoriteItems] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      const favoritesItems = [];
+      for (const favorite of favorites) {
+        const item = await getItem(favorite);
+        favoritesItems.push(item);
+      }
+      setFavoriteItems(favoritesItems);
+    })();
+  }, [favorites]);
+
+  return (
+    <Container>
+      <div>
+        <Heading>Favorites</Heading>
+        {favorites.length === 0 ? (
+          <Empty>
+            <Basket />
+            <EmptyText>
+              It seems that you haven't saved any items yet.
+            </EmptyText>
+            <div>We have a lot of lovely ideas to help you fill it.</div>
+            <Link to="/shop">
+              <Button>Inspire Me</Button>
+            </Link>
+          </Empty>
+        ) : (
+          <>
+            <ItemsList>
+              {favoriteItems.map((item) => {
+                return (
+                  <li key={item.id}>
+                    <ShopItemPreview
+                      name={item.name}
+                      images={item.images}
+                      price={item.price}
+                      id={item.id}
+                      isFavorite={favorites.includes(item.id)}
+                    />
+                  </li>
+                );
+              })}
+            </ItemsList>
+          </>
+        )}
+      </div>
+    </Container>
+  );
+}
+
+export default Favorite;
+
 // Styled Components
 const colors = {
   button: "hsl(0, 0%, 27%)", // Darker grey
@@ -72,60 +129,3 @@ const Button = styled.button`
   padding: 0.5rem 1rem;
   cursor: pointer;
 `;
-
-function Favorite() {
-  const { getItem } = useShop();
-  const { favorites } = useFavorite([]);
-  const [favoriteItems, setFavoriteItems] = useState([]);
-
-  useEffect(() => {
-    (async () => {
-      const favoritesItems = [];
-      for (const favorite of favorites) {
-        const item = await getItem(favorite);
-        favoritesItems.push(item);
-      }
-      setFavoriteItems(favoritesItems);
-    })();
-  }, [favorites]);
-
-  return (
-    <Container>
-      <div>
-        <Heading>Favorites</Heading>
-        {favorites.length === 0 ? (
-          <Empty>
-            <Basket />
-            <EmptyText>
-              It seems that you haven't saved any items yet.
-            </EmptyText>
-            <div>We have a lot of lovely ideas to help you fill it.</div>
-            <Link to="/shop">
-              <Button>Inspire Me</Button>
-            </Link>
-          </Empty>
-        ) : (
-          <>
-            <ItemsList>
-              {favoriteItems.map((item) => {
-                return (
-                  <li key={item.id}>
-                    <ShopItemPreview
-                      name={item.name}
-                      images={item.images}
-                      price={item.price}
-                      id={item.id}
-                      isFavorite={favorites.includes(item.id)}
-                    />
-                  </li>
-                );
-              })}
-            </ItemsList>
-          </>
-        )}
-      </div>
-    </Container>
-  );
-}
-
-export default Favorite;

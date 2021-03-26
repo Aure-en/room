@@ -2,6 +2,49 @@ import React from "react";
 import styled from "styled-components";
 import Nav from "../../components/Nav";
 
+function About() {
+  return (
+    <Container>
+      <Nav />
+      <Image
+        src="https://firebasestorage.googleapis.com/v0/b/room-f191c.appspot.com/o/about%2Fabout.jpg?alt=media&token=cdb4b49d-b7dd-4db1-87fb-3388ba0b0dd6"
+        alt="Furnitures"
+      />
+      <Center>
+        <Content>
+          <Title>About Us</Title>
+
+          <Heading>
+            Our design philosophy is simple: interiors matter. They matter
+            because they influence how we feel, how we act and how we live,
+            often without us realising it.
+          </Heading>
+
+          <TextDropCap>
+            These, and many more, are the backdrops to life’s most memorable
+            moments and each one has a significant impact on us, some without us
+            even realising. And, so, we create interiors that matter—the kind of
+            interiors that are worthy of life’s memorable moments.
+          </TextDropCap>
+
+          <Text>
+            Extraordinary interiors may call for bespoke furniture which is why
+            we offer a custom furniture service for our discerning clients. To
+            design and manufacture extra special furniture designs for our
+            clients, we commission the best the industry has to offer in the
+            form of proven and reliable product designers and artisans. Whether
+            built-in cabinetry or a unique custom-made furniture piece, we
+            guarantee that we will create the perfect piece for your project
+            when the right thing just can’t be found.
+          </Text>
+        </Content>
+      </Center>
+    </Container>
+  );
+}
+
+export default About;
+
 const colors = {
   black: "hsl(0, 0%, 0%)",
   grey: "hsl(0, 0%, 63%)",
@@ -83,45 +126,3 @@ const Image = styled.img`
   object-fit: cover;
 `;
 
-function About() {
-  return (
-    <Container>
-      <Nav />
-      <Image
-        src="https://firebasestorage.googleapis.com/v0/b/room-f191c.appspot.com/o/about%2Fabout.jpg?alt=media&token=cdb4b49d-b7dd-4db1-87fb-3388ba0b0dd6"
-        alt="Furnitures"
-      />
-      <Center>
-        <Content>
-          <Title>About Us</Title>
-
-          <Heading>
-            Our design philosophy is simple: interiors matter. They matter
-            because they influence how we feel, how we act and how we live,
-            often without us realising it.
-          </Heading>
-
-          <TextDropCap>
-            These, and many more, are the backdrops to life’s most memorable
-            moments and each one has a significant impact on us, some without us
-            even realising. And, so, we create interiors that matter—the kind of
-            interiors that are worthy of life’s memorable moments.
-          </TextDropCap>
-
-          <Text>
-            Extraordinary interiors may call for bespoke furniture which is why
-            we offer a custom furniture service for our discerning clients. To
-            design and manufacture extra special furniture designs for our
-            clients, we commission the best the industry has to offer in the
-            form of proven and reliable product designers and artisans. Whether
-            built-in cabinetry or a unique custom-made furniture piece, we
-            guarantee that we will create the perfect piece for your project
-            when the right thing just can’t be found.
-          </Text>
-        </Content>
-      </Center>
-    </Container>
-  );
-}
-
-export default About;

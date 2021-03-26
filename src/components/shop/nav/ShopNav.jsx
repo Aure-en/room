@@ -4,8 +4,92 @@ import { Link } from "react-router-dom";
 import useShop from "../../../hooks/useShop";
 import { formatNavLink } from "../../../utils/utils";
 
-// Styled components
+// Displays shopping categories (types of furnitures...)
+function ShopNav() {
+  const { getShopCategories } = useShop();
+  const [categories, setCategories] = useState([]);
+  const [dropdown, setDropdown] = useState(false);
+  const [hovered, setHovered] = useState("");
+  const navRef = useRef();
 
+  useEffect(() => {
+    (async () => {
+      const categories = await getShopCategories();
+      setCategories(categories);
+    })();
+  }, []);
+
+  return (
+    <Container
+      onMouseLeave={() => {
+        setDropdown(false);
+      }}
+    >
+      <Nav ref={navRef}>
+        {/* Sort the categories by order before displaying them */}
+        {Object.keys(categories)
+          .sort((a, b) => categories[a].order - categories[b].order)
+          .map((category) => {
+            return (
+              <Category
+                to={`/shop/${encodeURIComponent(category)}`}
+                key={category}
+                onMouseOver={() => {
+                  setDropdown(true);
+                  setHovered(category);
+                }}
+              >
+                {formatNavLink(category)}
+              </Category>
+            );
+          })}
+      </Nav>
+
+      {dropdown && Object.keys(categories[hovered].categories).length !== 0 && (
+        <DropdownContainer margin={navRef.current.offsetHeight}>
+          <Dropdown>
+            {/* Sort the subcategories by order before displaying them */}
+            {Object.keys(categories[hovered].categories)
+              .sort(
+                (a, b) =>
+                  categories[hovered].categories[a].order -
+                  categories[hovered].categories[b].order
+              )
+              .map((subcategory) => {
+                return (
+                  <div key={subcategory}>
+                    <Subcategory
+                      to={`/shop/${encodeURIComponent(subcategory)}`}
+                    >
+                      {formatNavLink(subcategory)}
+                    </Subcategory>
+                    <div>
+                      {categories[hovered].categories[
+                        subcategory
+                      ].categories.map((item) => {
+                        return (
+                          <Item
+                            key={item}
+                            to={`/shop/${encodeURIComponent(item)}`}
+                          >
+                            {formatNavLink(item)}
+                          </Item>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })}
+          </Dropdown>
+        </DropdownContainer>
+      )}
+    </Container>
+  );
+}
+
+export default ShopNav;
+
+// Styled components
 const colors = {
   primary: "hsl(0, 0%, 0%)", // Black
   secondary: "hsl(0, 0%, 27%)", // Grey
@@ -94,88 +178,3 @@ const Item = styled(Link)`
     text-decoration: underline;
   }
 `;
-
-// Displays shopping categories (types of furnitures...)
-function ShopNav() {
-  const { getShopCategories } = useShop();
-  const [categories, setCategories] = useState([]);
-  const [dropdown, setDropdown] = useState(false);
-  const [hovered, setHovered] = useState("");
-  const navRef = useRef();
-
-  useEffect(() => {
-    (async () => {
-      const categories = await getShopCategories();
-      setCategories(categories);
-    })();
-  }, []);
-
-  return (
-    <Container
-      onMouseLeave={() => {
-        setDropdown(false);
-      }}
-    >
-      <Nav ref={navRef}>
-        {/* Sort the categories by order before displaying them */}
-        {Object.keys(categories)
-          .sort((a, b) => categories[a].order - categories[b].order)
-          .map((category) => {
-            return (
-              <Category
-                to={`/shop/${encodeURIComponent(category)}`}
-                key={category}
-                onMouseOver={() => {
-                  setDropdown(true);
-                  setHovered(category);
-                }}
-              >
-                {formatNavLink(category)}
-              </Category>
-            );
-          })}
-      </Nav>
-
-      {dropdown && Object.keys(categories[hovered].categories).length !== 0 && (
-        <DropdownContainer margin={navRef.current.offsetHeight}>
-          <Dropdown>
-            {/* Sort the subcategories by order before displaying them */}
-            {Object.keys(categories[hovered].categories)
-              .sort(
-                (a, b) =>
-                  categories[hovered].categories[a].order -
-                  categories[hovered].categories[b].order
-              )
-              .map((subcategory) => {
-                return (
-                  <div key={subcategory}>
-                    <Subcategory
-                      to={`/shop/${encodeURIComponent(subcategory)}`}
-                    >
-                      {formatNavLink(subcategory)}
-                    </Subcategory>
-                    <div>
-                      {categories[hovered].categories[
-                        subcategory
-                      ].categories.map((item) => {
-                        return (
-                          <Item
-                            key={item}
-                            to={`/shop/${encodeURIComponent(item)}`}
-                          >
-                            {formatNavLink(item)}
-                          </Item>
-                        );
-                      })}
-                    </div>
-                  </div>
-                );
-              })}
-          </Dropdown>
-        </DropdownContainer>
-      )}
-    </Container>
-  );
-}
-
-export default ShopNav;

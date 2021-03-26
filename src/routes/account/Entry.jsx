@@ -1,9 +1,52 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 import SignIn from "../../components/account/SignIn";
 import SignUp from "../../components/account/SignUp";
 
 import background from "../../assets/images/entry.png";
+
+function Entry({ location }) {
+  const [isFlipped, setIsFlipped] = useState(false);
+  const [isPaying, setIsPaying] = useState(false);
+
+  useEffect(() => {
+    location.state && location.state.isPaying
+      ? setIsPaying(true)
+      : setIsPaying(false);
+  }, []);
+
+  const flip = () => {
+    setIsFlipped(!isFlipped);
+  };
+
+  return (
+    <Container>
+      <Main>
+        <Card>
+          <CardInner isFlipped={isFlipped}>
+            <CardSide>
+              <SignUp flip={flip} isPaying={isPaying} />
+            </CardSide>
+            <CardBackSide>
+              <SignIn flip={flip} isPaying={isPaying} />
+            </CardBackSide>
+          </CardInner>
+        </Card>
+      </Main>
+    </Container>
+  );
+}
+
+export default Entry;
+
+Entry.propTypes = {
+  location: PropTypes.shape({
+    state: PropTypes.shape({
+      isPaying: PropTypes.bool,
+    }),
+  }).isRequired,
+};
 
 // Styled components
 const colors = {
@@ -60,37 +103,3 @@ const CardSide = styled.div`
 const CardBackSide = styled(CardSide)`
   transform: rotateY(180deg);
 `;
-
-function Entry({ location }) {
-  const [isFlipped, setIsFlipped] = useState(false);
-  const [isPaying, setIsPaying] = useState(false);
-
-  useEffect(() => {
-    location.state && location.state.isPaying
-      ? setIsPaying(true)
-      : setIsPaying(false);
-  }, []);
-
-  const flip = () => {
-    setIsFlipped(!isFlipped);
-  };
-
-  return (
-    <Container>
-      <Main>
-        <Card>
-          <CardInner isFlipped={isFlipped}>
-            <CardSide>
-              <SignUp flip={flip} isPaying={isPaying} />
-            </CardSide>
-            <CardBackSide>
-              <SignIn flip={flip} isPaying={isPaying} />
-            </CardBackSide>
-          </CardInner>
-        </Card>
-      </Main>
-    </Container>
-  );
-}
-
-export default Entry;

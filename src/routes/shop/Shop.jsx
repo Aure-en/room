@@ -21,18 +21,6 @@ import Payment from "./checkout/Payment";
 import Personal from "./checkout/Personal";
 import Confirmation from "./checkout/Confirmation";
 
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-`;
-
-const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  flex: 1;
-`;
-
 function Shop({ match }) {
   const { windowSize } = useWindowSize();
 
@@ -96,3 +84,15 @@ Shop.defaultProps = {
 };
 
 export default Shop;
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+`;
+
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  flex: 1;
+`;

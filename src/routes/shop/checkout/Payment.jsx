@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 import { Redirect, useHistory } from "react-router-dom";
 import Order from "../../../components/shop/checkout/Order";
 import { useAuth } from "../../../contexts/AuthContext";
@@ -11,179 +12,6 @@ import useWindowSize from "../../../hooks/useWindowSize";
 // Icon
 import check from "../../../assets/icons/icon-check.svg";
 import iconX from "../../../assets/icons/icon-x.svg";
-
-// Styled Components
-const colors = {
-  primary: "hsl(0, 0%, 45%)", // Grey
-  secondary: "hsl(0, 0%, 27%)", // Button and checkbox
-  tertiary: "hsl(0, 0%, 90%)",
-  input: "hsl(0, 0%, 70%)", // Input lines
-  black: "hsl(0, 0%, 0%)",
-};
-
-const Container = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
-  margin: 5rem 2rem;
-
-  @media all and (min-width: 576px) {
-    margin: 5rem;
-  }
-`;
-
-const Content = styled.div`
-  width: 100%;
-
-  @media all and (min-width: 900px) {
-    display: flex;
-    align-items: start;
-    max-width: 1400px;
-    width: 80%;
-  }
-`;
-
-const Left = styled.div`
-  min-width: 40vw;
-`;
-
-const Category = styled.div`
-  margin-bottom: 2.5rem;
-`;
-
-const CategoryName = styled.div`
-  border-bottom: 1px solid ${colors.tertiary};
-  text-transform: uppercase;
-  font-size: 0.9rem;
-  color: ${colors.primary};
-  padding-bottom: 0.25rem;
-  margin-bottom: 1.25rem;
-`;
-
-const Informations = styled.div`
-  line-height: 1.125rem;
-`;
-
-const Heading = styled.h1`
-  margin-bottom: 2rem;
-  font-size: 2rem;
-  line-height: 2.75rem;
-  font-family: "Playfair Display", sans-serif;
-`;
-
-const Subheading = styled.div`
-  border-bottom: 1px solid ${colors.black};
-  text-transform: uppercase;
-  color: ${colors.black};
-  padding-bottom: 0.25rem;
-  margin-bottom: 1.5rem;
-`;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const Fields = styled.div`
-  display: grid;
-  grid-gap: 3rem 5rem;
-
-  @media all and (min-width: 576px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-`;
-
-const Field = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const FieldLarge = styled(Field)`
-  grid-column: 1 / -1;
-`;
-
-const Label = styled.label`
-  text-transform: uppercase;
-  font-size: 0.825rem;
-  letter-spacing: 1px;
-`;
-
-const Input = styled.input`
-  border: none;
-  border-bottom: 1px solid ${colors.input};
-  padding: 0.5rem 0 0.25rem 0;
-  font-family: "Source Sans Pro", sans-serif;
-
-  &::placeholder {
-    color: ${colors.input};
-  }
-
-  &:focus {
-    border-bottom: 1px solid ${colors.black};
-  }
-`;
-
-const HiddenInput = styled.input`
-  visibility: hidden;
-`;
-
-const CheckboxLabel = styled.label`
-  display: flex;
-  align-items: center;
-
-  &:before {
-    display: inline-block;
-    content: "";
-    width: 1rem;
-    height: 1rem;
-    margin-right: 0.5rem;
-    border-radius: 2px;
-    border: 1px solid ${colors.secondary};
-    background-color: ${(props) => props.isChecked && colors.secondary};
-    background-image: ${(props) => props.isChecked && `url(${check})`};
-    background-position: ${(props) => props.isChecked && "center"};
-  }
-`;
-
-const Li = styled.li`
-  padding-left: 1rem;
-  text-indent: 1rem;
-  line-height: 1.25rem;
-  display: flex;
-  align-items: center;
-  margin-bottom: 0.5rem;
-
-  &:before {
-    content: "";
-    display: inline-block;
-    width: 15px;
-    height: 15px;
-    background: url(${iconX});
-  }
-`;
-
-const CardButton = styled.button`
-  margin-left: auto;
-  color: ${colors.secondary};
-
-  &:hover {
-    color: ${colors.black};
-  }
-`;
-
-const Button = styled.button`
-  margin-top: 2.5rem;
-  font-family: "Source Sans Pro", sans-serif;
-  text-transform: uppercase;
-  font-size: 0.9rem;
-  color: ${colors.tertiary};
-  background: ${colors.secondary};
-  align-self: center;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-`;
 
 function Payment({ location }) {
   /* Props :
@@ -406,3 +234,193 @@ function Payment({ location }) {
 }
 
 export default Payment;
+
+Payment.propTypes = {
+  location: PropTypes.shape({
+    state: PropTypes.shape({
+      personal: PropTypes.shape({
+        address: PropTypes.string,
+        city: PropTypes.string,
+        country: PropTypes.string,
+        email: PropTypes.string,
+        firstName: PropTypes.string,
+        lastName: PropTypes.string,
+        phone: PropTypes.string,
+        zipCode: PropTypes.string,
+      }),
+    }),
+  }).isRequired,
+};
+
+// Styled Components
+const colors = {
+  primary: "hsl(0, 0%, 45%)", // Grey
+  secondary: "hsl(0, 0%, 27%)", // Button and checkbox
+  tertiary: "hsl(0, 0%, 90%)",
+  input: "hsl(0, 0%, 70%)", // Input lines
+  black: "hsl(0, 0%, 0%)",
+};
+
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  margin: 5rem 2rem;
+
+  @media all and (min-width: 576px) {
+    margin: 5rem;
+  }
+`;
+
+const Content = styled.div`
+  width: 100%;
+
+  @media all and (min-width: 900px) {
+    display: flex;
+    align-items: start;
+    max-width: 1400px;
+    width: 80%;
+  }
+`;
+
+const Left = styled.div`
+  min-width: 40vw;
+`;
+
+const Category = styled.div`
+  margin-bottom: 2.5rem;
+`;
+
+const CategoryName = styled.div`
+  border-bottom: 1px solid ${colors.tertiary};
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  color: ${colors.primary};
+  padding-bottom: 0.25rem;
+  margin-bottom: 1.25rem;
+`;
+
+const Informations = styled.div`
+  line-height: 1.125rem;
+`;
+
+const Heading = styled.h1`
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  line-height: 2.75rem;
+  font-family: "Playfair Display", sans-serif;
+`;
+
+const Subheading = styled.div`
+  border-bottom: 1px solid ${colors.black};
+  text-transform: uppercase;
+  color: ${colors.black};
+  padding-bottom: 0.25rem;
+  margin-bottom: 1.5rem;
+`;
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const Fields = styled.div`
+  display: grid;
+  grid-gap: 3rem 5rem;
+
+  @media all and (min-width: 576px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+`;
+
+const Field = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const FieldLarge = styled(Field)`
+  grid-column: 1 / -1;
+`;
+
+const Label = styled.label`
+  text-transform: uppercase;
+  font-size: 0.825rem;
+  letter-spacing: 1px;
+`;
+
+const Input = styled.input`
+  border: none;
+  border-bottom: 1px solid ${colors.input};
+  padding: 0.5rem 0 0.25rem 0;
+  font-family: "Source Sans Pro", sans-serif;
+
+  &::placeholder {
+    color: ${colors.input};
+  }
+
+  &:focus {
+    border-bottom: 1px solid ${colors.black};
+  }
+`;
+
+const HiddenInput = styled.input`
+  visibility: hidden;
+`;
+
+const CheckboxLabel = styled.label`
+  display: flex;
+  align-items: center;
+
+  &:before {
+    display: inline-block;
+    content: "";
+    width: 1rem;
+    height: 1rem;
+    margin-right: 0.5rem;
+    border-radius: 2px;
+    border: 1px solid ${colors.secondary};
+    background-color: ${(props) => props.isChecked && colors.secondary};
+    background-image: ${(props) => props.isChecked && `url(${check})`};
+    background-position: ${(props) => props.isChecked && "center"};
+  }
+`;
+
+const Li = styled.li`
+  padding-left: 1rem;
+  text-indent: 1rem;
+  line-height: 1.25rem;
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+
+  &:before {
+    content: "";
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    background: url(${iconX});
+  }
+`;
+
+const CardButton = styled.button`
+  margin-left: auto;
+  color: ${colors.secondary};
+
+  &:hover {
+    color: ${colors.black};
+  }
+`;
+
+const Button = styled.button`
+  margin-top: 2.5rem;
+  font-family: "Source Sans Pro", sans-serif;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  color: ${colors.tertiary};
+  background: ${colors.secondary};
+  align-self: center;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+`;

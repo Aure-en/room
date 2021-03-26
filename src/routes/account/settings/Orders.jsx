@@ -4,18 +4,6 @@ import { useAuth } from "../../../contexts/AuthContext";
 import useOrder from "../../../hooks/useOrder";
 import Order from "../../../components/account/Order";
 
-const Heading = styled.h1`
-  margin-left: 2rem;
-  margin-bottom: 2rem;
-  font-size: 2rem;
-  line-height: 2.75rem;
-  font-family: "Playfair Display", sans-serif;
-
-  @media all and (min-width: 500px) {
-    margin-left: 0;
-  }
-`;
-
 function Orders() {
   const { currentUser } = useAuth();
   const { getOrders } = useOrder();
@@ -41,3 +29,15 @@ function Orders() {
 }
 
 export default Orders;
+
+const Heading = styled.h1`
+  margin-left: 2rem;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  line-height: 2.75rem;
+  font-family: "Playfair Display", sans-serif;
+
+  @media all and (min-width: 500px) {
+    margin-left: 0;
+  }
+`;

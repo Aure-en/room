@@ -2,6 +2,77 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
+function CartPreview({ cart }) {
+  return (
+    <Container>
+      <ul>
+        {cart.map((product) => {
+          return (
+            <Product key={product.id}>
+              <Image src={product.image} alt="Product preview" />
+              <div>
+                <Name>{product.name}</Name>
+                <Type>
+                  {product.type}
+                  {' '}
+                  in
+                  {product.color.description}
+                </Type>
+                {product.options.map((option) => {
+                  return (
+                    <Option option={option} key={Object.keys(option)[0]}>
+                      <Capitalize>{Object.keys(option)[0]}</Capitalize>
+                      {' '}
+                      -{" "}
+                      {option[Object.keys(option)[0]].option}
+                    </Option>
+                  );
+                })}
+              </div>
+              <div>{product.quantity}</div>
+              <Price>£{product.price}</Price>
+            </Product>
+          );
+        })}
+      </ul>
+
+      <Review>
+        <div>Items</div>
+        <div>
+          £
+          {cart.reduce((sum, item) => sum + item.price * item.quantity, 0)}
+        </div>
+        <div>Shipping</div>
+        <div>0</div>
+        <Total>Total</Total>
+        <Total>
+          £
+          {cart.reduce((sum, item) => sum + item.price * item.quantity, 0)}
+        </Total>
+      </Review>
+    </Container>
+  );
+}
+
+CartPreview.propTypes = {
+  cart: PropTypes.arrayOf({
+    product: PropTypes.shape({
+      id: PropTypes.string,
+      name: PropTypes.string,
+      type: PropTypes.string,
+      image: PropTypes.string,
+      color: PropTypes.shape({
+        description: PropTypes.string,
+      }),
+      quantity: PropTypes.number,
+      price: PropTypes.number,
+    }),
+  }).isRequired,
+};
+
+export default CartPreview;
+
+
 const colors = {
   primary: "hsl(0, 0%, 45%)", // Grey
   secondary: "hsl(0, 0%, 27%)", // Darker grey - background
@@ -67,73 +138,3 @@ const Total = styled.div`
   color: ${colors.tertiary};
   font-weight: 600;
 `;
-
-function CartPreview({ cart }) {
-  return (
-    <Container>
-      <ul>
-        {cart.map((product) => {
-          return (
-            <Product key={product.id}>
-              <Image src={product.image} alt="Product preview" />
-              <div>
-                <Name>{product.name}</Name>
-                <Type>
-                  {product.type}
-                  {' '}
-                  in
-                  {product.color.description}
-                </Type>
-                {product.options.map((option) => {
-                  return (
-                    <Option option={option} key={Object.keys(option)[0]}>
-                      <Capitalize>{Object.keys(option)[0]}</Capitalize>
-                      {' '}
-                      -{" "}
-                      {option[Object.keys(option)[0]].option}
-                    </Option>
-                  );
-                })}
-              </div>
-              <div>{product.quantity}</div>
-              <Price>£{product.price}</Price>
-            </Product>
-          );
-        })}
-      </ul>
-
-      <Review>
-        <div>Items</div>
-        <div>
-          £
-{cart.reduce((sum, item) => sum + item.price * item.quantity, 0)}
-        </div>
-        <div>Shipping</div>
-        <div>0</div>
-        <Total>Total</Total>
-        <Total>
-          £
-{cart.reduce((sum, item) => sum + item.price * item.quantity, 0)}
-        </Total>
-      </Review>
-    </Container>
-  );
-}
-
-CartPreview.propTypes = {
-  cart: PropTypes.arrayOf({
-    product: PropTypes.shape({
-      id: PropTypes.string,
-      name: PropTypes.string,
-      type: PropTypes.string,
-      image: PropTypes.string,
-      color: PropTypes.shape({
-        description: PropTypes.string,
-      }),
-      quantity: PropTypes.number,
-      price: PropTypes.number,
-    }),
-  }).isRequired,
-};
-
-export default CartPreview;

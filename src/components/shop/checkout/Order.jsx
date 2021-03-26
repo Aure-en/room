@@ -4,6 +4,75 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
 import useCart from "../../../hooks/useCart";
 
+function Order() {
+  const [cart, setCart] = useState([]);
+  const { getCart } = useCart();
+  const { currentUser } = useAuth();
+
+  useEffect(() => {
+    (async () => {
+      if (!currentUser) return;
+      const cart = await getCart(currentUser.uid);
+      setCart(cart);
+    })();
+  }, []);
+
+  return (
+    <Container>
+      <Heading>Order Summary</Heading>
+      <Cart>
+        <ul>
+          {cart.map((item) => {
+            return (
+              <Item key={item.id}>
+                <div>
+                  <Name>{item.name}</Name>
+                  <Type>
+                    {item.type} in {item.color.description}
+                  </Type>
+                  {item.options.map((option) => {
+                    return (
+                      <div option={option} key={Object.keys(option)[0]}>
+                        <Capitalize>{Object.keys(option)[0]}</Capitalize> -
+{" "}
+                        {option[Object.keys(option)[0]].option}
+                      </div>
+                    );
+                  })}
+                </div>
+                <Quantity>{item.quantity}</Quantity>
+                <Price>£{item.price}</Price>
+              </Item>
+            );
+          })}
+        </ul>
+        <Row>
+          <div>Items</div>
+          <Price>£{cart.reduce((sum, item) => sum + +item.price, 0)}</Price>
+        </Row>
+        <Row>
+          <div>Shipping</div>
+          <Price>£0</Price>
+        </Row>
+        <Total>
+          <Row>
+            <TotalLabel>Total</TotalLabel>
+            <TotalPrice>
+              £{cart.reduce((sum, item) => sum + +item.price, 0)}
+            </TotalPrice>
+          </Row>
+        </Total>
+      </Cart>
+
+      <GoBack>
+        <Link to="/shop/cart">← Edit your cart</Link>
+      </GoBack>
+    </Container>
+  );
+}
+
+export default Order;
+
 const colors = {
   primary: "hsl(0, 0%, 45%)", // Grey
   secondary: "hsl(0, 0%, 27%)", // Darker grey - for background
@@ -106,73 +175,3 @@ const GoBack = styled.div`
     color: ${colors.white};
   }
 `;
-
-function Order() {
-  const [cart, setCart] = useState([]);
-  const { getCart } = useCart();
-  const { currentUser } = useAuth();
-
-  useEffect(() => {
-    (async () => {
-      if (!currentUser) return;
-      const cart = await getCart(currentUser.uid);
-      setCart(cart);
-    })();
-  }, []);
-
-  return (
-    <Container>
-      <Heading>Order Summary</Heading>
-      <Cart>
-        <ul>
-          {cart.map((item) => {
-            return (
-              <Item key={item.id}>
-                <div>
-                  <Name>{item.name}</Name>
-                  <Type>
-                    {item.type} in
-                    {item.color.description}
-                  </Type>
-                  {item.options.map((option) => {
-                    return (
-                      <div option={option} key={Object.keys(option)[0]}>
-                        <Capitalize>{Object.keys(option)[0]}</Capitalize> -
-{" "}
-                        {option[Object.keys(option)[0]].option}
-                      </div>
-                    );
-                  })}
-                </div>
-                <Quantity>{item.quantity}</Quantity>
-                <Price>£{item.price}</Price>
-              </Item>
-            );
-          })}
-        </ul>
-        <Row>
-          <div>Items</div>
-          <Price>£{cart.reduce((sum, item) => sum + +item.price, 0)}</Price>
-        </Row>
-        <Row>
-          <div>Shipping</div>
-          <Price>£0</Price>
-        </Row>
-        <Total>
-          <Row>
-            <TotalLabel>Total</TotalLabel>
-            <TotalPrice>
-              £{cart.reduce((sum, item) => sum + +item.price, 0)}
-            </TotalPrice>
-          </Row>
-        </Total>
-      </Cart>
-
-      <GoBack>
-        <Link to="/shop/cart">← Edit your cart</Link>
-      </GoBack>
-    </Container>
-  );
-}
-
-export default Order;

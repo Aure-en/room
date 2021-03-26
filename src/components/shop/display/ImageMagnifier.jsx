@@ -2,41 +2,6 @@ import React, { useState, useRef } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-const Container = styled.div`
-  display: flex;
-  height: 100%;
-  width: 100%;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-`;
-
-const ImageContainer = styled.div`
-  height: 100%;
-  width: 100%;
-  position: relative;
-`;
-
-const Zoom = styled.div`
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-image: url(${(props) => props.image});
-  z-index: ${(props) => (props.isZooming ? "2" : "-1")};
-  background-repeat: no-repeat;
-  transition: all ease-in;
-  cursor: pointer;
-`;
-
-const Image = styled.img`
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-  cursor: pointer;
-`;
-
 function ImageMagnifier({ image }) {
   const [isZooming, setIsZooming] = useState(false);
   const zoomRef = useRef();
@@ -83,3 +48,38 @@ ImageMagnifier.propTypes = {
 };
 
 export default ImageMagnifier;
+
+const Container = styled.div`
+  display: flex;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+`;
+
+const ImageContainer = styled.div`
+  height: 100%;
+  width: 100%;
+  position: relative;
+`;
+
+const Zoom = styled.div`
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-image: url(${(props) => props.image});
+  z-index: ${(props) => (props.isZooming ? "2" : "-1")};
+  background-repeat: no-repeat;
+  transition: all ease-in;
+  cursor: zoom-out;
+`;
+
+const Image = styled.img`
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  cursor: zoom-in;
+`;

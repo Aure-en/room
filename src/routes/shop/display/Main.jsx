@@ -4,6 +4,56 @@ import useDesign from "../../../hooks/useDesign";
 import FullCarousel from "../../../components/FullCarousel";
 import Designs from "../../../components/shop/display/Designs";
 
+function Main() {
+  const [designs, setDesigns] = useState([]);
+  const { getDesigns } = useDesign();
+
+  useEffect(() => {
+    (async () => {
+      const designs = await getDesigns();
+      setDesigns(designs);
+    })();
+  }, []);
+
+  return (
+    <Container>
+      <FullCarousel />
+      <Presentation>
+        <Heading>Room</Heading>
+        <Decoration>⬧</Decoration>
+        <p>
+          The furniture is the foundation of a home. That's why Room is
+          passionate about offering a huge variety of furniture at all prices.
+          Whatever your style, whatever your needs, find furniture that's made
+          for you.
+        </p>
+
+        <p>
+          Each year, the collection is refreshed to stay on trend and keep up
+          with your needs, whilst also taking more care of the planet and its
+          inhabitants. Over half of our wooden furniture meets sustainable
+          criteria. Every year we progress with our products, but also in
+          raising awareness among design students and young designers to
+          encourage them to think about eco-design. We believe we can reduce the
+          impact on the environment without compromising on style. The second
+          life of products starts here!
+        </p>
+
+        <p>So, you're free to have your own style!</p>
+      </Presentation>
+
+      {designs.length !== 0 && (
+        <>
+          <Featured id="featured">Featured Rooms</Featured>
+          <Designs designs={designs} />
+        </>
+      )}
+    </Container>
+  );
+}
+
+export default Main;
+
 const colors = {
   primary: "hsl(0, 0%, 27%)", // Grey
   secondary: "hsl(0, 0%, 40%)",
@@ -94,53 +144,3 @@ const Featured = styled(Heading)`
     background: linear-gradient(270deg, ${colors.secondary}, transparent);
   }
 `;
-
-function Main() {
-  const [designs, setDesigns] = useState([]);
-  const { getDesigns } = useDesign();
-
-  useEffect(() => {
-    (async () => {
-      const designs = await getDesigns();
-      setDesigns(designs);
-    })();
-  }, []);
-
-  return (
-    <Container>
-      <FullCarousel />
-      <Presentation>
-        <Heading>Room</Heading>
-        <Decoration>⬧</Decoration>
-        <p>
-          The furniture is the foundation of a home. That's why Room is
-          passionate about offering a huge variety of furniture at all prices.
-          Whatever your style, whatever your needs, find furniture that's made
-          for you.
-        </p>
-
-        <p>
-          Each year, the collection is refreshed to stay on trend and keep up
-          with your needs, whilst also taking more care of the planet and its
-          inhabitants. Over half of our wooden furniture meets sustainable
-          criteria. Every year we progress with our products, but also in
-          raising awareness among design students and young designers to
-          encourage them to think about eco-design. We believe we can reduce the
-          impact on the environment without compromising on style. The second
-          life of products starts here!
-        </p>
-
-        <p>So, you're free to have your own style!</p>
-      </Presentation>
-
-      {designs.length !== 0 && (
-        <>
-          <Featured id="featured">Featured Rooms</Featured>
-          <Designs designs={designs} />
-        </>
-      )}
-    </Container>
-  );
-}
-
-export default Main;

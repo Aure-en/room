@@ -7,163 +7,6 @@ import useStorage from "../../hooks/useStorage";
 import { ReactComponent as Plus } from "../../assets/icons/icon-plus.svg";
 import { ReactComponent as Close } from "../../assets/icons/icon-x-med.svg";
 
-// Styled Components
-const colors = {
-  primary: "hsl(0, 0%, 45%)", // Grey
-  secondary: "hsl(0, 0%, 27%)", // Button and checkbox
-  tertiary: "hsl(0, 0%, 90%)",
-  input: "hsl(0, 0%, 70%)", // Input lines
-  black: "hsl(0, 0%, 0%)",
-};
-
-const Container = styled.div`
-  margin: 5rem;
-  max-width: 1200px;
-`;
-
-const Heading = styled.h1`
-  margin-bottom: 2rem;
-  font-size: 2rem;
-  line-height: 2.75rem;
-  font-family: "Playfair Display", sans-serif;
-`;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-`;
-
-const Fields = styled.div`
-  display: grid;
-  grid-template-columns: repeat(${(props) => props.fields}, 1fr);
-  grid-gap: 3rem 5rem;
-  margin: 1.25rem 0 3rem 0;
-`;
-
-const Box = styled.div`
-  display: flex;
-  flex-direction: column;
-  border: 1px solid ${colors.input};
-  border-radius: 15px;
-  padding: 1.5rem;
-
-  & > * {
-    margin-top: 1rem;
-  }
-
-  & > *:first-child {
-    margin-top: inherit;
-  }
-`;
-
-const ChoiceBox = styled(Box)`
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-`;
-
-const Category = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  border-bottom: 1px solid ${colors.tertiary};
-  text-transform: uppercase;
-  color: ${colors.primary};
-  padding-bottom: 0.25rem;
-  margin-bottom: 1.5rem;
-`;
-
-const BoxHeading = styled.div`
-  text-transform: uppercase;
-  font-weight: 600;
-  align-self: center;
-  padding: 1rem 0;
-`;
-
-const label = `
-text-transform: uppercase;
-font-size: 0.825rem;
-letter-spacing: 1px;
-`;
-
-const Label = styled.label`
-  ${label}
-`;
-
-const TextLabel = styled.div`
-  ${label}
-`;
-
-const Field = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const Input = styled.input`
-  border: none;
-  border-bottom: 1px solid ${colors.input};
-  padding: 0.5rem 0 0.25rem 0;
-  font-family: "Source Sans Pro", sans-serif;
-
-  &::placeholder {
-    color: ${colors.input};
-  }
-
-  &:focus {
-    border-bottom: 1px solid ${colors.black};
-  }
-`;
-
-const IconButton = styled.button`
-  color: ${colors.primary};
-
-  &:hover {
-    color: ${colors.secondary};
-  }
-`;
-
-const BoxButton = styled(IconButton)`
-  align-self: center;
-`;
-
-const Button = styled.button`
-  font-family: "Source Sans Pro", sans-serif;
-  text-transform: uppercase;
-  font-size: 0.9rem;
-  color: ${colors.tertiary};
-  background: ${colors.secondary};
-  align-self: center;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-
-  &:disabled {
-    background: ${colors.input};
-    cursor: not-allowed;
-  }
-`;
-
-const Preview = styled.div`
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  grid-gap: 2rem;
-`;
-
-const Image = styled.img`
-  max-width: 100%;
-`;
-
-const Row = styled.div`
-  display: grid;
-  grid-template-columns: 1fr auto;
-`;
-
-const Message = styled.div`
-  text-align: center;
-  font-size: 0.825rem;
-  color: ${colors.primary};
-  margin-top: 0.25rem;
-`;
-
 function AddShopItem() {
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
@@ -1157,3 +1000,160 @@ function AddShopItem() {
 }
 
 export default AddShopItem;
+
+// Styled Components
+const colors = {
+  primary: "hsl(0, 0%, 45%)", // Grey
+  secondary: "hsl(0, 0%, 27%)", // Button and checkbox
+  tertiary: "hsl(0, 0%, 90%)",
+  input: "hsl(0, 0%, 70%)", // Input lines
+  black: "hsl(0, 0%, 0%)",
+};
+
+const Container = styled.div`
+  margin: 5rem;
+  max-width: 1200px;
+`;
+
+const Heading = styled.h1`
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  line-height: 2.75rem;
+  font-family: "Playfair Display", sans-serif;
+`;
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Fields = styled.div`
+  display: grid;
+  grid-template-columns: repeat(${(props) => props.fields}, 1fr);
+  grid-gap: 3rem 5rem;
+  margin: 1.25rem 0 3rem 0;
+`;
+
+const Box = styled.div`
+  display: flex;
+  flex-direction: column;
+  border: 1px solid ${colors.input};
+  border-radius: 15px;
+  padding: 1.5rem;
+
+  & > * {
+    margin-top: 1rem;
+  }
+
+  & > *:first-child {
+    margin-top: inherit;
+  }
+`;
+
+const ChoiceBox = styled(Box)`
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+`;
+
+const Category = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-bottom: 1px solid ${colors.tertiary};
+  text-transform: uppercase;
+  color: ${colors.primary};
+  padding-bottom: 0.25rem;
+  margin-bottom: 1.5rem;
+`;
+
+const BoxHeading = styled.div`
+  text-transform: uppercase;
+  font-weight: 600;
+  align-self: center;
+  padding: 1rem 0;
+`;
+
+const label = `
+text-transform: uppercase;
+font-size: 0.825rem;
+letter-spacing: 1px;
+`;
+
+const Label = styled.label`
+  ${label}
+`;
+
+const TextLabel = styled.div`
+  ${label}
+`;
+
+const Field = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Input = styled.input`
+  border: none;
+  border-bottom: 1px solid ${colors.input};
+  padding: 0.5rem 0 0.25rem 0;
+  font-family: "Source Sans Pro", sans-serif;
+
+  &::placeholder {
+    color: ${colors.input};
+  }
+
+  &:focus {
+    border-bottom: 1px solid ${colors.black};
+  }
+`;
+
+const IconButton = styled.button`
+  color: ${colors.primary};
+
+  &:hover {
+    color: ${colors.secondary};
+  }
+`;
+
+const BoxButton = styled(IconButton)`
+  align-self: center;
+`;
+
+const Button = styled.button`
+  font-family: "Source Sans Pro", sans-serif;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  color: ${colors.tertiary};
+  background: ${colors.secondary};
+  align-self: center;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+
+  &:disabled {
+    background: ${colors.input};
+    cursor: not-allowed;
+  }
+`;
+
+const Preview = styled.div`
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-gap: 2rem;
+`;
+
+const Image = styled.img`
+  max-width: 100%;
+`;
+
+const Row = styled.div`
+  display: grid;
+  grid-template-columns: 1fr auto;
+`;
+
+const Message = styled.div`
+  text-align: center;
+  font-size: 0.825rem;
+  color: ${colors.primary};
+  margin-top: 0.25rem;
+`;

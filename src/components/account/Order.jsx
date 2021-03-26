@@ -7,81 +7,6 @@ import CartPreview from "../shop/cart/CartPreview";
 import { ReactComponent as Plus } from "../../assets/icons/icon-plus.svg";
 import { ReactComponent as Minus } from "../../assets/icons/icon-minus.svg";
 
-// Styled Components
-const colors = {
-  primary: "hsl(0, 0%, 45%)", // Grey
-  secondary: "hsl(0, 0%, 27%)", // Dark Grey
-  tertiary: "hsl(0, 0%, 70%)", // Bright Grey
-  text: "hsl(0, 0%, 85%)",
-  label: "hsl(0, 0%, 100%)",
-};
-
-const Container = styled.div`
-  min-width: 50vw;
-  margin-bottom: 3rem;
-  border: 1px solid ${colors.text};
-  border-radius: 5px;
-`;
-
-const Top = styled.div`
-  display: grid;
-  background: ${colors.secondary};
-  padding: 0.75rem 1rem;
-  color: ${colors.text};
-  line-height: 1.125rem;
-  border-radius: 5px 5px 0 0;
-  grid-template-columns: repeat(3, auto);
-  grid-gap: 1rem;
-
-  @media all and (min-width: 576px) {
-    grid-template-columns: repeat(3, auto) 1fr auto;
-    grid-template-row: repeat(2, auto);
-  }
-`;
-
-const Icon = styled.div`
-  grid-row: 1 / -1;
-  align-self: center;
-  grid-column: -1;
-  cursor: pointer;
-
-  &:hover {
-    color: ${colors.label};
-  }
-`;
-
-const Category = styled.div`
-  border-bottom: 1px solid ${colors.tertiary};
-  text-transform: uppercase;
-  font-size: 0.9rem;
-  color: ${colors.primary};
-  padding-bottom: 0.25rem;
-  margin-bottom: 1.25rem;
-`;
-
-const Subheading = styled.div`
-  display: inline-block;
-  text-transform: uppercase;
-  color: ${colors.secondary};
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-`;
-
-const Type = styled.div`
-  text-transform: uppercase;
-  font-size: 0.9rem;
-  color: ${colors.label};
-`;
-
-const Dropdown = styled.div`
-  margin: 2rem;
-`;
-
-const Row = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-`;
-
 function Order({ order }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(true);
 
@@ -193,3 +118,79 @@ Order.propTypes = {
 };
 
 export default Order;
+
+
+// Styled Components
+const colors = {
+  primary: "hsl(0, 0%, 45%)", // Grey
+  secondary: "hsl(0, 0%, 27%)", // Dark Grey
+  tertiary: "hsl(0, 0%, 70%)", // Bright Grey
+  text: "hsl(0, 0%, 85%)",
+  label: "hsl(0, 0%, 100%)",
+};
+
+const Container = styled.div`
+  min-width: 50vw;
+  margin-bottom: 3rem;
+  border: 1px solid ${colors.text};
+  border-radius: 5px;
+`;
+
+const Top = styled.div`
+  display: grid;
+  background: ${colors.secondary};
+  padding: 0.75rem 1rem;
+  color: ${colors.text};
+  line-height: 1.125rem;
+  border-radius: 5px 5px 0 0;
+  grid-template-columns: repeat(3, auto);
+  grid-gap: 1rem;
+
+  @media all and (min-width: 576px) {
+    grid-template-columns: repeat(3, auto) 1fr auto;
+    grid-template-row: repeat(2, auto);
+  }
+`;
+
+const Icon = styled.div`
+  grid-row: 1 / -1;
+  align-self: center;
+  grid-column: -1;
+  cursor: pointer;
+
+  &:hover {
+    color: ${colors.label};
+  }
+`;
+
+const Category = styled.div`
+  border-bottom: 1px solid ${colors.tertiary};
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  color: ${colors.primary};
+  padding-bottom: 0.25rem;
+  margin-bottom: 1.25rem;
+`;
+
+const Subheading = styled.div`
+  display: inline-block;
+  text-transform: uppercase;
+  color: ${colors.secondary};
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+`;
+
+const Type = styled.div`
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  color: ${colors.label};
+`;
+
+const Dropdown = styled.div`
+  margin: 2rem;
+`;
+
+const Row = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+`;

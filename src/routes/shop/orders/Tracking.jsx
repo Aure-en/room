@@ -3,6 +3,69 @@ import styled from "styled-components";
 import useOrder from "../../../hooks/useOrder";
 import Order from "../../../components/account/Order";
 
+function Tracking() {
+  const [email, setEmail] = useState("");
+  const [orderId, setOrderId] = useState("");
+  const [order, setOrder] = useState();
+  const [message, setMessage] = useState("");
+  const { searchOrder } = useOrder();
+
+  const handleSearchOrder = async (e) => {
+    e.preventDefault();
+    setMessage("");
+    const order = await searchOrder(email, orderId);
+    order
+      ? setOrder(order)
+      : setMessage("Sorry, we could not find your order.");
+  };
+
+  return (
+    <Container>
+      <Heading>Order Tracking</Heading>
+
+      <div>
+        <Category>Track your order</Category>
+        <Form onSubmit={handleSearchOrder}>
+          <Fields>
+            <Field>
+              <Label htmlFor="email">Email</Label>
+              <Input
+                type="email"
+                value={email}
+                id="email"
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email"
+              />
+            </Field>
+
+            <Field>
+              <Label htmlFor="order_id">Order</Label>
+              <Input
+                type="text"
+                value={orderId}
+                id="order_id"
+                onChange={(e) => setOrderId(e.target.value)}
+                placeholder="Enter your order number"
+              />
+            </Field>
+          </Fields>
+          <Button type="submit">Track your order</Button>
+          <Message>{message}</Message>
+        </Form>
+      </div>
+
+      {order && (
+        <div>
+          <Category>Order</Category>
+          <Order order={order} />
+        </div>
+      )}
+    </Container>
+  );
+}
+
+export default Tracking;
+
 // Styled Components
 const colors = {
   primary: "hsl(0, 0%, 45%)", // Grey
@@ -96,66 +159,3 @@ const Message = styled.div`
   color: ${colors.primary};
   margin-top: 0.25rem;
 `;
-
-function Tracking() {
-  const [email, setEmail] = useState("");
-  const [orderId, setOrderId] = useState("");
-  const [order, setOrder] = useState();
-  const [message, setMessage] = useState("");
-  const { searchOrder } = useOrder();
-
-  const handleSearchOrder = async (e) => {
-    e.preventDefault();
-    setMessage("");
-    const order = await searchOrder(email, orderId);
-    order
-      ? setOrder(order)
-      : setMessage("Sorry, we could not find your order.");
-  };
-
-  return (
-    <Container>
-      <Heading>Order Tracking</Heading>
-
-      <div>
-        <Category>Track your order</Category>
-        <Form onSubmit={handleSearchOrder}>
-          <Fields>
-            <Field>
-              <Label htmlFor="email">Email</Label>
-              <Input
-                type="email"
-                value={email}
-                id="email"
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email"
-              />
-            </Field>
-
-            <Field>
-              <Label htmlFor="order_id">Order</Label>
-              <Input
-                type="text"
-                value={orderId}
-                id="order_id"
-                onChange={(e) => setOrderId(e.target.value)}
-                placeholder="Enter your order number"
-              />
-            </Field>
-          </Fields>
-          <Button type="submit">Track your order</Button>
-          <Message>{message}</Message>
-        </Form>
-      </div>
-
-      {order && (
-        <div>
-          <Category>Order</Category>
-          <Order order={order} />
-        </div>
-      )}
-    </Container>
-  );
-}
-
-export default Tracking;

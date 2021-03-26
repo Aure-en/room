@@ -1,8 +1,91 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import useOrder from "../../../hooks/useOrder";
 import CartPreview from "../../../components/shop/cart/CartPreview";
+
+function Confirmation({ match }) {
+  const [order, setOrder] = useState({});
+  const [loading, setLoading] = useState(true);
+  const { getOrder } = useOrder();
+
+  useEffect(() => {
+    (async () => {
+      const order = await getOrder(match.params.id);
+      setOrder(order);
+      setLoading(false);
+    })();
+  }, []);
+
+  return (
+    <div>
+      <Container>
+        <Content>
+          {!loading && (
+            <Order>
+              <Heading>Order Confirmation</Heading>
+
+              <Summary>
+                <CategoryName>Order Summary</CategoryName>
+                <CartPreview cart={order.products} />
+              </Summary>
+
+              <div>
+                <CategoryName>Shipping Details</CategoryName>
+                {order.shipping.firstName} {order.shipping.lastName}
+                <br />
+                {order.shipping.address}
+                <br />
+                {order.shipping.zipCode} {order.shipping.city}
+                <br />
+                {order.shipping.country}
+              </div>
+            </Order>
+          )}
+
+          <Message>
+            <MessageHeading>Confirmation</MessageHeading>
+
+            <p>
+              Your order n°
+              <strong>{match.params.id}</strong>
+              {' '}
+              has been confirmed. You will be receiving a confirmation mail with your order details shortly.
+              </p>
+
+            <p>
+              You can follow your order's status at any given time{" "}
+              <MessageLink>
+                <Link to="/">here</Link>
+              </MessageLink>
+              . If you have any other questions, feel free to{" "}
+              <MessageLink>
+                <Link to="/contact">contact us.</Link>
+              </MessageLink>
+            </p>
+
+            <p>Thank you for shopping with us!</p>
+
+            <Button>
+              <Link to="/shop">Continue Shopping</Link>
+            </Button>
+          </Message>
+        </Content>
+      </Container>
+    </div>
+  );
+}
+
+export default Confirmation;
+
+Confirmation.propTypes = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.string,
+    }),
+  }).isRequired,
+};
 
 const colors = {
   primary: "hsl(0, 0%, 45%)", // Grey
@@ -102,78 +185,3 @@ const Button = styled.button`
     background: ${colors.button};
   }
 `;
-
-function Confirmation({ match, location }) {
-  const [order, setOrder] = useState({});
-  const [loading, setLoading] = useState(true);
-  const { getOrder } = useOrder();
-
-  useEffect(() => {
-    (async () => {
-      const order = await getOrder(match.params.id);
-      setOrder(order);
-      setLoading(false);
-    })();
-  }, []);
-
-  return (
-    <div>
-      <Container>
-        <Content>
-          {!loading && (
-            <Order>
-              <Heading>Order Confirmation</Heading>
-
-              <Summary>
-                <CategoryName>Order Summary</CategoryName>
-                <CartPreview cart={order.products} />
-              </Summary>
-
-              <div>
-                <CategoryName>Shipping Details</CategoryName>
-                {order.shipping.firstName} {order.shipping.lastName}
-                <br />
-                {order.shipping.address}
-                <br />
-                {order.shipping.zipCode} {order.shipping.city}
-                <br />
-                {order.shipping.country}
-              </div>
-            </Order>
-          )}
-
-          <Message>
-            <MessageHeading>Confirmation</MessageHeading>
-
-            <p>
-              Your order n°
-              <strong>{match.params.id}</strong>
-{' '}
-has been confirmed. You will be
-              receiving a confirmation mail with your order details shortly.
-</p>
-
-            <p>
-              You can follow your order's status at any given time{" "}
-              <MessageLink>
-                <Link to="/">here</Link>
-              </MessageLink>
-              . If you have any other questions, feel free to{" "}
-              <MessageLink>
-                <Link to="/contact">contact us.</Link>
-              </MessageLink>
-            </p>
-
-            <p>Thank you for shopping with us!</p>
-
-            <Button>
-              <Link to="/shop">Continue Shopping</Link>
-            </Button>
-          </Message>
-        </Content>
-      </Container>
-    </div>
-  );
-}
-
-export default Confirmation;

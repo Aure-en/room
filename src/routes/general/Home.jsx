@@ -3,64 +3,6 @@ import styled from "styled-components";
 import Carousel from "../../components/Carousel";
 import Nav from "../../components/Nav";
 
-const colors = {
-  black: "hsl(0, 0%, 0%)",
-  grey: "hsl(0, 0%, 63%)",
-};
-
-const Container = styled.div`
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-`;
-
-const Row = styled.div`
-  display: flex;
-  flex: 1;
-
-  @media all and (max-width: 576px) {
-    flex-direction: column;
-  }
-`;
-
-const About = styled.h2`
-  text-transform: uppercase;
-  font-weight: 600;
-  letter-spacing: 0.35rem;
-  line-height: 1.5rem;
-`;
-
-const Center = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const Card = styled.div`
-  max-width: 70%;
-  padding: 2rem;
-`;
-
-const Text = styled.p`
-  line-height: 1.25rem;
-  color: ${colors.grey};
-`;
-
-const ImageContainer = styled.div`
-  width: 100%;
-  overflow: hidden;
-`;
-
-const Image = styled.img`
-  object-fit: fill;
-  height: 100%;
-  width: 100%;
-
-  @media all and (min-width: 1200px) {
-    width: initial;
-  }
-`;
-
 const CarouselImages = [
   "https://firebasestorage.googleapis.com/v0/b/room-f191c.appspot.com/o/home%2Fdesktop-image-hero-1.jpg?alt=media&token=e0ad37e3-8115-49f2-a906-d1b4c4ae18ab",
   "https://firebasestorage.googleapis.com/v0/b/room-f191c.appspot.com/o/home%2Fdesktop-image-hero-2.jpg?alt=media&token=35ec1676-80b4-4eda-925e-c84ff8ce8fbf",
@@ -123,3 +65,61 @@ function Home() {
 }
 
 export default Home;
+
+const colors = {
+  black: "hsl(0, 0%, 0%)",
+  grey: "hsl(0, 0%, 63%)",
+};
+
+const Container = styled.div`
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+`;
+
+const Row = styled.div`
+  display: flex;
+  flex: 1;
+
+  @media all and (max-width: 576px) {
+    flex-direction: column;
+  }
+`;
+
+const About = styled.h2`
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.35rem;
+  line-height: 1.5rem;
+`;
+
+const Center = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Card = styled.div`
+  max-width: 70%;
+  padding: 2rem;
+`;
+
+const Text = styled.p`
+  line-height: 1.25rem;
+  color: ${colors.grey};
+`;
+
+const ImageContainer = styled.div`
+  width: 100%;
+  overflow: hidden;
+`;
+
+const Image = styled.img`
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+
+  @media all and (min-width: 1200px) {
+    width: initial;
+  }
+`;

@@ -19,6 +19,96 @@ import { ReactComponent as Home } from "../../../assets/icons/icon-home.svg";
 import { ReactComponent as Search } from "../../../assets/icons/icon-search.svg";
 import { ReactComponent as User } from "../../../assets/icons/icon-user.svg";
 
+function Nav() {
+  const { currentUser } = useAuth();
+  const { getCart, cartListener } = useCart();
+  const { favorites } = useFavorite();
+  const navRef = useRef();
+  const [cart, setCart] = useState(0);
+
+  useEffect(() => {
+    (async () => {
+      if (!currentUser) return;
+      const cart = await getCart(currentUser.uid);
+      setCart(cart.length);
+    })();
+  }, [currentUser]);
+
+  useEffect(() => {
+    if (!currentUser) return;
+    const unsubscribe = cartListener(currentUser.uid, async () => {
+      const cart = await getCart(currentUser.uid);
+      setCart(cart.length);
+    });
+    return unsubscribe;
+  }, [currentUser]);
+
+  return (
+    <Container ref={navRef}>
+      <Navigation>
+        <NavLeft>
+          <NavIconLink>
+            <SideNav nav={navRef} />
+          </NavIconLink>
+          <NavIconLink>
+            <Link to="/">
+              <Home />
+            </Link>
+          </NavIconLink>
+        </NavLeft>
+
+        <Link to="/shop">
+          <Brand>
+            <Logo />
+          </Brand>
+        </Link>
+
+        <NavRight>
+          <NavIcon title="Work in progress">
+            <Search />
+          </NavIcon>
+
+          {currentUser && !currentUser.isAnonymous ? (
+            <AccessSettings />
+          ) : (
+            <NavIcon>
+              <Link to="/shop/entry">
+                <User />
+              </Link>
+            </NavIcon>
+          )}
+
+          <NavIconLink>
+            <Position>
+              <Link to="/shop/favorite">
+                {favorites.length !== 0 ? (
+                  <>
+                    <HeartFilled />
+                    <Stamp>{favorites.length}</Stamp>
+                  </>
+                ) : (
+                  <Heart />
+                )}
+              </Link>
+            </Position>
+          </NavIconLink>
+          <NavIconLink>
+            <Position>
+              <Link to="/shop/cart">
+                <Cart />
+                {cart !== 0 && <Stamp>{cart}</Stamp>}
+              </Link>
+            </Position>
+          </NavIconLink>
+        </NavRight>
+      </Navigation>
+    </Container>
+  );
+}
+
+export default Nav;
+
+
 const colors = {
   primary: "hsl(0, 0%, 0%)", // Black
   secondary: "hsl(0, 0%, 27%)", // Grey
@@ -61,7 +151,6 @@ const Navigation = styled.nav`
 
 const Brand = styled.span`
   font-size: 1.5rem;
-  margin: 0 2rem;
   color: ${colors.primary};
 `;
 
@@ -111,92 +200,3 @@ const Stamp = styled.span`
   justify-content: center;
   padding-top: 3px;
 `;
-
-function Nav() {
-  const { currentUser } = useAuth();
-  const { getCart, cartListener } = useCart();
-  const { favorites } = useFavorite();
-  const navRef = useRef();
-  const [cart, setCart] = useState(0);
-
-  useEffect(() => {
-    (async () => {
-      if (!currentUser) return;
-      const cart = await getCart(currentUser.uid);
-      setCart(cart.length);
-    })();
-  }, [currentUser]);
-
-  useEffect(() => {
-    if (!currentUser) return;
-    const unsubscribe = cartListener(currentUser.uid, async () => {
-      const cart = await getCart(currentUser.uid);
-      setCart(cart.length);
-    });
-    return unsubscribe;
-  }, [currentUser]);
-
-  return (
-    <Container ref={navRef}>
-      <Navigation>
-        <NavLeft>
-          <NavIconLink>
-            <SideNav nav={navRef} />
-          </NavIconLink>
-          <NavIconLink>
-            <Link to="/">
-              <Home />
-            </Link>
-          </NavIconLink>
-        </NavLeft>
-
-        <Link to="/shop">
-          <Brand>
-            <Logo />
-          </Brand>
-        </Link>
-
-        <NavRight>
-          <NavIcon>
-            <Search />
-          </NavIcon>
-
-          {currentUser && !currentUser.isAnonymous ? (
-            <AccessSettings />
-          ) : (
-            <NavIcon>
-              <Link to="/shop/entry">
-                <User />
-              </Link>
-            </NavIcon>
-          )}
-
-          <NavIconLink>
-            <Position>
-              <Link to="/shop/favorite">
-                {favorites.length !== 0 ? (
-                  <>
-                    <HeartFilled />
-                    <Stamp>{favorites.length}</Stamp>
-                  </>
-                ) : (
-                  <Heart />
-                )}
-              </Link>
-            </Position>
-          </NavIconLink>
-          <NavIconLink>
-            <Position>
-              <Link to="/shop/cart">
-                <Cart />
-                {cart !== 0 && <Stamp>{cart}</Stamp>}
-              </Link>
-            </Position>
-          </NavIconLink>
-        </NavRight>
-      </Navigation>
-    </Container>
-  );
-}
-
-export default Nav;

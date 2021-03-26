@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 import { CSSTransition } from "react-transition-group";
 import { formatNavLink } from "../../../utils/utils";
 
@@ -8,187 +9,6 @@ import check from "../../../assets/icons/icon-check.svg";
 import { ReactComponent as FilterIcon } from "../../../assets/icons/icon-filter.svg";
 import { ReactComponent as AngleDown } from "../../../assets/icons/icon-angle-down.svg";
 import { ReactComponent as AngleUp } from "../../../assets/icons/icon-angle-up.svg";
-
-// Styled Components
-const colors = {
-  primary: "hsl(0, 0%, 45%)", // Grey
-  secondary: "hsl(0, 0%, 27%)", // Dark Grey
-  tertiary: "hsl(0, 0%, 70%)", // Bright Grey
-  text: "hsl(0, 0%, 85%)",
-  label: "hsl(0, 0%, 100%)",
-};
-
-const filterColors = {
-  beige: "hsl(20, 49%, 73%)",
-  black: "hsl(0, 0%, 0%)",
-  blue: "hsl(213, 95%, 36%)",
-  brown: "hsl(20, 35%, 29%)",
-  green: "hsl(141, 28%, 29%)",
-  grey: "hsl(0, 0%, 50%)",
-  orange: "hsl(9, 39%, 51%)",
-  red: "hsl(0, 50%, 38%)",
-  white: "hsl(0, 0%, 100%)",
-  yellow: "hsl(39, 39%, 53%)",
-};
-
-const Dropdown = styled.div`
-  line-height: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  grid-column: 1 / -1;
-`;
-
-const Filter = styled.h3`
-  text-transform: uppercase;
-  font-weight: 600;
-  margin: 0.5rem 0;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-`;
-
-const Row = styled.div`
-  display: flex;
-`;
-
-const Buttons = styled.div`
-  display: flex;
-  justify-content: center;
-
-  & > *:first-child {
-    margin-right: 2rem;
-  }
-`;
-
-const filterButton = `
-  text-transform: capitalize;
-  display: flex;
-  align-items: center;
-  margin: .15rem 0;
-
-  &:before {
-    content: '';
-    display: inline-block;
-    width: 0.75rem;
-    height: 0.75rem;
-    margin-right: 0.75rem;
-    border: 1px solid ${colors.primary};
-  }
-`;
-
-const Color = styled.button`
-  ${filterButton}
-  font-weight: ${(props) => props.isSelected && "600"};
-
-  &:before {
-    background-color: ${(props) => filterColors[props.color] || props.color};
-  }
-`;
-
-const Checkbox = styled.button`
-  ${filterButton}
-  font-weight: ${(props) => props.isSelected && "600"};
-
-  &:before {
-    background-color: ${(props) => props.isSelected && colors.secondary};
-    background-image: ${(props) => props.isSelected && `url(${check})`};
-    background-position: ${(props) => props.isSelected && "center"};
-    border-radius: 2px;
-  }
-`;
-
-const Small = styled.span`
-  display: inline-block;
-  margin-left: 0.4rem;
-  font-size: 0.825rem;
-  color: ${colors.secondary};
-  font-weight: 500;
-`;
-
-const Range = styled.input.attrs((props) => ({
-  type: "range",
-}))`
-  margin: 0.5rem 0;
-  -webkit-appearance: none;
-
-  &:focus {
-    outline: none;
-  }
-
-  &::-webkit-slider-thumb {
-    -webkit-appearance: none;
-  }
-
-  &::-webkit-slider-thumb {
-    width: 13px;
-    height: 13px;
-    margin-top: -3px;
-    border-radius: 50%;
-    background: ${colors.secondary};
-  }
-
-  &::-webkit-slider-runnable-track {
-    background: ${colors.tertiary};
-    height: 5px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-`;
-
-const RangeBubble = styled.span`
-  position: relative;
-  display: inline-block;
-  padding: 0.15rem 0;
-  min-width: 3rem;
-  text-align: center;
-  background: ${colors.secondary};
-  border-radius: 3px;
-  color: ${colors.text};
-  margin-left: 1rem;
-
-  &:before {
-    content: "";
-    position: absolute;
-    border-top: 7px solid transparent;
-    border-bottom: 7px solid transparent;
-    border-right: 7px solid ${colors.secondary};
-    left: -6px;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-`;
-
-const Button = styled.button`
-  margin-top: 1.5rem;
-  text-transform: uppercase;
-  font-size: 0.9rem;
-  color: ${colors.text};
-  background: ${colors.secondary};
-  align-self: center;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-
-  &:hover {
-    color: ${colors.label};
-  }
-`;
-
-const ButtonEmpty = styled(Button)`
-  background: transparent;
-  color: ${colors.secondary};
-  border: 1px solid ${colors.secondary};
-
-  &:hover {
-    color: initial;
-  }
-`;
-
-const OpenButton = styled(Button)`
-  display: flex;
-  justify-content: space-between;
-  text-transform: initial;
-  margin-top: 0;
-`;
 
 function Filters({ items, handleFilters }) {
   // Filters
@@ -598,3 +418,193 @@ function Filters({ items, handleFilters }) {
 }
 
 export default Filters;
+
+Filters.propTypes = {
+  items: PropTypes.array,
+  handleFilters: PropTypes.func.isRequired,
+};
+
+Filters.defaultProps = {
+  items: [],
+};
+
+// Styled Components
+const colors = {
+  primary: "hsl(0, 0%, 45%)", // Grey
+  secondary: "hsl(0, 0%, 27%)", // Dark Grey
+  tertiary: "hsl(0, 0%, 70%)", // Bright Grey
+  text: "hsl(0, 0%, 85%)",
+  label: "hsl(0, 0%, 100%)",
+};
+
+const filterColors = {
+  beige: "hsl(20, 49%, 73%)",
+  black: "hsl(0, 0%, 0%)",
+  blue: "hsl(213, 95%, 36%)",
+  brown: "hsl(20, 35%, 29%)",
+  green: "hsl(141, 28%, 29%)",
+  grey: "hsl(0, 0%, 50%)",
+  orange: "hsl(9, 39%, 51%)",
+  red: "hsl(0, 50%, 38%)",
+  white: "hsl(0, 0%, 100%)",
+  yellow: "hsl(39, 39%, 53%)",
+};
+
+const Dropdown = styled.div`
+  line-height: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  grid-column: 1 / -1;
+`;
+
+const Filter = styled.h3`
+  text-transform: uppercase;
+  font-weight: 600;
+  margin: 0.5rem 0;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const Row = styled.div`
+  display: flex;
+`;
+
+const Buttons = styled.div`
+  display: flex;
+  justify-content: center;
+
+  & > *:first-child {
+    margin-right: 2rem;
+  }
+`;
+
+const filterButton = `
+  text-transform: capitalize;
+  display: flex;
+  align-items: center;
+  margin: .15rem 0;
+
+  &:before {
+    content: '';
+    display: inline-block;
+    width: 0.75rem;
+    height: 0.75rem;
+    margin-right: 0.75rem;
+    border: 1px solid ${colors.primary};
+  }
+`;
+
+const Color = styled.button`
+  ${filterButton}
+  font-weight: ${(props) => props.isSelected && "600"};
+
+  &:before {
+    background-color: ${(props) => filterColors[props.color] || props.color};
+  }
+`;
+
+const Checkbox = styled.button`
+  ${filterButton}
+  font-weight: ${(props) => props.isSelected && "600"};
+
+  &:before {
+    background-color: ${(props) => props.isSelected && colors.secondary};
+    background-image: ${(props) => props.isSelected && `url(${check})`};
+    background-position: ${(props) => props.isSelected && "center"};
+    border-radius: 2px;
+  }
+`;
+
+const Small = styled.span`
+  display: inline-block;
+  margin-left: 0.4rem;
+  font-size: 0.825rem;
+  color: ${colors.secondary};
+  font-weight: 500;
+`;
+
+const Range = styled.input.attrs((props) => ({
+  type: "range",
+}))`
+  margin: 0.5rem 0;
+  -webkit-appearance: none;
+
+  &:focus {
+    outline: none;
+  }
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+  }
+
+  &::-webkit-slider-thumb {
+    width: 13px;
+    height: 13px;
+    margin-top: -3px;
+    border-radius: 50%;
+    background: ${colors.secondary};
+  }
+
+  &::-webkit-slider-runnable-track {
+    background: ${colors.tertiary};
+    height: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+`;
+
+const RangeBubble = styled.span`
+  position: relative;
+  display: inline-block;
+  padding: 0.15rem 0;
+  min-width: 3rem;
+  text-align: center;
+  background: ${colors.secondary};
+  border-radius: 3px;
+  color: ${colors.text};
+  margin-left: 1rem;
+
+  &:before {
+    content: "";
+    position: absolute;
+    border-top: 7px solid transparent;
+    border-bottom: 7px solid transparent;
+    border-right: 7px solid ${colors.secondary};
+    left: -6px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+`;
+
+const Button = styled.button`
+  margin-top: 1.5rem;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  color: ${colors.text};
+  background: ${colors.secondary};
+  align-self: center;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+
+  &:hover {
+    color: ${colors.label};
+  }
+`;
+
+const ButtonEmpty = styled(Button)`
+  background: transparent;
+  color: ${colors.secondary};
+  border: 1px solid ${colors.secondary};
+
+  &:hover {
+    color: initial;
+  }
+`;
+
+const OpenButton = styled(Button)`
+  display: flex;
+  justify-content: space-between;
+  text-transform: initial;
+  margin-top: 0;
+`;

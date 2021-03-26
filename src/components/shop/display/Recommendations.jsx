@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 import { useFavorite } from "../../../contexts/FavoriteContext";
 import useCarousel from "../../../hooks/useCarousel";
 import ShopItemPreview from "./ShopItemPreview";
@@ -7,6 +8,100 @@ import ShopItemPreview from "./ShopItemPreview";
 // Icons
 import { ReactComponent as AngleLeft } from "../../../assets/icons/icon-angle-left.svg";
 import { ReactComponent as AngleRight } from "../../../assets/icons/icon-angle-right.svg";
+
+function Recommendations({ recommendations, number }) {
+  const { favorites } = useFavorite();
+  const {
+    slidesNumber,
+    transition,
+    transitionDuration,
+    slidesGroups,
+    previous,
+    next,
+    handleTransitionEnd,
+  } = useCarousel(recommendations, number);
+  useCarousel(recommendations, number);
+
+  return (
+    <>
+      <Heading>Similar Items</Heading>
+      <Container>
+        <Button onClick={previous} disabled={slidesGroups.length < 3}>
+          <AngleLeft />
+        </Button>
+
+        <Gallery>
+          <Slides
+            onTransitionEnd={handleTransitionEnd}
+            transition={transition}
+            transitionDuration={transitionDuration}
+            slidesGroups={slidesGroups.length}
+          >
+            {slidesGroups.map((slide, index) => {
+              return (
+                <Slide key={index} slidesNumber={slidesNumber}>
+                  {slide.map((slide, index) => {
+                    if (slide) {
+                      return (
+                        <Preview key={`${slide.id}-${index}`}>
+                          <ShopItemPreview
+                            name={slide.name}
+                            images={slide.images}
+                            price={slide.price}
+                            id={slide.id}
+                            isFavorite={favorites.includes(slide.id)}
+                            isNew={slide.isNew}
+                          />
+                        </Preview>
+                      );
+                    }
+                    return <Preview key={`empty-${index}`} />;
+                  })}
+                </Slide>
+              );
+            })}
+          </Slides>
+        </Gallery>
+
+        <Button onClick={next} disabled={slidesGroups.length < 3}>
+          <AngleRight />
+        </Button>
+      </Container>
+    </>
+  );
+}
+
+export default Recommendations;
+
+Recommendations.propTypes = {
+  recommendations: PropTypes.arrayOf(
+    PropTypes.shape({
+      additional: PropTypes.objectOf(PropTypes.string),
+      categories: PropTypes.arrayOf(PropTypes.string),
+      colors: PropTypes.arrayOf(
+        PropTypes.shape({
+          description: PropTypes.string,
+          image: PropTypes.string,
+          type: PropTypes.string,
+          value: PropTypes.string,
+        })
+      ),
+      description: PropTypes.arrayOf(PropTypes.string),
+      dimensions: PropTypes.shape({
+        width: PropTypes.number,
+        height: PropTypes.number,
+        depth: PropTypes.number,
+      }),
+      id: PropTypes.string,
+      images: PropTypes.arrayOf(PropTypes.string),
+      name: PropTypes.string,
+      new: PropTypes.bool,
+      price: PropTypes.number,
+      type: PropTypes.string,
+    })
+  ).isRequired,
+  number: PropTypes.number.isRequired,
+};
 
 // Styled components
 const colors = {
@@ -88,67 +183,3 @@ const Heading = styled.h2`
     background: linear-gradient(270deg, ${colors.heading}, transparent);
   }
 `;
-
-function Recommendations({ recommendations, number }) {
-  const { favorites } = useFavorite();
-  const {
-    slidesNumber,
-    transition,
-    transitionDuration,
-    slidesGroups,
-    previous,
-    next,
-    handleTransitionEnd,
-  } = useCarousel(recommendations, number);
-  useCarousel(recommendations, number);
-
-  return (
-    <>
-      <Heading>Similar Items</Heading>
-      <Container>
-        <Button onClick={previous} disabled={slidesGroups.length < 3}>
-          <AngleLeft />
-        </Button>
-
-        <Gallery>
-          <Slides
-            onTransitionEnd={handleTransitionEnd}
-            transition={transition}
-            transitionDuration={transitionDuration}
-            slidesGroups={slidesGroups.length}
-          >
-            {slidesGroups.map((slide, index) => {
-              return (
-                <Slide key={index} slidesNumber={slidesNumber}>
-                  {slide.map((slide, index) => {
-                    if (slide) {
-                      return (
-                        <Preview key={`${slide.id}-${index}`}>
-                          <ShopItemPreview
-                            name={slide.name}
-                            images={slide.images}
-                            price={slide.price}
-                            id={slide.id}
-                            isFavorite={favorites.includes(slide.id)}
-                            isNew={slide.isNew}
-                          />
-                        </Preview>
-                      );
-                    }
-                    return <Preview key={`empty-${index}`} />;
-                  })}
-                </Slide>
-              );
-            })}
-          </Slides>
-        </Gallery>
-
-        <Button onClick={next} disabled={slidesGroups.length < 3}>
-          <AngleRight />
-        </Button>
-      </Container>
-    </>
-  );
-}
-
-export default Recommendations;

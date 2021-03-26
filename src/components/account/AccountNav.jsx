@@ -3,6 +3,37 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
+function AccountNav({ currentLink }) {
+  const [links, setLinks] = useState([
+    "user",
+    "orders",
+    "addresses",
+    "payment",
+  ]);
+
+  return (
+    <Nav>
+      {links.map((link) => {
+        return currentLink === link ? (
+          <CurrentLink key={link} isSelected={currentLink === link}>
+            {link}
+          </CurrentLink>
+        ) : (
+          <NavLink to={`/account/${link}`} key={link}>
+            {link}
+          </NavLink>
+        );
+      })}
+    </Nav>
+  );
+}
+
+AccountNav.propTypes = {
+  currentLink: PropTypes.string.isRequired,
+};
+
+export default AccountNav;
+
 const colors = {
   primary: "hsl(0, 0%, 0%)", // Black
   secondary: "hsl(0, 0%, 37%)", // Grey
@@ -72,34 +103,3 @@ const CurrentLink = styled.span`
     }
   }
 `;
-
-function AccountNav({ currentLink }) {
-  const [links, setLinks] = useState([
-    "user",
-    "orders",
-    "addresses",
-    "payment",
-  ]);
-
-  return (
-    <Nav>
-      {links.map((link) => {
-        return currentLink === link ? (
-          <CurrentLink key={link} isSelected={currentLink === link}>
-            {link}
-          </CurrentLink>
-        ) : (
-          <NavLink to={`/account/${link}`} key={link}>
-            {link}
-          </NavLink>
-        );
-      })}
-    </Nav>
-  );
-}
-
-AccountNav.propTypes = {
-  currentLink: PropTypes.string.isRequired,
-};
-
-export default AccountNav;

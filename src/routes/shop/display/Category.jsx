@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 import { useFavorite } from "../../../contexts/FavoriteContext";
 import useShop from "../../../hooks/useShop";
 import useWindowSize from "../../../hooks/useWindowSize";
@@ -7,54 +8,6 @@ import SideFilters from "../../../components/shop/display/SideFilters";
 import Filters from "../../../components/shop/display/Filters";
 import Sort from "../../../components/shop/display/Sort";
 import ShopItemPreview from "../../../components/shop/display/ShopItemPreview";
-
-const ShopList = styled.ul`
-  display: grid;
-  grid-gap: 3vw;
-
-  @media all and (min-width: 576px) {
-    grid-template-columns: repeat(2, auto);
-  }
-
-  @media all and (min-width: 1350px) {
-    grid-template-columns: repeat(3, auto);
-  }
-`;
-
-const Content = styled.div`
-  justify-self: stretch;
-`;
-
-const Shop = styled.div`
-  display: grid;
-  grid-column-gap: 1rem;
-  padding: 5rem 0;
-  justify-items: center;
-
-  @media all and (min-width: 768px) {
-    grid-template-columns: auto 1fr;
-  }
-
-  @media all and (min-width: 992px) {
-    width: 80%;
-  }
-`;
-
-const Buttons = styled.div`
-  display: grid;
-  justify-items: stretch;
-  grid-gap: 2rem;
-  margin-bottom: 1rem;
-
-  @media all and (min-width: 576px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  @media all and (min-width: 830px) {
-    display: flex;
-    justify-content: flex-end;
-  }
-`;
 
 function Category({ match }) {
   const [items, setItems] = useState([]); // All items that belong in the category
@@ -211,3 +164,59 @@ function Category({ match }) {
 }
 
 export default Category;
+
+Category.propTypes = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      category: PropTypes.string,
+    }),
+  }).isRequired,
+};
+
+const ShopList = styled.ul`
+  display: grid;
+  grid-gap: 3vw;
+
+  @media all and (min-width: 576px) {
+    grid-template-columns: repeat(2, auto);
+  }
+
+  @media all and (min-width: 1350px) {
+    grid-template-columns: repeat(3, auto);
+  }
+`;
+
+const Content = styled.div`
+  justify-self: stretch;
+`;
+
+const Shop = styled.div`
+  display: grid;
+  grid-column-gap: 1rem;
+  padding: 5rem 0;
+  justify-items: center;
+
+  @media all and (min-width: 768px) {
+    grid-template-columns: auto 1fr;
+  }
+
+  @media all and (min-width: 992px) {
+    width: 80%;
+  }
+`;
+
+const Buttons = styled.div`
+  display: grid;
+  justify-items: stretch;
+  grid-gap: 2rem;
+  margin-bottom: 1rem;
+
+  @media all and (min-width: 576px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media all and (min-width: 830px) {
+    display: flex;
+    justify-content: flex-end;
+  }
+`;
