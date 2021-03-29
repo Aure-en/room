@@ -4,7 +4,7 @@ Room - View site
 
 ## Description
 
-Room is a furniture e-commerce website, made with React and Firebase, as an expansion of the [Room Homepage Front End Mentors' project] (https://www.frontendmentor.io/challenges/room-homepage-BtdBY_ENq/intro). It allows the user to shop or save items as a guest or as a regular member.
+Room is a furniture e-commerce website, made with React and Firebase, as an expansion of the [Room Homepage Front End Mentors' project](https://www.frontendmentor.io/challenges/room-homepage-BtdBY_ENq/intro). It allows the user to shop or save items as a guest or as a regular member.
 
 ## Features implemented
 
@@ -27,8 +27,11 @@ Room is a furniture e-commerce website, made with React and Firebase, as an expa
 ## Screenshots
 
 ![Room1](https://user-images.githubusercontent.com/68861848/112833388-f089f800-9096-11eb-914c-5bb4073a261b.png)
+
 ![Room2](https://user-images.githubusercontent.com/68861848/112833393-f253bb80-9096-11eb-866e-2156f07bceb1.png)
+
 ![Room3](https://user-images.githubusercontent.com/68861848/112833397-f384e880-9096-11eb-81ed-1d004fc640fc.png)
+
 ![Room4](https://user-images.githubusercontent.com/68861848/112833399-f4b61580-9096-11eb-8d97-85f4334223b7.png)
 
 ## Reflection
