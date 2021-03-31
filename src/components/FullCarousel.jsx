@@ -131,19 +131,20 @@ const Text = styled.div`
   color: ${colors.arrow};
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   font-size: 1.25rem;
   line-height: 2.5rem;
   text-align: center;
   padding: 0 1rem;
-
-  @media all and (min-width: 400px) {
-    top: 50%;
-    transform: translateY(-50%);
-    left: 15%;
-  }
+  left: 50%;
+  top: 15%;
+  transform: translateX(-50%);
 
   @media all and (min-width: 768px) {
+    left: 15%;
+    top: 50%;
+    transform: translateY(-50%);
     font-size: 1.75rem;
     line-height: 3.25rem;
     align-items: flex-start;

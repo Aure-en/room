@@ -14,9 +14,11 @@ function Contact() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
+  const [success, setSuccess] = useState("");
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
+    setSuccess("Your message has been sent.");
   };
 
   return (
@@ -37,6 +39,7 @@ function Contact() {
                 id="first_name"
                 onChange={(e) => setFirstName(e.target.value)}
                 placeholder="Enter your first name"
+                required
               />
             </Field>
 
@@ -48,6 +51,7 @@ function Contact() {
                 id="last_name"
                 onChange={(e) => setLastName(e.target.value)}
                 placeholder="Enter your last name"
+                required
               />
             </Field>
 
@@ -59,6 +63,7 @@ function Contact() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
+                required
               />
             </Field>
 
@@ -70,6 +75,7 @@ function Contact() {
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="Enter your phone number"
+                required
               />
             </Field>
 
@@ -81,10 +87,14 @@ function Contact() {
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="Enter your message"
                 rows={1}
+                required
               />
             </MessageField>
 
-            <SubmitBtn>Send message ⟶</SubmitBtn>
+            <Field>
+              <SubmitBtn>Send message ⟶</SubmitBtn>
+              {success && <Success>{success}</Success>}
+            </Field>
           </Form>
 
           <Information>
@@ -257,7 +267,7 @@ const TextArea = styled.textarea`
 `;
 
 const SubmitBtn = styled.button`
-  justify-self: start;
+  align-self: flex-start;
   padding: 0;
   cursor: pointer;
   transition: all 0.2s linear;
@@ -304,4 +314,9 @@ const Icon = styled.a`
   &:hover {
     color: ${colors.black};
   }
+`;
+
+const Success = styled.div`
+  color: ${colors.grey};
+  margin: 1rem 0;
 `;

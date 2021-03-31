@@ -6,6 +6,7 @@ function useCarousel(slides, number) {
   const [slidesGroups, setSlidesGroups] = useState([]);
   const [transition, setTransition] = useState(0);
   const [transitionDuration, setTransitionDuration] = useState(0.3);
+  const [isInitialized, setIsInitialized] = useState(false);
   const [isNext, setIsNext] = useState(false); // Indicates the carousel direction (previous/next)
 
   const previous = () => {
@@ -30,6 +31,7 @@ function useCarousel(slides, number) {
   - Thanks to useEffect, the transition duration is put back to 0.3s to have a smooth animation.
   */
   const handleTransitionEnd = () => {
+    if (!isInitialized) return;
     setTransitionDuration(0);
     setTransition(-100 / slidesGroups.length);
 
@@ -77,6 +79,11 @@ function useCarousel(slides, number) {
       setTransitionDuration(0.3);
     }
   }, [transitionDuration]);
+
+  // Avoid handleTransitionEnd when initializing the carousel
+  useEffect(() => {
+    setIsInitialized(true);
+  }, [transition]);
 
   return {
     currentSlide,
